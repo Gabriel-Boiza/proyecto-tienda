@@ -38,7 +38,7 @@
                     <i data-feather="home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href='{{route("productos.create")}}' class="flex items-center space-x-2 text-gray-500 hover:text-gray-300">
+                <a href='{{route("productos.index")}}' class="flex items-center space-x-2 text-gray-500 hover:text-gray-300">
                     <i data-feather="box"></i>
                     <span>Productos</span>
                 </a>

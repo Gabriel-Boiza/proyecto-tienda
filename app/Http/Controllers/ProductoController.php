@@ -7,12 +7,19 @@ use App\Models\Producto;
 
 class ProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function obtenerProductos(){
+
+        $productos = Producto::all();
+
+        return response()->json($productos);
+    }
+    
     public function index()
     {
+        $productos = Producto::with('categorias')->get();
+
         
+        return view('productos/listar_productos', compact('productos'));
     }
 
     /**
