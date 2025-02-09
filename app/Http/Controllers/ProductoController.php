@@ -101,7 +101,7 @@ class ProductoController extends Controller
         ->get();
         
         return view("app-admin.productos.mostrar", compact('producto', 'imagenesAdicionales'));
-    
+        
     }
 
     /**

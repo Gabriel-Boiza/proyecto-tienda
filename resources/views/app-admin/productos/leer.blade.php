@@ -60,6 +60,8 @@
     </div>
 
     <script>
+                console.log('hola');
+
         let allProducts = []; // Store all products
         let categories = new Set(); // Store unique categories
 
@@ -211,7 +213,7 @@
 
         function eliminarProducto(id) {
             if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-                fetch(`/api/productos/${id}`, {
+                fetch(`productos/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
