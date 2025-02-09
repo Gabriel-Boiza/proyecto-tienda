@@ -8,9 +8,11 @@ use App\Http\Controllers\CategoriaController;
 
 class Producto extends Model
 {
-    protected $fillable = ['nombre'];
-
-    public function categorias(){
-        return $this->belongsToMany(Categoria::class, 'productos_categorias', 'id_categoria', 'id_producto' );
+    protected $fillable = [
+        'nombre', 'precio', 'descripcion', 'stock', 'imagen_principal'
+    ];
+    public function categorias()
+    {
+        return $this->belongsToMany(Categoria::class, 'productos_categorias', 'id_producto', 'id_categoria');
     }
 }
