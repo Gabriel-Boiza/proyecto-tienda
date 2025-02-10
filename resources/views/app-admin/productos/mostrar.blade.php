@@ -122,7 +122,7 @@
         let currentImageIndex = 0;
         const images = [
             '{{ asset("storage/".$producto->imagen_principal) }}',
-            @foreach ($imagenesAdicionales as $imagen)
+            @foreach ($imagenesAdicionales as $imagen) 
                 '{{ asset("storage/".$imagen->imagen) }}',
             @endforeach
         ];

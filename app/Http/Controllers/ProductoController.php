@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProductoController extends Controller
 {
@@ -109,7 +111,12 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        echo $id;
+        $producto = Producto::with('categorias')->find($id);
+        $imagenesAdicionales = DB::table('imagenes_adicionales')
+        ->where('id_producto', $id) 
+        ->get();
+        
+        return view("app-admin.productos.mostrar", compact('producto', 'imagenesAdicionales'));
     }
 
     /**
@@ -117,7 +124,10 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Producto::find($id)->update([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+        ]);
     }
 
     /**
@@ -125,7 +135,27 @@ class ProductoController extends Controller
      */
     public function destroy(string $id)
     {
-        $producto = Producto::find($id);
+        $producto = Producto::find($id); 
+        $imagenesAdicionales = DB::table('imagenes_adicionales')->where('id_producto', $id)->pluck('imagen');
+    
+
+        if(!empty($imagenesAdicionales)){
+            foreach($imagenesAdicionales as $indice => $imagen){
+            
+                $rutaImagenAdicional = storage_path("app/public/{$imagen}");
+                unlink($rutaImagenAdicional);
+            }
+        }
+
+        if ($producto->imagen_principal) {
+            $rutaImagen = storage_path("app/public/{$producto->imagen_principal}");
+            
+            unlink($rutaImagen);
+        }
+    
         $producto->delete();
+    
+        return response()->json(['message' => 'Producto eliminado correctamente']);
     }
+    
 }
