@@ -39,7 +39,7 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        // Validación de los datos del formulario
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
@@ -50,15 +50,14 @@ class ProductoController extends Controller
             'imagenes_adicionales' => 'nullable|array',
         ]);
     
-        // Ruta de la imagen principal
+
         $rutaImagenPrincipal = "";
     
         if ($request->hasFile('imagen_principal')) {
             $imagenPrincipal = $request->file('imagen_principal');
             $rutaImagenPrincipal = $imagenPrincipal->store('productos', 'public'); 
         }
-    
-        // Crear el producto
+
         $producto = Producto::create([
             'nombre' => $request->nombre,
             'precio' => $request->precio,
@@ -66,8 +65,7 @@ class ProductoController extends Controller
             'stock' => $request->stock,
             'imagen_principal' => $rutaImagenPrincipal,
         ]);
-    
-        // Guardar imágenes adicionales
+
         if ($request->has('imagenes_adicionales')) {
             foreach ($request->file('imagenes_adicionales') as $imagenAdicional) {
                 $rutaImagenAdicional = $imagenAdicional->store('productos', 'public'); 
@@ -79,8 +77,7 @@ class ProductoController extends Controller
                 ]);
             }
         }
-    
-        // Asignar categorías al producto
+
         if ($request->has('categorias') && count($request->categorias) > 0) {
             $producto->categorias()->attach($request->categorias);  
         }

@@ -36,20 +36,18 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar la categoría si es necesario
+
         $request->validate([
-            'categoria' => 'required|string|max:255', // Ajusta según las reglas de validación que necesites
+            'categoria' => 'required|string|max:255',  //categoria es el valor que le paso por fetch
         ]);
     
-        // Crear la nueva categoría en la base de datos
+
         Categoria::create([
-            'nombre_categoria' => $request->input('categoria'), // Obtener el valor de la categoría desde el cuerpo de la solicitud
+            'nombre_categoria' => $request->input('categoria'), 
         ]);
     
-        // Si todo sale bien, devolver una respuesta de éxito
-        return response()->json([
-            'message' => 'Categoría creada con éxito'
-        ], 201); // 201 es el código de estado para "creado"
+
+        return response()->json(['message' => 'Categoría creada con éxito']); 
     }
     
 
@@ -74,7 +72,26 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+  
+        $request->validate([
+            'categoria' => 'required|string|max:255'
+        ]);
+    
+        try {
+ 
+            $categoria = Categoria::findOrFail($id);
+            
+            $categoria->nombre_categoria = $request->categoria;
+            $categoria->save();
+
+            $datos = ['message' => 'Categoría actualizada correctamente', 'categoria' => $categoria];
+
+            return response()->json($datos);
+    
+        } catch (Exception $e) {
+
+            return response()->json(['message' => 'Error al actualizar la categoría']);
+        }
     }
 
     /**

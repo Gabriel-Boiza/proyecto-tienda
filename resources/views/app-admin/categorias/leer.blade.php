@@ -12,16 +12,24 @@
     <div class="flex">
         @include('app-admin.componentes.panel_admin')
         <main class="flex-1 flex flex-col items-center justify-center p-6">
-            <h1 class="text-center text-2xl mb-4">Gestión categorías</h1>
+            <h1 class="text-center text-xl font-bold mb-6">Gestión categorías</h1>
             <form method="POST" id="formulario" class="flex justify-center w-full max-w-[60%] mb-2">
-                <input name="nombre_categoria" id="generarInput" type="text" placeholder="Nombre de la categoria" 
-                class="w-[70%] p-2 border rounded-md bg-slate-800 border-slate-700 placeholder-white">
-                <input type="submit" class="w-[25%] p-2 text-white bg-purple-600 border rounded-md ml-5" value="+ Generar">
+                <input 
+                    name="nombre_categoria" 
+                    id="generarInput" 
+                    type="text" 
+                    placeholder="Nombre de la categoria" 
+                    class="w-[70%] p-2 rounded-md bg-zinc-800 text-gray-300 placeholder-gray-400"
+                >
+                <input 
+                    type="submit" 
+                    class="w-[25%] p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md ml-5" 
+                    value="+ Generar"
+                >
             </form>
 
-            <div id="container"> </div>
+            <div id="container" class="bg-zinc-800/50 rounded-lg w-full max-w-[60%]"> </div>
         </main>
-
     </div>
 </body>
 </html>
