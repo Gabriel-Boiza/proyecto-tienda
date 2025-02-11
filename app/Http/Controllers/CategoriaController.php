@@ -7,6 +7,12 @@ use App\Models\Categoria;
 
 class CategoriaController extends Controller
 {
+
+    public function obtenerCategorias(){
+        $categorias = Categoria::all();
+
+        return response()->json($categorias);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -30,11 +36,22 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
+        // Validar la categoría si es necesario
+        $request->validate([
+            'categoria' => 'required|string|max:255', // Ajusta según las reglas de validación que necesites
+        ]);
+    
+        // Crear la nueva categoría en la base de datos
         Categoria::create([
-            'nombre_categoria' => request('nombre_categoria'),
-            'categoria_padre' => request('categoria_padre')
-        ]); 
+            'nombre_categoria' => $request->input('categoria'), // Obtener el valor de la categoría desde el cuerpo de la solicitud
+        ]);
+    
+        // Si todo sale bien, devolver una respuesta de éxito
+        return response()->json([
+            'message' => 'Categoría creada con éxito'
+        ], 201); // 201 es el código de estado para "creado"
     }
+    
 
     /**
      * Display the specified resource.
@@ -65,6 +82,9 @@ class CategoriaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $categoria = Categoria::find($id);
+        $categoria->delete();
+
+        return response()->json(['message' => 'Producto eliminado correctamente']);
     }
 }

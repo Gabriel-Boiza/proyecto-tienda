@@ -141,16 +141,21 @@ class ProductoController extends Controller
 
         if(!empty($imagenesAdicionales)){
             foreach($imagenesAdicionales as $indice => $imagen){
-            
+
                 $rutaImagenAdicional = storage_path("app/public/{$imagen}");
-                unlink($rutaImagenAdicional);
+                if(file_exists($rutaImagenAdicional)){
+                    unlink($rutaImagenAdicional);
+                }
+            
             }
         }
 
         if ($producto->imagen_principal) {
             $rutaImagen = storage_path("app/public/{$producto->imagen_principal}");
             
-            unlink($rutaImagen);
+            if(file_exists($rutaImagen)){
+                unlink($rutaImagen);
+            }
         }
     
         $producto->delete();

@@ -13,6 +13,9 @@ Route::get('/app-admin', function () {
 
 Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']);
 
+Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']);
+
+
 Route::resources([
     'categorias' => CategoriaController::class,
     'productos' => ProductoController::class
