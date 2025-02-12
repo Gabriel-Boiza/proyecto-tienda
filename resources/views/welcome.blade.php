@@ -34,7 +34,8 @@
     </nav>
 
     <!-- Hero Section -->
-    <div class="hero-gradient h-96">
+    <div class="h-96 bg-cover bg-center" style="background-image: url('{{ asset('img/productos/imagen_home.png') }}');">
+
         <div class="container mx-auto px-6 py-20">
             <h1 class="text-4xl font-bold mb-4">Periféricos Gaming de Alta Gama</h1>
             <p class="text-xl mb-8">Descubre nuestra selección premium de periféricos gaming. Hasta 50% de descuento en productos seleccionados</p>
@@ -54,24 +55,17 @@
                 <div class="relative">
                     <span class="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 rounded">-20%</span>
                     <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="Teclado" class="w-full h-48 object-cover"/>
-
-
-
                 </div>
                 <div class="p-4">
                     <h3 class="font-bold">{{$producto->nombre}}</h3>
                     <p class="text-gray-400">{{$producto->descripcion}}</p>
                     <div class="flex justify-between items-center mt-4">
                         <span class="text-xl font-bold">${{$producto->precio}}</span>
-                        <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">Añadir</button>
+                        <a href="periferico/{{{$producto->id}}}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">Ver más</a>
                     </div>
                 </div>
             </div>
         @endforeach
-            <!-- Product Card 2 -->
-            
-
-            <!-- Product Card 4 -->
             
     </div>
 
@@ -79,30 +73,15 @@
     <div class="container mx-auto px-6 py-16">
         <h2 class="text-2xl font-bold mb-8">Categorías</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            
+            @foreach($categorias as $categoria)
+            <a href="categoria/{{{$categoria->id}}}">
             <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 cursor-pointer transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-                <span>Teclados</span>
+                <span>{{$categoria->nombre_categoria}}</span>
             </div>
-            <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 cursor-pointer transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                </svg>
-                <span>Ratones</span>
-            </div>
-            <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 cursor-pointer transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.828-2.828" />
-                </svg>
-                <span>Auriculares</span>
-            </div>
-            <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 cursor-pointer transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span>Monitores</span>
-            </div>
+            </a>
+            @endforeach
+            
         </div>
     </div>
 

@@ -130,32 +130,3 @@ function generarCategoria() {
 function validarCategoria(categoria){
     return true; //aun no hecha
 }
-
-
-//sin usar
-async function peticionApi(url, metodo = 'GET', datos = null) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
-    const opciones = {
-        method: metodo,
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        }
-    };
-
-    if (datos) {
-        opciones.body = JSON.stringify(datos);
-    }
-
-    try {
-        const respuesta = await fetch(url, opciones);
-        if (!respuesta.ok) {
-            throw new Error(`Error ${respuesta.status}: ${respuesta.statusText}`);
-        }
-        return await respuesta.json();
-    } catch (error) {
-        console.error('Error en la petición:', error);
-        throw error; // Permite manejar errores desde la función que llama a esta
-    }
-}

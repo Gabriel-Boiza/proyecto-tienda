@@ -8,6 +8,11 @@ use App\Models\Categoria;
 class CategoriaController extends Controller
 {
 
+    public function userShow(string $id){
+        
+        echo $id;
+    }
+
     public function obtenerCategorias(){
         $categorias = Categoria::all();
 

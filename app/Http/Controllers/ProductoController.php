@@ -12,9 +12,15 @@ use Illuminate\Support\Facades\Storage;
 class ProductoController extends Controller
 {
 
-    public function obtenerProductosUsuarios(){
-        $productos = Producto::with('categorias')->get();   
-        return view('welcome', compact('productos'));
+    public function destacados(){
+        $productos = Producto::whereRelation('categorias', 'nombre_categoria', 'destacado')->get();  
+        $categorias = Categoria::all(); 
+        //return response()->json($productos);
+        return view('welcome', compact('productos', 'categorias'));
+    }
+
+    public function userShow(string $id){
+        echo $id;
     }
 
     public function obtenerProductos(){
