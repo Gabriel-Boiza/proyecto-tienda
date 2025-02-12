@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
+
+    public function obtenerProductosUsuarios(){
+        $productos = Producto::with('categorias')->get();   
+        return view('welcome', compact('productos'));
+    }
+
     public function obtenerProductos(){
 
         $productos = Producto::with('categorias')->get();   

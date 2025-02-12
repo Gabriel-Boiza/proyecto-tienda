@@ -92,6 +92,7 @@ function eliminarCategoria(id){
         .then(response => {
             if(!response.ok) {throw new Error('Error al actualizar la categoría')}
             generarTablas();
+
         })
         .catch(error => console.error('Error:', error));
     }
