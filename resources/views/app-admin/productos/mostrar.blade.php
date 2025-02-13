@@ -87,7 +87,16 @@
                         </label>
                         <p class="text-white">{{ $producto->stock }}</p>
                     </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">
+                            Descuento actual
+                        </label>
+                        <p class="text-white">{{ $producto->descuento }}</p>
+                    </div>
                 </div>
+
+                
 
                 <!-- Categorías -->
                 <div class="space-y-4">

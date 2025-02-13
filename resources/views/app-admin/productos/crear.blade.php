@@ -71,6 +71,20 @@
                     </div>
                 </div>
 
+                <!-- Descuento -->
+                <div>
+                    <label for="descuento" class="block text-sm font-medium text-gray-400 mb-1">Descuento</label>
+                    <div class="relative">
+                        <input type="number" 
+                            name="descuento" 
+                            id="descuento" 
+                            min="0"
+                            max="100"
+                            class="w-full bg-zinc-800 border border-zinc-700 rounded-md pr-8 px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+                        <span class="absolute right-3 top-2 text-gray-500">%</span>
+                    </div>
+                </div>
+
                 <!-- Categorías -->
                 <div class="space-y-4">
                     <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Categorías</h2>

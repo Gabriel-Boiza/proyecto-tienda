@@ -108,8 +108,8 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <div>
-                            <span class="text-2xl font-bold">${{$producto->precio}}</span>
-                            <span class="text-sm text-gray-400 line-through ml-2">${{$producto->precio * 1.2}}</span>
+                            <span class="text-2xl font-bold">{{$producto->precio * (100-$producto->descuento)/100}}€</span>
+                            <span class="text-sm text-gray-400 line-through ml-2">{{$producto->precio}}€</span>
                         </div>
                         <a href="periferico/{{{$producto->id}}}" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors">
                             Añadir

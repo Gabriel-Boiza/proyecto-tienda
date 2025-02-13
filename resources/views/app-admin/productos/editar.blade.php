@@ -75,6 +75,8 @@
         </div>
     </div>
 
+    
+
     <!-- Categorías -->
     <div class="space-y-4">
         <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Categorías</h2>

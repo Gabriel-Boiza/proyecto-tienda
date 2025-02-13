@@ -60,6 +60,7 @@ class ProductoController extends Controller
             'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
             'categorias' => 'nullable|array', 
             'imagenes_adicionales' => 'nullable|array',
+            'descuento' => 'integer',
         ]);
     
 
@@ -76,6 +77,7 @@ class ProductoController extends Controller
             'descripcion' => $request->descripcion, 
             'stock' => $request->stock,
             'imagen_principal' => $rutaImagenPrincipal,
+            'descuento' => $request->descuento,
         ]);
 
         if ($request->has('imagenes_adicionales')) {

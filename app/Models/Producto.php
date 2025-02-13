@@ -9,7 +9,7 @@ use App\Http\Controllers\CategoriaController;
 class Producto extends Model
 {
     protected $fillable = [
-        'nombre', 'precio', 'descripcion', 'stock', 'imagen_principal'
+        'nombre', 'precio', 'descripcion', 'stock', 'imagen_principal', 'descuento',
     ];
     public function categorias()
     {
