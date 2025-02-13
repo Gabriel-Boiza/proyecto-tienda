@@ -120,12 +120,13 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        $producto = Producto::with('categorias')->find($id);
+        $producto = Producto::with('categorias')->findOrFail($id);
+        $categorias = Categoria::all();
         $imagenesAdicionales = DB::table('imagenes_adicionales')
-        ->where('id_producto', $id) 
-        ->get();
-        
-        return view("app-admin.productos.mostrar", compact('producto', 'imagenesAdicionales'));
+            ->where('id_producto', $id) 
+            ->get();
+    
+        return view("app-admin.productos.editar", compact('producto', 'categorias', 'imagenesAdicionales'));
     }
 
     /**

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('precio');
             $table->integer('stock'); // Corregido
             $table->string('imagen_principal');
+            $table->integer('descuento')->nullable();
             $table->timestamps();
         });
         
