@@ -5,86 +5,155 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechPerif - Gaming Peripherals</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .hero-gradient {
-            background: linear-gradient(45deg, #4C1D95, #1E40AF);
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js"></script>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-900 text-white" x-data="{ mobileMenu: false }">
     <!-- Navigation -->
-    <nav class="bg-black p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="text-xl font-bold">TechPerif</div>
-            <div class="flex space-x-6">
-                <a href="#" class="hover:text-purple-500">Teclados</a>
-                <a href="#" class="hover:text-purple-500">Ratones</a>
-                <a href="#" class="hover:text-purple-500">Auriculares</a>
-                <a href="#" class="hover:text-purple-500">Monitores</a>
-            </div>
-            <div class="flex items-center space-x-4">
-                <input type="search" placeholder="Buscar productos..." class="px-4 py-2 rounded bg-gray-800 text-white">
-                <button class="text-purple-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
+    <nav class="bg-black sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                        <span class="text-xl font-bold">T</span>
+                    </div>
+                    <span class="text-xl font-bold">TechPerif</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="py-2 border-b-2 border-transparent hover:border-purple-500 hover:text-purple-500 transition-all duration-200">Teclados</a>
+                    <a href="#" class="py-2 border-b-2 border-transparent hover:border-purple-500 hover:text-purple-500 transition-all duration-200">Ratones</a>
+                    <a href="#" class="py-2 border-b-2 border-transparent hover:border-purple-500 hover:text-purple-500 transition-all duration-200">Auriculares</a>
+                    <a href="#" class="py-2 border-b-2 border-transparent hover:border-purple-500 hover:text-purple-500 transition-all duration-200">Monitores</a>
+                </div>
+
+                <!-- Search and Cart -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <div class="relative">
+                        <input type="search" placeholder="Buscar productos..." class="w-64 px-4 py-2 bg-gray-800 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                        <button class="absolute right-2 top-1/2 -translate-y-1/2">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button class="p-2 hover:text-purple-500">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        </button>
+                        <span class="absolute -top-2 -right-2 bg-purple-600 text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden" @click="mobileMenu = !mobileMenu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"/></svg>
                 </button>
+            </div>
+
+            <!-- Mobile Menu Panel -->
+            <div class="md:hidden" x-show="mobileMenu" x-transition>
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700">Teclados</a>
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700">Ratones</a>
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700">Auriculares</a>
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700">Monitores</a>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <div class="h-96 bg-cover bg-center" style="background-image: url('{{ asset('img/productos/imagen_home.png') }}');">
-
-        <div class="container mx-auto px-6 py-20">
-            <h1 class="text-4xl font-bold mb-4">Periféricos Gaming de Alta Gama</h1>
-            <p class="text-xl mb-8">Descubre nuestra selección premium de periféricos gaming. Hasta 50% de descuento en productos seleccionados</p>
-            <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded">
-                Ver Ofertas
-            </button>
+    <div class="relative bg-gradient-to-r from-purple-900 to-blue-900">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="relative container mx-auto px-4 py-24">
+            <div class="max-w-3xl">
+                <h1 class="text-5xl font-bold mb-6">Periféricos Gaming de Alta Gama</h1>
+                <p class="text-xl mb-8 text-gray-200">Descubre nuestra selección premium de periféricos gaming. Hasta 50% de descuento en productos seleccionados</p>
+                <div class="flex flex-wrap gap-4">
+                    <button class="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-lg font-bold transform hover:scale-105 transition-all duration-200">
+                        Ver Ofertas
+                    </button>
+                    <div class="bg-white/10 backdrop-blur rounded-lg px-6 py-3">
+                        <p class="text-sm">La oferta termina en:</p>
+                        <div class="text-2xl font-bold">23:59:59</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Featured Products -->
-    <div class="container mx-auto px-6 py-16">
-        <h2 class="text-2xl font-bold mb-8">Productos Destacados</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        @foreach($productos as $producto)
-            <!-- Product Card 1 -->
-            <div class="bg-gray-800 rounded-lg overflow-hidden">
+    <div class="container mx-auto px-4 py-16">
+        <h2 class="text-3xl font-bold mb-8">Productos Destacados</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($productos as $producto)
+            <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300">
                 <div class="relative">
-                    <span class="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 rounded">-20%</span>
-                    <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="Teclado" class="w-full h-48 object-cover"/>
+                    <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 left-2 bg-purple-600 px-2 py-1 rounded text-sm">-20%</div>
+                    <button class="absolute top-2 right-2 p-2 bg-gray-900/50 rounded-full hover:bg-gray-900 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                    </button>
                 </div>
                 <div class="p-4">
-                    <h3 class="font-bold">{{$producto->nombre}}</h3>
-                    <p class="text-gray-400">{{$producto->descripcion}}</p>
-                    <div class="flex justify-between items-center mt-4">
-                        <span class="text-xl font-bold">${{$producto->precio}}</span>
-                        <a href="periferico/{{{$producto->id}}}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">Ver más</a>
+                    <h3 class="font-bold text-lg mb-2">{{$producto->nombre}}</h3>
+                    <p class="text-gray-400 text-sm mb-3">{{$producto->descripcion}}</p>
+                    <div class="flex items-center mb-3">
+                        <div class="flex text-yellow-400 mr-2">
+                            @for($i = 0; $i < 5; $i++)
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            @endfor
+                        </div>
+                        <span class="text-sm text-gray-400">(150 reviews)</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-2xl font-bold">${{$producto->precio}}</span>
+                            <span class="text-sm text-gray-400 line-through ml-2">${{$producto->precio * 1.2}}</span>
+                        </div>
+                        <a href="periferico/{{{$producto->id}}}" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors">
+                            Añadir
+                        </a>
                     </div>
                 </div>
             </div>
-        @endforeach
-            
-    </div>
-
-    <!-- Categories -->
-    <div class="container mx-auto px-6 py-16">
-        <h2 class="text-2xl font-bold mb-8">Categorías</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            
-            @foreach($categorias as $categoria)
-            <a href="categoria/{{{$categoria->id}}}">
-            <div class="bg-gray-800 p-6 rounded-lg text-center hover:bg-gray-700 cursor-pointer transition duration-300">
-                <span>{{$categoria->nombre_categoria}}</span>
-            </div>
-            </a>
             @endforeach
-            
         </div>
     </div>
 
+    <!-- Categories -->
+    <div class="container mx-auto px-4 py-16">
+        <h2 class="text-3xl font-bold mb-8">Categorías</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($categorias as $categoria)
+            <a href="categoria/{{$categoria->id}}" class="group">
+                <div class="bg-gray-800 rounded-xl p-6 text-center hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-purple-600/10 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center group-hover:bg-purple-600/20 transition-colors">
+                        <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">{{$categoria->nombre_categoria}}</h3>
+                    <p class="text-gray-400 text-sm">20 productos</p>
+                </div>
+            </a>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="bg-gray-800 py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">¡Suscríbete a nuestro newsletter!</h2>
+                <p class="text-gray-400 mb-6">Recibe las últimas novedades y ofertas exclusivas directamente en tu correo.</p>
+                <form class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <input type="email" placeholder="Tu correo electrónico" class="px-4 py-3 bg-gray-900 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none flex-1 max-w-md">
+                    <button class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition-colors">
+                        Suscribirse
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Footer -->
     <footer class="bg-gray-800 text-gray-300 mt-16">
         <div class="container mx-auto px-6 py-12">
