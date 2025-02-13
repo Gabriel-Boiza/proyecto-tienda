@@ -134,10 +134,68 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Producto::find($id)->update([
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
+        $producto = Producto::findOrFail($id);
+    
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required|numeric|min:0',
+            'descripcion' => 'nullable|string',
+            'stock' => 'required|integer|min:0',
+            'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categorias' => 'nullable|array',
+            'imagenes_adicionales' => 'nullable|array',
+            'imagenes_eliminar' => 'nullable|array'
         ]);
+    
+        // Actualizar los datos principales del producto
+        $producto->update([
+            'nombre' => $request->nombre,
+            'precio' => $request->precio,
+            'descripcion' => $request->descripcion,
+            'stock' => $request->stock,
+        ]);
+    
+        // Actualizar la imagen principal si se sube una nueva
+        if ($request->hasFile('imagen_principal')) {
+            // Eliminar la imagen anterior
+            if ($producto->imagen_principal) {
+                Storage::disk('public')->delete($producto->imagen_principal);
+            }
+    
+            // Guardar la nueva imagen
+            $rutaImagenPrincipal = $request->file('imagen_principal')->store('productos', 'public');
+            $producto->update(['imagen_principal' => $rutaImagenPrincipal]);
+        }
+    
+        // Manejo de imágenes adicionales
+        if ($request->has('imagenes_eliminar')) {
+            foreach ($request->imagenes_eliminar as $imagenId) {
+                $imagen = DB::table('imagenes_adicionales')->where('id', $imagenId)->first();
+                if ($imagen) {
+                    Storage::disk('public')->delete($imagen->imagen);
+                    DB::table('imagenes_adicionales')->where('id', $imagenId)->delete();
+                }
+            }
+        }
+    
+        if ($request->hasFile('imagenes_adicionales')) {
+            foreach ($request->file('imagenes_adicionales') as $imagenAdicional) {
+                $rutaImagenAdicional = $imagenAdicional->store('productos', 'public');
+                DB::table('imagenes_adicionales')->insert([
+                    'id_producto' => $producto->id,
+                    'imagen' => $rutaImagenAdicional,
+                ]);
+            }
+        }
+    
+        // Sincronizar categorías
+        if ($request->has('categorias')) {
+            $producto->categorias()->sync($request->categorias);
+        } else {
+            $producto->categorias()->detach();
+        }
+    
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
     }
 
     /**
