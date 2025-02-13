@@ -166,125 +166,75 @@
     </div>
 
     <script>
-    const maxImages = 4;
-    let uploadedImages = {{ count($imagenesAdicionales) }};
-    let currentFiles = new DataTransfer();
+        const maxImages = 4;
+        let uploadedImages = {{ count($imagenesAdicionales) }};
+        let currentFiles = new DataTransfer();
 
-    function handleImageUpload(input) {
-        const previewContainer = document.getElementById('preview-container');
-        const uploadContainer = document.getElementById('upload-container');
-        const counter = document.getElementById('image-counter');
-        const files = input.files;
+        function handleImageUpload(event) {
+            const input = event.target;
+            const files = input.files;
+            const previewContainer = document.getElementById('preview-container');
 
-        if (uploadedImages + files.length > maxImages) {
-            alert(`Solo puedes subir un máximo de ${maxImages} imágenes. Por favor, selecciona menos imágenes.`);
-            input.value = '';
-            return;
+            if (uploadedImages + files.length > maxImages) {
+                alert(`Solo puedes subir un máximo de ${maxImages} imágenes.`);
+                return;
+            }
+
+            Array.from(files).forEach(file => {
+                if (uploadedImages >= maxImages) return;
+
+                currentFiles.items.add(file);
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'relative group';
+                    previewDiv.dataset.filename = file.name;
+                    
+                    previewDiv.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-32 object-cover rounded-md" />
+                        <button type="button" onclick="removeImage(this, '${file.name}')" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    `;
+                    
+                    previewContainer.appendChild(previewDiv);
+                    uploadedImages++;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // Asignar los archivos actualizados al input
+            input.files = currentFiles.files;
         }
 
-        Array.from(files).forEach(file => {
-            if (uploadedImages >= maxImages) return;
+        function removeImage(button, filename) {
+            const previewDiv = button.parentElement;
+            previewDiv.remove();
+            uploadedImages--;
 
-            currentFiles.items.add(file);
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const previewDiv = document.createElement('div');
-                previewDiv.className = 'relative group';
-                previewDiv.dataset.filename = file.name;
-                
-                previewDiv.innerHTML = `
-                    <img src="${e.target.result}" class="w-full h-32 object-cover rounded-md" />
-                    <button type="button" onclick="removeImage(this)" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                `;
-                
-                previewContainer.appendChild(previewDiv);
-                uploadedImages++;
-                counter.textContent = uploadedImages;
-
-                if (uploadedImages >= maxImages) {
-                    uploadContainer.style.display = 'none';
-                }
-            };
-            reader.readAsDataURL(file);
-        });
-
-        input.files = currentFiles.files;
-    }
-
-    function removeImage(button) {
-        const previewDiv = button.parentElement;
-        const filename = previewDiv.dataset.filename;
-        
-        // If removing an existing image, add it to a list of images to delete
-        const existingImageInput = previewDiv.querySelector('input[name="imagenes_existentes[]"]');
-        if (existingImageInput) {
-            const deleteInput = document.createElement('input');
-            deleteInput.type = 'hidden';
-            deleteInput.name = 'imagenes_eliminar[]';
-            deleteInput.value = existingImageInput.value;
-            document.querySelector('form').appendChild(deleteInput);
-        } else {
-            // If removing a new image, update the DataTransfer object
+            // Eliminar archivo del DataTransfer
             const newFiles = new DataTransfer();
             Array.from(currentFiles.files).forEach(file => {
                 if (file.name !== filename) {
                     newFiles.items.add(file);
                 }
             });
+
             currentFiles = newFiles;
             document.getElementById('imagenes_adicionales').files = currentFiles.files;
         }
 
-        previewDiv.remove();
-        uploadedImages--;
-        document.getElementById('image-counter').textContent = uploadedImages;
-
-        if (uploadedImages < maxImages) {
-            document.getElementById('upload-container').style.display = 'flex';
-        }
-    }
-    function previewImage(event, previewElementId) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            const previewElement = document.getElementById(previewElementId);
-            previewElement.src = reader.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
-    function handleImageUpload(event) {
-        const files = event.target.files;
-        const previewContainer = document.getElementById('preview-container');
-        
-        Array.from(files).forEach(file => {
+        function previewImage(event, previewElementId) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const previewDiv = document.createElement('div');
-                previewDiv.className = 'relative group';
-                previewDiv.innerHTML = `
-                    <img src="${e.target.result}" class="w-full h-24 object-cover rounded-md" />
-                    <button type="button" onclick="removePreview(this)" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                `;
-                previewContainer.appendChild(previewDiv);
-                uploadedImages++;
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-
-    function removePreview(button) {
-        const previewDiv = button.parentElement;
-        previewDiv.remove();
-        uploadedImages--;
-    }
+            reader.onload = function() {
+                document.getElementById(previewElementId).src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
     </script>
+
 </body>
 </html>
