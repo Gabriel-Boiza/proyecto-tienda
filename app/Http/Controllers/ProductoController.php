@@ -14,7 +14,7 @@ class ProductoController extends Controller
 
     public function destacados(){
         $productos = Producto::whereRelation('categorias', 'nombre_categoria', 'destacado')->get();  
-        $categorias = Categoria::all(); 
+        $categorias = Categoria::withCount('productos')->get(); 
         //return response()->json($productos);
         return view('welcome', compact('productos', 'categorias'));
     }
