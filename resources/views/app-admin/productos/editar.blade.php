@@ -117,25 +117,30 @@
 
 
         <!-- Imágenes Adicionales -->
-    <div>
-        <label class="block text-sm font-medium text-gray-400 mb-2">Imágenes Adicionales</label>
-        <div id="preview-container" class="grid grid-cols-4 gap-4 mb-4">
-            @foreach($imagenesAdicionales as $imagen)
-                <div class="relative">
-                    <img src="{{ asset('storage/'.$imagen->imagen) }}" 
-                        alt="Imagen adicional" 
-                        class="w-full h-24 object-cover rounded-md">
-                    <button type="button" 
-                            onclick="this.parentElement.remove()"
-                            class="absolute top-1 right-1 bg-red-500 rounded-full p-1 text-white">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-            @endforeach
-        </div>
-        <input type="file" 
+        <div>
+            <label class="block text-sm font-medium text-gray-400 mb-2">Imágenes Adicionales</label>
+            <div id="preview-container" class="grid grid-cols-4 gap-4 mb-4">
+                @foreach($imagenesAdicionales as $imagen)
+                    <div class="relative group" id="imagen-{{ $imagen->id }}">
+                        <img src="{{ asset('storage/'.$imagen->imagen) }}" 
+                            alt="Imagen adicional" 
+                            class="w-full h-24 object-cover rounded-md">
+                        
+                        <!-- Botón de eliminación con evento onclick -->
+                        <button type="button" 
+                                onclick="eliminarImagen('{{ $imagen->id }}')"
+                                class="absolute top-1 right-1 bg-red-500 rounded-full p-1 text-white">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Input oculto para enviar imágenes a eliminar -->
+                        <input type="hidden" name="imagenes_eliminar[]" value="{{ $imagen->id }}" disabled>
+                    </div>
+                @endforeach
+            </div>
+            <input type="file" 
             name="imagenes_adicionales[]" 
             multiple 
             accept="image/*"
@@ -146,7 +151,8 @@
                     file:text-sm file:font-semibold
                     file:bg-purple-600 file:text-white
                     hover:file:bg-purple-500">
-    </div>
+        </div>
+
 
 
     <!-- Botones -->
@@ -233,6 +239,18 @@
                 document.getElementById(previewElementId).src = reader.result;
             }
             reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function eliminarImagen(id) {
+            const imageDiv = document.getElementById(`imagen-${id}`);
+            if (imageDiv) {
+                // Buscar el input oculto y activarlo
+                const hiddenInput = imageDiv.querySelector(`input[name="imagenes_eliminar[]"]`);
+                hiddenInput.removeAttribute("disabled");
+
+                // Ocultar la imagen
+                imageDiv.style.display = "none";
+            }
         }
     </script>
 
