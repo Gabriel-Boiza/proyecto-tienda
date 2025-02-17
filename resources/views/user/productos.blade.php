@@ -86,12 +86,12 @@
                 @foreach($categorias->productos as $producto)
                     <div class="bg-[#131927] rounded-lg overflow-hidden">
                         <div class="relative">
-                            <img src="/api/placeholder/400/300" alt="Razer BlackWidow V3" class="w-full h-48 object-cover">
+                            <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-48 object-cover">
                             <span class="absolute top-2 left-2 px-2 py-1 rounded text-sm bg-blue-500">-20%</span>
                         </div>
                         <div class="p-4">
                             <h3 class="font-bold mb-1">{{$producto->nombre}}</h3>
-                            <p class="text-gray-400 text-sm mb-2">Teclado mecánico RGB con switches Green</p>
+                            <p class="text-gray-400 text-sm mb-2">{{$producto->descripcion}}</p>
                             <div class="flex justify-between items-center">
                                 <div>
                                     <span class="font-bold">{{$producto->precio * (100-$producto->descuento)/100}}€</span>
