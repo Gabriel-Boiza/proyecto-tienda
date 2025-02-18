@@ -12,15 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('productos', function (Blueprint $table) {
-            $table->id();
+            $table->id();  // Esto crea un campo de tipo unsignedBigInteger
             $table->string('nombre');
             $table->string('descripcion');
             $table->float('precio');
-            $table->integer('stock'); // Corregido
+            $table->integer('stock');
             $table->string('imagen_principal');
             $table->integer('descuento');
+            $table->unsignedBigInteger('marca');  // Esto debe ser unsignedBigInteger
             $table->timestamps();
+        
+            // Definir la clave foránea
+            $table->foreign('marca')->references('id')->on('marcas')->onDelete('cascade');
         });
+        
+        
         
     }
 

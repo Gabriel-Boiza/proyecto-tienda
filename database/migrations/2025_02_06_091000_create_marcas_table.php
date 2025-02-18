@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('imagenes_adicionales', function (Blueprint $table) {
+        Schema::create('marcas', function (Blueprint $table) {
             $table->id();
-            $table->string('imagen');
-            $table->unsignedBigInteger('id_producto');
-            $table->foreign('id_producto')->references('id')->on('productos')->onDelete('cascade');
+            $table->string('nombre');
             $table->timestamps();
         });
     }
@@ -24,7 +22,7 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {   
-        Schema::dropIfExists('imagenes_adicionales');
+    {
+        Schema::dropIfExists('marcas');
     }
 };
