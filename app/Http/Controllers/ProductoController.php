@@ -136,8 +136,36 @@ class ProductoController extends Controller
     {
         $producto = Producto::findOrFail($id);
         
-        // Actualizar los datos del producto (por ejemplo, nombre, precio, stock, etc.)
-        $producto->update($request->only(['nombre', 'descripcion', 'precio', 'stock']));
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required|numeric|min:0',
+            'descripcion' => 'nullable|string',
+            'stock' => 'required|integer|min:0',
+            'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categorias' => 'nullable|array',
+            'imagenes_adicionales' => 'nullable|array',
+            'imagenes_eliminar' => 'nullable|array'
+        ]);
+    
+        // Actualizar los datos principales del producto
+        $producto->update([
+            'nombre' => $request->nombre,
+            'precio' => $request->precio,
+            'descripcion' => $request->descripcion,
+            'stock' => $request->stock,
+        ]);
+    
+        // Actualizar la imagen principal si se sube una nueva
+        if ($request->hasFile('imagen_principal')) {
+            // Eliminar la imagen anterior
+            if ($producto->imagen_principal) {
+                Storage::disk('public')->delete($producto->imagen_principal);
+            }
+    
+            // Guardar la nueva imagen
+            $rutaImagenPrincipal = $request->file('imagen_principal')->store('productos', 'public');
+            $producto->update(['imagen_principal' => $rutaImagenPrincipal]);
+        }
 
         // Eliminar las imágenes adicionales si se han seleccionado para eliminar
         if ($request->has('imagenes_eliminar')) {
@@ -168,6 +196,11 @@ class ProductoController extends Controller
             }
         }
 
+        if ($request->has('categorias')) {
+            $producto->categorias()->sync($request->categorias);
+        } else {
+            $producto->categorias()->detach();
+        }
         // Redirigir o retornar una respuesta
         return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');
     }
