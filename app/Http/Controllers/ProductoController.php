@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\Marca;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -43,7 +44,8 @@ class ProductoController extends Controller
     public function create()
     {
         $categorias = Categoria::select('id', 'nombre_categoria')->get()->toArray();
-        return view("app-admin/productos/crear", compact('categorias'));
+        $marcas = Marca::all();
+        return view("app-admin/productos/crear", compact('categorias', 'marcas'));
     }
 
     /**
