@@ -183,6 +183,7 @@
 
             if (uploadedImages + files.length > maxImages) {
                 alert(`Solo puedes subir un máximo de ${maxImages} imágenes.`);
+                input.value = "";
                 return;
             }
 
@@ -250,6 +251,11 @@
 
                 // Ocultar la imagen
                 imageDiv.style.display = "none";
+
+                uploadedImages--;
+
+                console.log(`Imagen eliminada. Total ahora: ${uploadedImages}`);
+
             }
         }
     </script>
