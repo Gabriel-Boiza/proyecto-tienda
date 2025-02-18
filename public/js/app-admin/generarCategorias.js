@@ -130,3 +130,23 @@ function generarCategoria() {
 function validarCategoria(categoria){
     return true; //aun no hecha
 }
+
+document.getElementById("formulario").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita el envío inmediato
+
+    const input = document.getElementById("generarInput");
+    const nombreCategoria = input.value;
+
+    // Lista de categorías actuales (esto debería ser dinámico, lo menciono solo como ejemplo)
+    const categoriasExistentes = Array.from(document.querySelectorAll("#container div")).map(div => div.textContent.trim().toLowerCase());
+
+    const resultado = validarCategoria(nombreCategoria, categoriasExistentes);
+
+    if (!resultado.valido) {
+        alert(resultado.mensaje);
+        return; // No envía el formulario si hay errores
+    }
+
+    // Si no hay errores, continuar con el envío del formulario
+    this.submit();
+});

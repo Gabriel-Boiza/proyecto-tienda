@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use Exception;
+use Illuminate\Validation\Rule;
 
 class CategoriaController extends Controller
 {
@@ -43,7 +45,20 @@ class CategoriaController extends Controller
     {
 
         $request->validate([
-            'categoria' => 'required|string|max:255',  //categoria es el valor que le paso por fetch
+            'categoria' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z0-9\s]+$/',
+                Rule::unique('categorias', 'nombre_categoria')->ignore($request->id), // Si estás actualizando
+            ],  //categoria es el valor que le paso por fetch
+        ],
+        [
+            'categoria.required' => 'El nombre de la categoría es obligatorio.',
+            'categoria.string' => 'El nombre de la categoría debe ser una cadena de texto.',
+            'categoria.max' => 'El nombre de la categoría no puede exceder los 255 caracteres.',
+            'categoria.regex' => 'El nombre de la categoría solo puede contener letras, números y espacios.',
+            'categoria.unique' => 'Ya existe una categoría con ese nombre.',
         ]);
     
 
