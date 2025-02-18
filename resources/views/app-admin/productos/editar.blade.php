@@ -99,54 +99,63 @@
         <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Imágenes</h2>
         
         <!-- Imagen Principal -->
-        <div>
-            <label class="block text-sm font-medium text-gray-400 mb-2">Imagen Principal Actual</label>
-            <img src="{{ asset('storage/'.$producto->imagen_principal) }}" 
-                 alt="Imagen principal" 
-                 class="w-32 h-32 object-cover rounded-md mb-2">
-            <input type="file" 
-                   name="imagen_principal" 
-                   accept="image/*"
-                   class="block w-full text-sm text-gray-400
-                          file:mr-4 file:py-2 file:px-4
-                          file:rounded-md file:border-0
-                          file:text-sm file:font-semibold
-                          file:bg-purple-600 file:text-white
-                          hover:file:bg-purple-500">
-        </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-400 mb-2">Imagen Principal Actual</label>
+        <img id="imagenPrincipalPreview" 
+            src="{{ asset('storage/'.$producto->imagen_principal) }}" 
+            alt="Imagen principal" 
+            class="w-32 h-32 object-cover rounded-md mb-2">
+        <input type="file" 
+            name="imagen_principal" 
+            accept="image/*"
+            onchange="previewImage(event, 'imagenPrincipalPreview')" 
+            class="block w-full text-sm text-gray-400
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-purple-600 file:text-white
+                    hover:file:bg-purple-500">
+    </div>
+
 
         <!-- Imágenes Adicionales -->
         <div>
             <label class="block text-sm font-medium text-gray-400 mb-2">Imágenes Adicionales</label>
-            <div class="grid grid-cols-4 gap-4 mb-4">
+            <div id="preview-container" class="grid grid-cols-4 gap-4 mb-4">
                 @foreach($imagenesAdicionales as $imagen)
-                    <div class="relative">
+                    <div class="relative group" id="imagen-{{ $imagen->id }}">
                         <img src="{{ asset('storage/'.$imagen->imagen) }}" 
-                             alt="Imagen adicional" 
-                             class="w-full h-24 object-cover rounded-md">
+                            alt="Imagen adicional" 
+                            class="w-full h-24 object-cover rounded-md">
+                        
+                        <!-- Botón de eliminación con evento onclick -->
                         <button type="button" 
-                                onclick="this.parentElement.remove()"
+                                onclick="eliminarImagen('{{ $imagen->id }}')"
                                 class="absolute top-1 right-1 bg-red-500 rounded-full p-1 text-white">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </button>
-                        <input type="hidden" name="imagenes_existentes[]" value="{{ $imagen->id }}">
+                        
+                        <!-- Input oculto para enviar imágenes a eliminar -->
+                        <input type="hidden" name="imagenes_eliminar[]" value="{{ $imagen->id }}" disabled>
                     </div>
                 @endforeach
             </div>
             <input type="file" 
-                   name="imagenes_adicionales[]" 
-                   multiple 
-                   accept="image/*"
-                   class="block w-full text-sm text-gray-400
-                          file:mr-4 file:py-2 file:px-4
-                          file:rounded-md file:border-0
-                          file:text-sm file:font-semibold
-                          file:bg-purple-600 file:text-white
-                          hover:file:bg-purple-500">
+            name="imagenes_adicionales[]" 
+            multiple 
+            accept="image/*"
+            onchange="handleImageUpload(event)"
+            class="block w-full text-sm text-gray-400
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-purple-600 file:text-white
+                    hover:file:bg-purple-500">
         </div>
-    </div>
+
+
 
     <!-- Botones -->
     <div class="flex justify-end space-x-4 pt-6 border-t border-zinc-700">
@@ -165,88 +174,93 @@
     </div>
 
     <script>
-    const maxImages = 4;
-    let uploadedImages = {{ count($imagenesAdicionales) }};
-    let currentFiles = new DataTransfer();
+        const maxImages = 4;
+        let uploadedImages = {{ count($imagenesAdicionales) }};
+        let currentFiles = new DataTransfer();
 
-    function handleImageUpload(input) {
-        const previewContainer = document.getElementById('preview-container');
-        const uploadContainer = document.getElementById('upload-container');
-        const counter = document.getElementById('image-counter');
-        const files = input.files;
+        function handleImageUpload(event) {
+            const input = event.target;
+            const files = input.files;
+            const previewContainer = document.getElementById('preview-container');
 
-        if (uploadedImages + files.length > maxImages) {
-            alert(`Solo puedes subir un máximo de ${maxImages} imágenes. Por favor, selecciona menos imágenes.`);
-            input.value = '';
-            return;
+            if (uploadedImages + files.length > maxImages) {
+                alert(`Solo puedes subir un máximo de ${maxImages} imágenes.`);
+                input.value = "";
+                return;
+            }
+
+            Array.from(files).forEach(file => {
+                if (uploadedImages >= maxImages) return;
+
+                currentFiles.items.add(file);
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'relative group';
+                    previewDiv.dataset.filename = file.name;
+                    
+                    previewDiv.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-32 object-cover rounded-md" />
+                        <button type="button" onclick="removeImage(this, '${file.name}')" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    `;
+                    
+                    previewContainer.appendChild(previewDiv);
+                    uploadedImages++;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // Asignar los archivos actualizados al input
+            input.files = currentFiles.files;
         }
 
-        Array.from(files).forEach(file => {
-            if (uploadedImages >= maxImages) return;
+        function removeImage(button, filename) {
+            const previewDiv = button.parentElement;
+            previewDiv.remove();
+            uploadedImages--;
 
-            currentFiles.items.add(file);
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const previewDiv = document.createElement('div');
-                previewDiv.className = 'relative group';
-                previewDiv.dataset.filename = file.name;
-                
-                previewDiv.innerHTML = `
-                    <img src="${e.target.result}" class="w-full h-32 object-cover rounded-md" />
-                    <button type="button" onclick="removeImage(this)" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                `;
-                
-                previewContainer.appendChild(previewDiv);
-                uploadedImages++;
-                counter.textContent = uploadedImages;
-
-                if (uploadedImages >= maxImages) {
-                    uploadContainer.style.display = 'none';
-                }
-            };
-            reader.readAsDataURL(file);
-        });
-
-        input.files = currentFiles.files;
-    }
-
-    function removeImage(button) {
-        const previewDiv = button.parentElement;
-        const filename = previewDiv.dataset.filename;
-        
-        // If removing an existing image, add it to a list of images to delete
-        const existingImageInput = previewDiv.querySelector('input[name="imagenes_existentes[]"]');
-        if (existingImageInput) {
-            const deleteInput = document.createElement('input');
-            deleteInput.type = 'hidden';
-            deleteInput.name = 'imagenes_eliminar[]';
-            deleteInput.value = existingImageInput.value;
-            document.querySelector('form').appendChild(deleteInput);
-        } else {
-            // If removing a new image, update the DataTransfer object
+            // Eliminar archivo del DataTransfer
             const newFiles = new DataTransfer();
             Array.from(currentFiles.files).forEach(file => {
                 if (file.name !== filename) {
                     newFiles.items.add(file);
                 }
             });
+
             currentFiles = newFiles;
             document.getElementById('imagenes_adicionales').files = currentFiles.files;
         }
 
-        previewDiv.remove();
-        uploadedImages--;
-        document.getElementById('image-counter').textContent = uploadedImages;
-
-        if (uploadedImages < maxImages) {
-            document.getElementById('upload-container').style.display = 'flex';
+        function previewImage(event, previewElementId) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById(previewElementId).src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
         }
-    }
+
+        function eliminarImagen(id) {
+            const imageDiv = document.getElementById(`imagen-${id}`);
+            if (imageDiv) {
+                // Buscar el input oculto y activarlo
+                const hiddenInput = imageDiv.querySelector(`input[name="imagenes_eliminar[]"]`);
+                hiddenInput.removeAttribute("disabled");
+
+                // Ocultar la imagen
+                imageDiv.style.display = "none";
+
+                uploadedImages--;
+
+                console.log(`Imagen eliminada. Total ahora: ${uploadedImages}`);
+
+            }
+        }
     </script>
+
 </body>
 </html>

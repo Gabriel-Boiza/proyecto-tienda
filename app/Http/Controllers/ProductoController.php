@@ -122,56 +122,120 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        $producto = Producto::with('categorias')->find($id);
+        $producto = Producto::with('categorias')->findOrFail($id);
+        $categorias = Categoria::all();
         $imagenesAdicionales = DB::table('imagenes_adicionales')
-        ->where('id_producto', $id) 
-        ->get();
-        
-        return view("app-admin.productos.mostrar", compact('producto', 'imagenesAdicionales'));
+            ->where('id_producto', $id) 
+            ->get();
+    
+        return view("app-admin.productos.editar", compact('producto', 'categorias', 'imagenesAdicionales'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        Producto::find($id)->update([
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
+        $producto = Producto::findOrFail($id);
+        
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required|numeric|min:0',
+            'descripcion' => 'nullable|string',
+            'stock' => 'required|integer|min:0',
+            'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categorias' => 'nullable|array',
+            'imagenes_adicionales' => 'nullable|array',
+            'imagenes_eliminar' => 'nullable|array'
         ]);
+    
+        // Actualizar los datos principales del producto
+        $producto->update([
+            'nombre' => $request->nombre,
+            'precio' => $request->precio,
+            'descripcion' => $request->descripcion,
+            'stock' => $request->stock,
+        ]);
+    
+        // Actualizar la imagen principal si se sube una nueva
+        if ($request->hasFile('imagen_principal')) {
+            // Eliminar la imagen anterior
+            if ($producto->imagen_principal) {
+                Storage::disk('public')->delete($producto->imagen_principal);
+            }
+    
+            // Guardar la nueva imagen
+            $rutaImagenPrincipal = $request->file('imagen_principal')->store('productos', 'public');
+            $producto->update(['imagen_principal' => $rutaImagenPrincipal]);
+        }
+
+        // Eliminar las imágenes adicionales si se han seleccionado para eliminar
+        if ($request->has('imagenes_eliminar')) {
+            foreach ($request->imagenes_eliminar as $imagenId) {
+                // Obtener la imagen a eliminar de la base de datos
+                $imagen = DB::table('imagenes_adicionales')->where('id', $imagenId)->first();
+                if ($imagen) {
+                    // Eliminar el archivo de almacenamiento
+                    Storage::disk('public')->delete($imagen->imagen);
+                    
+                    // Eliminar la entrada de la base de datos
+                    DB::table('imagenes_adicionales')->where('id', $imagenId)->delete();
+                }
+            }
+        }
+
+        // Subir nuevas imágenes adicionales si las hay
+        if ($request->hasFile('imagenes_adicionales')) {
+            foreach ($request->file('imagenes_adicionales') as $imagenAdicional) {
+                // Almacenar la imagen
+                $rutaImagenAdicional = $imagenAdicional->store('productos', 'public');
+                
+                // Insertar la nueva imagen en la base de datos
+                DB::table('imagenes_adicionales')->insert([
+                    'id_producto' => $producto->id,
+                    'imagen' => $rutaImagenAdicional,
+                ]);
+            }
+        }
+
+        if ($request->has('categorias')) {
+            $producto->categorias()->sync($request->categorias);
+        } else {
+            $producto->categorias()->detach();
+        }
+        // Redirigir o retornar una respuesta
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $producto = Producto::find($id); 
-        $imagenesAdicionales = DB::table('imagenes_adicionales')->where('id_producto', $id)->pluck('imagen');
-    
+        $producto = Producto::findOrFail($id);
 
-        if(!empty($imagenesAdicionales)){
-            foreach($imagenesAdicionales as $indice => $imagen){
+        // Obtener imágenes adicionales
+        $imagenesAdicionales = DB::table('imagenes_adicionales')->where('id_producto', $id)->get();
 
-                $rutaImagenAdicional = storage_path("app/public/{$imagen}");
-                if(file_exists($rutaImagenAdicional)){
-                    unlink($rutaImagenAdicional);
-                }
-            
-            }
+        // Eliminar imágenes adicionales del almacenamiento
+        foreach ($imagenesAdicionales as $imagen) {
+            Storage::disk('public')->delete($imagen->imagen);
         }
 
+        // Eliminar registros de imágenes adicionales de la base de datos
+        DB::table('imagenes_adicionales')->where('id_producto', $id)->delete();
+
+        // Eliminar la imagen principal del almacenamiento si existe
         if ($producto->imagen_principal) {
-            $rutaImagen = storage_path("app/public/{$producto->imagen_principal}");
-            
-            if(file_exists($rutaImagen)){
-                unlink($rutaImagen);
-            }
+            Storage::disk('public')->delete($producto->imagen_principal);
         }
-    
+
+        // Eliminar el producto
         $producto->delete();
-    
-        return response()->json(['message' => 'Producto eliminado correctamente']);
+
+        return response()->json(['message' => 'Producto e imágenes eliminados correctamente']);
     }
+
     
 }
