@@ -94,6 +94,26 @@
         </div>
     </div>
 
+    <!-- Marca -->
+    <div>
+        <label for="marca" class="block text-sm font-medium text-gray-400 mb-1">Marca</label>
+        <input type="text" 
+            name="fk_marca" 
+            id="marca" 
+            list="marcas" 
+            value="{{ $producto->marca ? $producto->marca->nombre : '' }}" 
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+        <datalist id="marcas">
+            @foreach($marcas as $marca)
+                <option value="{{ $marca->nombre }}" data-id="{{ $marca->id }}"></option>
+            @endforeach
+        </datalist>
+    </div>
+
+    <input type="hidden" name="fk_marca" id="marca-id" value="{{ $producto->marca ? $producto->marca->id : '' }}">
+
+
+
     <!-- Imágenes -->
     <div class="space-y-4">
         <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Imágenes</h2>
@@ -174,6 +194,18 @@
     </div>
 
     <script>
+
+        const marcaInput = document.getElementById('marca');
+            const marcaList = document.getElementById('marcas');
+
+            marcaInput.addEventListener('input', function() {
+                const option = Array.from(marcaList.options).find(option => option.value === marcaInput.value);
+                
+                if (option) {
+                    marcaInput.value = option.value;  // Muestra el nombre de la marca
+                    document.getElementById('marca-id').value = option.getAttribute('data-id'); // Establece el id de la marca seleccionada
+                }
+            });
         const maxImages = 4;
         let uploadedImages = {{ count($imagenesAdicionales) }};
         let currentFiles = new DataTransfer();

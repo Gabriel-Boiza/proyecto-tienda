@@ -126,13 +126,14 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        $producto = Producto::with('categorias')->findOrFail($id);
+        $producto = Producto::with(['categorias','marca'])->findOrFail($id);
         $categorias = Categoria::all();
+        $marcas = Marca::all();
         $imagenesAdicionales = DB::table('imagenes_adicionales')
             ->where('id_producto', $id) 
             ->get();
     
-        return view("app-admin.productos.editar", compact('producto', 'categorias', 'imagenesAdicionales'));
+        return view("app-admin.productos.editar", compact('producto', 'categorias','marcas','imagenesAdicionales'));
     }
 
     /**
@@ -150,7 +151,9 @@ class ProductoController extends Controller
             'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'categorias' => 'nullable|array',
             'imagenes_adicionales' => 'nullable|array',
-            'imagenes_eliminar' => 'nullable|array'
+            'imagenes_eliminar' => 'nullable|array',
+            'fk_marca' => 'required|exists:marcas,id', // Validamos que la marca exista
+
         ]);
     
         // Actualizar los datos principales del producto
@@ -159,6 +162,8 @@ class ProductoController extends Controller
             'precio' => $request->precio,
             'descripcion' => $request->descripcion,
             'stock' => $request->stock,
+            'fk_marca' => $request->fk_marca, // Guardar la marca seleccionada
+
         ]);
     
         // Actualizar la imagen principal si se sube una nueva
