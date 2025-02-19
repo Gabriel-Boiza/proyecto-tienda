@@ -106,6 +106,17 @@
         </div>
     </div>
 
+    <div class="space-y-4">
+        <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">
+            Marca
+        </h2>
+        <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-zinc-700 rounded-full text-sm">
+                    {{$producto->marca->nombre}}
+                </span>
+        </div>
+    </div>
+
     <!-- Botones de acción -->
     <div class="flex justify-end space-x-4 pt-6 border-t border-zinc-700">
         <a 

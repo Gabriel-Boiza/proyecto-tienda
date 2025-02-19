@@ -98,6 +98,21 @@
                 </div>
             </div>
 
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Marcas</h2>
+                <div class="grid grid-cols-3 gap-4">
+                    @foreach($marcas as $marca)
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" 
+                                    name="marca" 
+                                    value="{{$marca->id}}" 
+                                    class="rounded text-purple-500 bg-zinc-800 border-zinc-700">
+                                <span>{{$marca->nombre}}</span>
+                            </label>
+                    @endforeach
+                </div>
+            </div>
+
             <!-- Imágenes -->
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Imágenes del Producto</h2>

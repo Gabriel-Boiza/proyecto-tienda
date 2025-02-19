@@ -13,9 +13,9 @@
                     <i data-feather="shopping-cart"></i>
                     <span>Categorias</span>
                 </a>
-                <a href="#" class="flex items-center space-x-2 text-gray-500 hover:text-gray-300 {{ request() -> routeIs('usuarios.index') ? 'text-purple-500' : 'text-gray-500' }}">
+                <a href="{{route('marcas.index')}}" class="flex items-center space-x-2 text-gray-500 hover:text-gray-300">
                     <i data-feather="users"></i>
-                    <span>Customers</span>
+                    <span>Marcas</span>
                 </a>
                 <a href="#" class="flex items-center space-x-2 text-gray-500 hover:text-gray-300 {{ request() -> routeIs('analytics') ? 'text-purple-500' : 'text-gray-500' }}">
                     <i data-feather="bar-chart-2"></i>

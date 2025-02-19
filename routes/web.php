@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\Auth\LoginController;
 
 // Rutas públicas (para usuarios/clientes)
@@ -26,5 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::resources([
         'categorias' => CategoriaController::class,
         'productos' => ProductoController::class,
+        'marcas' => MarcaController::class,
     ]);
+
+    Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 
+    Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
+    Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
+
 });

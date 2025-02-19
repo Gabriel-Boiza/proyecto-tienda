@@ -19,6 +19,7 @@ class CategoriasSeeder extends Seeder
             ['nombre_categoria' => 'Auriculares'],
             ['nombre_categoria' => 'Altavoces'],
             ['nombre_categoria' => 'Micrófonos'],
+            ['nombre_categoria' => 'destacado'],
         ]);
     }
 }
