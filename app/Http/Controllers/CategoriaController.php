@@ -12,7 +12,9 @@ class CategoriaController extends Controller
 
     public function userShow(string $id){
         
-        echo $id;
+        $categorias = Categoria::with('productos')->find($id);
+        //return response()->json($categorias);
+        return view('user.productos', compact('categorias'));
     }
 
     public function obtenerCategorias(){
