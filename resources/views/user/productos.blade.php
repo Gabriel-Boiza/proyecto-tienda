@@ -84,7 +84,7 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <a href="#" class="bg-purple-600 p-2 rounded-lg hover:bg-purple-700 flex items-center text-white">Ver más</a>
+                                    <a href="/periferico/{{$producto->id}}" class="bg-purple-600 p-2 rounded-lg hover:bg-purple-700 flex items-center text-white">Ver más</a>
                                 </div>
                             </div>
                         </article>

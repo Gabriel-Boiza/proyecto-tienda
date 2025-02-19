@@ -26,7 +26,9 @@
         <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300">
             <div class="relative">
                 <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-48 object-cover">
+                @if($producto->descuento != 0)
                 <div class="absolute top-2 left-2 bg-purple-600 px-2 py-1 rounded text-sm">-{{$producto->descuento}}%</div>
+                @endif
                 <button class="absolute top-2 right-2 p-2 bg-gray-900/50 rounded-full hover:bg-gray-900 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                 </button>
@@ -45,7 +47,9 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <span class="text-2xl font-bold">{{$producto->precio * (100-$producto->descuento)/100}}€</span>
+                        @if($producto->descuento != 0)
                         <span class="text-sm text-gray-400 line-through ml-2">{{$producto->precio}}€</span>
+                        @endif
                     </div>
                     <a href="periferico/{{{$producto->id}}}" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors">
                         Añadir
