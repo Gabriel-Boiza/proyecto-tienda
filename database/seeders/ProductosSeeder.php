@@ -14,7 +14,7 @@ class ProductosSeeder extends Seeder
     public function run(): void
     {
         DB::table('productos')->insert([
-            ['nombre' => 'Ratón Logitech G Pro', 'descripcion' => 'Ratón gaming profesional con sensor HERO', 'precio' => 89.99, 'stock' => 50, 'imagen_principal' => 'productos/imagen1.jpeg', 'descuento' => 0, 'fk_marca' => 1], // Logitech
+            ['nombre' => 'Ratón Logitech G Pro', 'descripcion' => 'Ratón gaming profesional con sensor HERO', 'precio' => 89.99, 'stock' => 0, 'imagen_principal' => 'productos/imagen1.jpeg', 'descuento' => 0, 'fk_marca' => 1], // Logitech
             ['nombre' => 'Teclado mecánico Corsair K95', 'descripcion' => 'Teclado mecánico con retroiluminación RGB', 'precio' => 149.99, 'stock' => 30, 'imagen_principal' => 'productos/imagen2.jpeg', 'descuento' => 0, 'fk_marca' => 2], // Corsair
             ['nombre' => 'Auriculares SteelSeries Arctis 7', 'descripcion' => 'Auriculares inalámbricos para gaming con sonido envolvente', 'precio' => 139.99, 'stock' => 15, 'imagen_principal' => 'productos/imagen3.jpeg', 'descuento' => 0, 'fk_marca' => 3], // SteelSeries
             ['nombre' => 'Mousepad Razer Goliathus', 'descripcion' => 'Alfombrilla de ratón de tela con iluminación RGB', 'precio' => 29.99, 'stock' => 100, 'imagen_principal' => 'productos/imagen1.jpeg', 'descuento' => 0, 'fk_marca' => 4], // Razer
@@ -31,6 +31,12 @@ class ProductosSeeder extends Seeder
             ['id_producto' => 2, 'id_categoria' => 7],
             ['id_producto' => 3, 'id_categoria' => 7],
             ['id_producto' => 4, 'id_categoria' => 7],
+            ['id_producto' => 5, 'id_categoria' => 7],
+            ['id_producto' => 6, 'id_categoria' => 7],
+            ['id_producto' => 7, 'id_categoria' => 7],
+            ['id_producto' => 8, 'id_categoria' => 7],
+            ['id_producto' => 9, 'id_categoria' => 7],
+            ['id_producto' => 10, 'id_categoria' => 7],
         ]);
         
     }

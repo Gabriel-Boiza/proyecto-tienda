@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use App\Models\Producto;
+use App\Models\Marca;
 use Exception;
 use Illuminate\Validation\Rule;
 
@@ -13,8 +15,14 @@ class CategoriaController extends Controller
     public function userShow(string $id){
         
         $categorias = Categoria::with('productos')->find($id);
+        
+        $productos = $categorias->productos()->paginate(6);
+
+        $marcas = Marca::all();
+        $precioMaximo = Producto::max('precio');
+        $precioMinimo = Producto::min('precio');
         //return response()->json($categorias);
-        return view('user.productos', compact('categorias'));
+        return view('user.productos', compact('categorias', 'precioMaximo', 'precioMinimo', 'marcas', 'productos'));
     }
 
     public function obtenerCategorias(){

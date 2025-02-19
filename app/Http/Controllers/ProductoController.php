@@ -22,6 +22,7 @@ class ProductoController extends Controller
 
     public function userShow(string $id){
         $producto = Producto::with(['categorias', 'marca'])->find($id);
+
         return view('user/mostrarProducto', compact('producto'));
     }
 
