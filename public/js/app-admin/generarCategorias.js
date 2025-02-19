@@ -101,35 +101,57 @@ function eliminarCategoria(id){
 function generarCategoria() {
     let form = document.getElementById('formulario');
     let input = document.getElementById('generarInput');
-    
-    form.addEventListener('submit', function(event){
-        event.preventDefault();
-        let categoria = input.value;
-        
-        if(!validarCategoria(categoria)){return false}
+    let container = document.getElementById('container');
 
-        fetch('categorias', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ categoria: categoria })
-        })
-        .then(response => {
-            if(!response.ok) {throw new Error('Error al actualizar la categoría')}
-        })
-        .then(data => {
-            generarTablas();
-        })
-        .catch(error => console.error('Error:', error));
+    form.addEventListener('submit', async function(event){
+        event.preventDefault();
+        let categoria = input.value.trim();
         
+        if (!validarCategoria(categoria)) {
+            alert("El nombre de la categoria no puede repetirse, contener carácteres especiales o estar vacío");
+            return;
+        }
+
+        try {
+            const response = await fetch('categorias', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ categoria: categoria })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (data.errors) {
+                    alert(Object.values(data.errors).flat().join(' '));
+                } else {
+                    alert("Error al crear la categoría.");
+                }
+                return;
+            }
+
+            input.value = ''; // Limpiar input si todo sale bien
+            generarTablas(); // Refrescar lista de categorías
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert("El nombre de la categoria no puede repetirse, contener carácteres especiales o estar vacío");
+        }
     });
 }
 
-function validarCategoria(categoria){
-    return true; //aun no hecha
+// Validación en frontend
+function validarCategoria(categoria) {
+    if (!categoria) {
+        return false;
+    }
+    const regex = /^[a-zA-Z0-9\s]+$/; 
+    return regex.test(categoria);
 }
+
 
 document.getElementById("formulario").addEventListener("submit", function(event) {
     event.preventDefault(); // Evita el envío inmediato
