@@ -14,13 +14,19 @@
         <main class="flex-1 flex flex-col items-center justify-center p-6">
             <h1 class="text-center text-xl font-bold mb-6">Gestión categorías</h1>
             <form method="POST" id="formulario" class="flex justify-center w-full max-w-[60%] mb-2">
-                <input 
-                    name="nombre_categoria" 
-                    id="generarInput" 
-                    type="text" 
-                    placeholder="Nombre de la categoria" 
-                    class="w-[70%] p-2 rounded-md bg-zinc-800 text-gray-300 placeholder-gray-400"
-                >
+                @csrf
+                <div class="w-full">
+                    <input 
+                        name="nombre_categoria" 
+                        id="generarInput" 
+                        type="text" 
+                        placeholder="Nombre de la categoria" 
+                        class="w-[70%] p-2 rounded-md bg-zinc-800 text-gray-300 placeholder-gray-400"
+                    >
+                    @error('nombre_categoria')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
                 <input 
                     type="submit" 
                     class="w-[25%] p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md ml-5" 
@@ -31,5 +37,15 @@
             <div id="container" class="bg-zinc-800/50 rounded-lg w-full max-w-[60%]"> </div>
         </main>
     </div>
+
+    @if ($errors->any())
+        <script>
+            // Log de los errores para ayudar a la depuración
+            console.log("Errores: ", {!! json_encode($errors->all()) !!});
+            
+            // Si hay errores, mostramos una alerta
+            alert("{!! implode(' ', $errors->all()) !!}");
+        </script>
+    @endif
 </body>
 </html>
