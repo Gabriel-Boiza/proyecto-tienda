@@ -19,11 +19,11 @@ return new class extends Migration
             $table->integer('stock');
             $table->string('imagen_principal');
             $table->integer('descuento');
-            $table->unsignedBigInteger('marca');  // Esto debe ser unsignedBigInteger
+            $table->unsignedBigInteger('fk_marca');  // Esto debe ser unsignedBigInteger
             $table->timestamps();
         
             // Definir la clave foránea
-            $table->foreign('marca')->references('id')->on('marcas')->onDelete('cascade');
+            $table->foreign('fk_marca')->references('id')->on('marcas')->onDelete('cascade');
         });
         
         

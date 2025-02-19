@@ -103,8 +103,8 @@
                 <div class="grid grid-cols-3 gap-4">
                     @foreach($marcas as $marca)
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" 
-                                    name="marcas[]" 
+                                <input type="radio" 
+                                    name="marca" 
                                     value="{{$marca->id}}" 
                                     class="rounded text-purple-500 bg-zinc-800 border-zinc-700">
                                 <span>{{$marca->nombre}}</span>

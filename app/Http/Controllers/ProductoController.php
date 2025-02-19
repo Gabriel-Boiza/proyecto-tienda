@@ -61,6 +61,7 @@ class ProductoController extends Controller
             'stock' => 'required|integer|min:0',
             'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
             'categorias' => 'nullable|array', 
+            'marcas' => 'nullable|array', 
             'imagenes_adicionales' => 'nullable|array',
             'descuento' => 'integer',
         ]);
@@ -79,6 +80,7 @@ class ProductoController extends Controller
             'descripcion' => $request->descripcion, 
             'stock' => $request->stock,
             'imagen_principal' => $rutaImagenPrincipal,
+            'marca' => $request->marca,
             'descuento' => $request->descuento,
         ]);
 
@@ -110,7 +112,7 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {
-        $producto = Producto::with('categorias')->find($id);
+        $producto = Producto::with(['categorias', 'marca'])->find($id);
         $imagenesAdicionales = DB::table('imagenes_adicionales')
         ->where('id_producto', $id) 
         ->get();
