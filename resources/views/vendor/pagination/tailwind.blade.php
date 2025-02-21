@@ -23,7 +23,7 @@
         </div>
 
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-           
+            
 
             <div>
                 <span class="relative z-0 inline-flex rtl:flex-row-reverse shadow-sm rounded-md">

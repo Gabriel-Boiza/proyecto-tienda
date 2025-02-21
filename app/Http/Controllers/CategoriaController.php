@@ -13,16 +13,36 @@ class CategoriaController extends Controller
 {
 
     public function userShow(string $id){
-        
         $categorias = Categoria::with('productos')->find($id);
         
-        $productos = $categorias->productos()->paginate(6);
 
+        
         $marcas = Marca::all();
         $precioMaximo = Producto::max('precio');
+        $precioActual = $precioMaximo;
         $precioMinimo = Producto::min('precio');
-        //return response()->json($categorias);
-        return view('user.productos', compact('categorias', 'precioMaximo', 'precioMinimo', 'marcas', 'productos'));
+        $marcasActuales = [];
+
+        
+
+        if(isset($_GET['precio'])){
+            $precioActual = $_GET['precio'];
+        }
+
+        $productos = $categorias->productos()->where('precio', '<=', $precioActual)->paginate(6)->appends(request()->query());
+
+        if(isset($_GET['marcas'])){
+            $marcasActuales = $_GET['marcas'];
+            $productos = $precioActual <= $precioMaximo 
+            ? $productos = $categorias->productos()->whereIn('fk_marca', $marcasActuales)->where('precio', '<=', $precioActual)->paginate(6)->appends(request()->query()) 
+            : $categorias->productos()->where('precio', '<=', $precioActual)->paginate(6)->appends(request()->query()) ;
+            $marcasActuales = $_GET['marcas'];
+        }
+
+        
+
+        return view('user.productos', compact('categorias', 'precioMaximo', 'precioMinimo', 'marcas', 'productos', 'precioActual', 'marcasActuales'));
+        
     }
 
     public function obtenerCategorias(){
