@@ -9,15 +9,7 @@
                 <span class="text-xl font-bold text-white tracking-wide">TechPerif</span>
             </div>
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8">
-                <a href="#" class="py-2 border-b-2 border-transparent hover:border-purple-500 hover:text-purple-500 transition-all duration-200 text-gray-300">Teclados</a>
-                <a href="#" class="py-2 border-b-2 border-transparent hover:border-purple-500 hover:text-purple-500 transition-all duration-200 text-gray-300">Ratones</a>
-                <a href="#" class="py-2 border-b-2 border-transparent hover:border-purple-500 hover:text-purple-500 transition-all duration-200 text-gray-300">Auriculares</a>
-                <a href="#" class="py-2 border-b-2 border-transparent hover:border-purple-500 hover:text-purple-500 transition-all duration-200 text-gray-300">Monitores</a>
-            </div>
-
-            <!-- Search and Cart -->
+            <!-- Search and Icons -->
             <div class="hidden md:flex items-center space-x-6">
                 <!-- Search Input -->
                 <div class="relative">
@@ -27,13 +19,15 @@
                         placeholder="Buscar productos..." 
                         class="w-72 px-4 py-2 bg-gray-800/50 rounded-lg border border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:outline-none placeholder-gray-400 text-white transition-all duration-300 hover:bg-gray-800"
                     >
-        
-
-                    <!-- Dropdown for search results -->
-                    <div id="search-results" class="absolute w-full bg-gray-800/95 text-white mt-2 rounded-lg shadow-xl hidden backdrop-blur-sm border border-gray-700">
-                        <!-- Results will be populated here -->
-                    </div>
+                    <div id="search-results" class="absolute w-full bg-gray-800/95 text-white mt-2 rounded-lg shadow-xl hidden backdrop-blur-sm border border-gray-700"></div>
                 </div>
+
+                <!-- Favoritos -->
+                <a href="/favoritos" class="relative group p-2 hover:text-purple-500 transition-colors">
+                    <svg class="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                </a>
 
                 <!-- Cart -->
                 <div class="relative group">
@@ -44,35 +38,29 @@
                     </button>
                     <span class="absolute -top-2 -right-2 bg-gradient-to-br from-purple-500 to-purple-700 text-xs text-white font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">3</span>
                 </div>
-            </div>
 
-            <!-- Mobile Menu Button -->
-            <button class="md:hidden p-2 hover:bg-gray-800 rounded-lg transition-colors" @click="mobileMenu = !mobileMenu">
-                <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"/>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Mobile Menu Panel -->
-        <div class="md:hidden" x-show="mobileMenu" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4">
-            <div class="px-2 pt-4 pb-3 space-y-1">
-                <a href="#" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-purple-600/20 transition-colors">Teclados</a>
-                <a href="#" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-purple-600/20 transition-colors">Ratones</a>
-                <a href="#" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-purple-600/20 transition-colors">Auriculares</a>
-                <a href="#" class="block px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-purple-600/20 transition-colors">Monitores</a>
-                <!-- Mobile Search -->
-                <div class="relative mt-3">
-                    <input 
-                        type="search" 
-                        placeholder="Buscar productos..." 
-                        class="w-full px-4 py-2 bg-gray-800/50 rounded-lg border border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:outline-none placeholder-gray-400 text-white"
-                    >
-                    <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-500 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                <!-- User Menu -->
+                <div class="relative group">
+                    <button class="p-2 hover:text-purple-500 transition-colors">
+                        <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
                     </button>
+                    <div class="absolute right-0 w-48 bg-gray-800 rounded-lg shadow-xl py-2 border border-gray-700 
+                                opacity-0 pointer-events-none transition-opacity duration-300 
+                                group-hover:opacity-100 group-hover:pointer-events-auto 
+                                "
+                    >
+                        @if(isset($_SESSION['usuario']))
+                            <a href="/perfil" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mi Perfil</a>
+                            <a href="/mis-pedidos" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mis Pedidos</a>
+                            <div class="border-t border-gray-700 my-2"></div>
+                            <a href="/logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors">Cerrar Sesión</a>
+                        @else
+                            <a href="/login" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Iniciar Sesión</a>
+                            <a href="/registro" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Registrarse</a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
