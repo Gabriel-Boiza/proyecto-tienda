@@ -1,14 +1,12 @@
-<nav class="bg-gradient-to-r from-gray-900 to-black sticky top-0 z-50 shadow-xl border-b border-purple-800">
-    <div class="container mx-auto px-4 py-4">
-        <div class="flex justify-between items-center">
-
-            <div class="flex items-center space-x-8">
-
-                <div class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-                    <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
-                        <span class="text-xl font-bold text-white">PP</span>
+<nav class="bg-black sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                        <span class="text-xl font-bold">T</span>
                     </div>
-                    <span class="text-xl font-bold text-white tracking-wide">PePerifericos</span>
+                    <span class="text-xl font-bold">TechPerif</span>
                 </div>
 
                 <!-- Desktop Menu -->
