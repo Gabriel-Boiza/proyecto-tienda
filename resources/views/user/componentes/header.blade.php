@@ -55,9 +55,9 @@
                             <a href="/perfil" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mi Perfil</a>
                             <a href="/mis-pedidos" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mis Pedidos</a>
                             <div class="border-t border-gray-700 my-2"></div>
-                            <a href="/logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors">Cerrar Sesión</a>
+                            <a href="/logoutCliente" class="block px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors">Cerrar Sesión</a>
                         @else
-                            <a href="/login" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Iniciar Sesión</a>
+                            <a href="/loginCliente" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Iniciar Sesión</a>
                             <a href="/registro" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Registrarse</a>
                         @endif
                     </div>

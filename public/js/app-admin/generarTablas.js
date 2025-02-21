@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function(event){
             cells[0].textContent = producto.id;
             cells[1].textContent = producto.nombre;
             cells[2].textContent = producto.descripcion;
-            cells[3].textContent = `$${producto.precio.toFixed(2)}`;
+            cells[3].textContent = `${producto.precio.toFixed(2)}€`;
             cells[4].textContent = producto.stock;
 
             if (producto.categorias && producto.categorias.length > 0) {

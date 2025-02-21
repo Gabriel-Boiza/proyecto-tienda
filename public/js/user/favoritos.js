@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     const favsBtn = document.getElementsByClassName('favoritos');
+
+    console.log(localStorage)
     
     Array.from(favsBtn).forEach(btn => {
         let producto = JSON.parse(btn.value);
