@@ -17,7 +17,7 @@
         <div class="container mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-lg font-bold mb-4">TechPerif</h3>
+                    <h3 class="text-lg font-bold mb-4">PePeriféricos</h3>
                     <p class="text-sm">Tu tienda de confianza para periféricos gaming de alta calidad</p>
                 </div>
                 <div>
@@ -32,7 +32,7 @@
                 <div>
                     <h3 class="text-lg font-bold mb-4">Contacto</h3>
                     <ul class="text-sm space-y-2">
-                        <li>info@techperif.com</li>
+                        <li>info@peperiféricos.com</li>
                         <li>+34 900 123 456</li>
                         <li>Madrid, España</li>
                     </ul>
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-sm text-center">
-                <p>&copy; 2024 TechPerif. Todos los derechos reservados.</p>
+                <p>&copy; 2025 PePeriféricos. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
