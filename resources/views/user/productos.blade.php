@@ -41,9 +41,8 @@
                     <div>
                         <h3 class="text-gray-400 mb-2">Ordenar por</h3>
                         <select name='orden' class="w-full bg-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option>Más populares</option>
-                            <option>Precio: Menor a mayor</option>
-                            <option>Precio: Mayor a menor</option>
+                            <option value='asc'>Precio: Menor a mayor</option>
+                            <option value='desc'>Precio: Mayor a menor</option>
                         </select>
                     </div>
 
