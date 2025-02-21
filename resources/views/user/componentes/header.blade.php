@@ -106,7 +106,7 @@ document.getElementById('search').addEventListener('input', function() {
                             'border-gray-700/50',
                             'last:border-0'
                         );
-                        productElement.href = `/producto/${producto.id}`;
+                        productElement.href = `/periferico/${producto.id}`;
                         productElement.innerHTML = `
                             <div class="flex justify-between items-center">
                                 <div>
