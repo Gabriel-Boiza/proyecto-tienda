@@ -47,8 +47,8 @@
                         </select>
                     </div>
 
-                    <div>
-                        <input type="submit">
+                    <div class="mt-6">
+                        <input type="submit" value="Aplicar filtros" class="w-full bg-purple-600 text-white rounded-lg px-4 py-2 transition-all duration-300 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
 
                 </form>
