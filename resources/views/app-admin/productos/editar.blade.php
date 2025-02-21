@@ -95,24 +95,22 @@
     </div>
 
     <!-- Marca -->
-    <div>
+    <div class="relative w-full">
         <label for="marca" class="block text-sm font-medium text-gray-400 mb-1">Marca</label>
-        <input type="text" 
-            name="fk_marca" 
-            id="marca" 
-            list="marcas" 
-            value="{{ $producto->marca ? $producto->marca->nombre : '' }}" 
-            class="w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
-        <datalist id="marcas">
+        <select id="marca" name="fk_marca" 
+            class="appearance-none w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+
+            <option value="" disabled {{ $producto->marca ? '' : 'selected' }}>Selecciona una marca...</option>
+
             @foreach($marcas as $marca)
-                <option value="{{ $marca->nombre }}" data-id="{{ $marca->id }}"></option>
+                <option value="{{ $marca->id }}" 
+                    {{ $producto->marca && $producto->marca->id == $marca->id ? 'selected' : '' }}>
+                    {{ $marca->nombre }}
+                </option>
             @endforeach
-        </datalist>
+        </select>
     </div>
-
-    <input type="hidden" name="fk_marca" id="marca-id" value="{{ $producto->marca ? $producto->marca->id : '' }}">
-
-
+    
 
     <!-- Imágenes -->
     <div class="space-y-4">

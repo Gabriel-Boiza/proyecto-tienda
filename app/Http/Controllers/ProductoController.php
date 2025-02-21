@@ -246,5 +246,20 @@ class ProductoController extends Controller
         return response()->json(['message' => 'Producto e imágenes eliminados correctamente']);
     }
 
+    // ProductoController.php
+
+    public function buscar(Request $request)
+    {
+        $query = $request->input('query');
+        
+        // Realizamos la búsqueda de productos que coincidan con el nombre o la descripción
+        $productos = Producto::where('nombre', 'like', "%{$query}%")
+
+                            ->get(['id', 'nombre', 'precio']); // Solo devolver los datos necesarios
+
+        return response()->json($productos);
+    }
+
+
     
 }

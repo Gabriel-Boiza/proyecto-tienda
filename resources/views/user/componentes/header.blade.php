@@ -19,12 +19,19 @@
 
                 <!-- Search and Cart -->
                 <div class="hidden md:flex items-center space-x-6">
+                    <!-- Search Input -->
                     <div class="relative">
-                        <input type="search" placeholder="Buscar productos..." class="w-64 px-4 py-2 bg-gray-800 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
-                        <button class="absolute right-2 top-1/2 -translate-y-1/2">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        </button>
+                        <input type="search" id="search" placeholder="Buscar productos..." 
+                            class="w-64 px-4 py-2 bg-gray-800 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
+
+                        <!-- Dropdown for search results -->
+                        <div id="search-results" class="absolute w-full bg-gray-800 text-white mt-2 rounded-lg shadow-lg hidden">
+                            <!-- Results will be populated here -->
+                        </div>
                     </div>
+
+
+                    
                     <div class="relative">
                         <button class="p-2 hover:text-purple-500">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -50,3 +57,38 @@
             </div>
         </div>
     </nav>
+    <script>
+        document.getElementById('search').addEventListener('input', function() {
+            const query = this.value;
+            const resultsContainer = document.getElementById('search-results');
+
+            if (query.length > 2) {
+                fetch(`/productos/buscar?query=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Limpiar resultados anteriores y mostrar el contenedor
+                        resultsContainer.innerHTML = '';
+                        resultsContainer.classList.remove('hidden');
+
+                        if (data.length > 0) {
+                            data.forEach(producto => {
+                                const productElement = document.createElement('a');
+                                productElement.classList.add('block', 'px-4', 'py-2', 'hover:bg-gray-700', 'rounded-lg');
+                                productElement.href = `/producto/${producto.id}`; // Enlace a la página del producto
+                                productElement.innerHTML = `
+                                    <h3 class="text-md font-semibold">${producto.nombre}</h3><p class="text-sm"> $${producto.precio}</p>
+                                `;
+                                resultsContainer.appendChild(productElement);
+                            });
+                        } else {
+                            resultsContainer.innerHTML = `<p class="px-4 py-2">No se encontraron productos.</p>`;
+                        }
+                    })
+                    .catch(error => console.error('Error en la búsqueda:', error));
+            } else {
+                resultsContainer.classList.add('hidden');
+            }
+        });
+
+
+    </script>

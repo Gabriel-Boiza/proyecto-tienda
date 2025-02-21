@@ -6,6 +6,9 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\Auth\LoginController;
 
+Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
+
+
 // Rutas públicas (para usuarios/clientes)
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
