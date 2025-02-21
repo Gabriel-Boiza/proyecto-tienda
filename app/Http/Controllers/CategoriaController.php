@@ -4,24 +4,51 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use App\Models\Producto;
+use App\Models\Marca;
 use Exception;
 use Illuminate\Validation\Rule;
 
 class CategoriaController extends Controller
 {
 
-    public function userShow(string $id){
-        
+    public function userShow(string $id)
+    {
         $categorias = Categoria::with('productos')->find($id);
-        //return response()->json($categorias);
-        return view('user.productos', compact('categorias'));
+        
+        $marcas = Marca::all();
+        $precioMaximo = Producto::max('precio');
+        $precioActual = $precioMaximo;
+        $precioMinimo = Producto::min('precio');
+        $marcasActuales = [];
+    
+        if (isset($_GET['precio'])) {
+            $precioActual = $_GET['precio'];
+        }
+    
+        $productosQuery = $categorias->productos()->where('precio', '<=', $precioActual);
+    
+        if (isset($_GET['marcas'])) {
+            $marcasActuales = $_GET['marcas'];
+            $productosQuery->whereIn('fk_marca', $marcasActuales);
+        }
+    
+        if (isset($_GET['orden']) && in_array($_GET['orden'], ['asc', 'desc'])) {
+            $productosQuery->orderBy('precio', $_GET['orden']);
+        }
+    
+        $productos = $productosQuery->paginate(6)->appends(request()->query());
+    
+        return view('user.productos', compact('categorias', 'precioMaximo', 'precioMinimo', 'marcas', 'productos', 'precioActual', 'marcasActuales'));
     }
-
+    
     public function obtenerCategorias(){
         $categorias = Categoria::all();
 
         return response()->json($categorias);
     }
+
+    
     /**
      * Display a listing of the resource.
      */

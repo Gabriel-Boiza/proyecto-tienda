@@ -15,11 +15,13 @@
     <div class="container mx-auto px-4 py-8">
         <!-- Breadcrumbs -->
         <div class="text-sm mb-8">
-            <a href="#" class="text-gray-400 hover:text-purple-500">Inicio</a>
+            <a href="/" class="text-gray-400 hover:text-purple-500">Inicio</a>
             <span class="text-gray-600 mx-2">/</span>
-            <a href="#" class="text-gray-400 hover:text-purple-500">Teclados</a>
+            @foreach($producto->categorias as $categoria)
+            <a href="/categoria/{{{$categoria->id}}}" class="text-gray-400 hover:text-purple-500">{{$categoria->nombre_categoria}}</a>
             <span class="text-gray-600 mx-2">/</span>
-            <span class="text-purple-500">Teclado Mecánico RGB Pro</span>
+            @endforeach
+            <span class="text-purple-500">{{$producto->nombre}}</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -27,9 +29,11 @@
             <div class="space-y-4">
                 <div class="relative bg-gray-800 rounded-lg overflow-hidden">
                     <img :src="images[currentImage]" alt="Product image" class="w-full h-96 object-cover">
+                    @if($producto->descuento != 0)
                     <div class="absolute top-4 left-4 bg-purple-600 px-3 py-1 rounded-full text-sm font-semibold">
-                        -20%
+                        -{{$producto->descuento}}%
                     </div>
+                    @endif
                 </div>
                 <div class="grid grid-cols-4 gap-4">
                     <template x-for="(image, index) in images" :key="index">
@@ -62,10 +66,16 @@
 
                 <div class="space-y-4">
                     <div class="flex items-baseline space-x-4">
-                        <span class="text-4xl font-bold">119.99€</span>
+                        <span class="text-4xl font-bold">{{$producto->precio}}€</span>
+                        @if($producto->descuento != 0)
                         <span class="text-xl text-gray-400 line-through">149.99€</span>
+                        @endif
                     </div>
+                    @if($producto->stock != 0)
                     <p class="text-green-500">En stock - Envío en 24/48h</p>
+                    @else
+                    <p class="text-red-500">Sin stock disponible</p>
+                    @endif
                 </div>
 
                 <div class="space-y-4">
@@ -91,17 +101,30 @@
 
                     <div>
                         <h3 class="text-lg font-semibold mb-2">Cantidad</h3>
-                        <div class="flex items-center space-x-4">
-                            <button 
-                                @click="quantity > 1 && quantity--"
-                                class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
-                            >-</button>
-                            <span x-text="quantity" class="w-12 text-center text-xl"></span>
-                            <button 
-                                @click="quantity++"
-                                class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
-                            >+</button>
-                        </div>
+                        <div class="flex items-center space-x-2">
+                        <div x-data="{ quantity: 1 }" class="flex items-center space-x-2">
+                        <button 
+                            @click="quantity = Math.max(1, quantity - 1)"
+                            class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
+                        >-</button>
+
+                        <input 
+                            type="number" 
+                            x-model="quantity"
+                            name="cantidad"
+                            min="1"
+                            class="w-16 text-center text-xl bg-gray-900 border border-gray-700 rounded-lg p-1"
+                        />
+
+                        <button 
+                            @click="quantity++"
+                            class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
+                        >+</button>
+                    </div>
+
+
+
+
                     </div>
                 </div>
 

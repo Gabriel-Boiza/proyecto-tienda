@@ -22,22 +22,6 @@ class MarcaSeeder extends Seeder
             ['nombre' => 'ASUS ROG'],
             ['nombre' => 'MSI'],
             ['nombre' => 'Cooler Master'],
-            ['nombre' => 'Thermaltake'],
-            ['nombre' => 'EVGA'],
-            ['nombre' => 'Gigabyte Aorus'],
-            ['nombre' => 'Zowie'],
-            ['nombre' => 'Ducky'],
-            ['nombre' => 'Glorious'],
-            ['nombre' => 'Redragon'],
-            ['nombre' => 'Trust Gaming'],
-            ['nombre' => 'Mad Catz'],
-            ['nombre' => 'Turtle Beach'],
-            ['nombre' => 'BenQ'],
-            ['nombre' => 'AOC'],
-            ['nombre' => 'HP Omen'],
-            ['nombre' => 'Dell Alienware'],
-            ['nombre' => 'XPG'],
-            ['nombre' => 'NZXT'],
         ]);
         
     }
