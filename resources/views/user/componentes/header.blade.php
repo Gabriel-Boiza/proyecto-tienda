@@ -27,11 +27,7 @@
                         placeholder="Buscar productos..." 
                         class="w-72 px-4 py-2 bg-gray-800/50 rounded-lg border border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:outline-none placeholder-gray-400 text-white transition-all duration-300 hover:bg-gray-800"
                     >
-                    <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-500 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                    </button>
+        
 
                     <!-- Dropdown for search results -->
                     <div id="search-results" class="absolute w-full bg-gray-800/95 text-white mt-2 rounded-lg shadow-xl hidden backdrop-blur-sm border border-gray-700">
