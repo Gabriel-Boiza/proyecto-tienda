@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PePeriféricos - Detalle del Producto</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js"></script>
-</head>
-<body class="bg-gray-900 text-white" >
-    <!-- Navigation (same as original) -->
-    
+@extends('welcome')
 
+@section('content')
     <!-- Product Section -->
     <div class="container mx-auto px-4 py-8">
         <!-- Breadcrumbs -->
@@ -51,7 +41,7 @@
             <!-- Product Info -->
             <div class="space-y-6">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">Teclado Mecánico RGB Pro</h1>
+                    <h1 class="text-3xl font-bold mb-2">{{$producto->nombre}}</h1>
                     <div class="flex items-center space-x-4">
                         <div class="flex text-yellow-400">
                             <template x-for="i in 5">
@@ -103,28 +93,25 @@
                         <h3 class="text-lg font-semibold mb-2">Cantidad</h3>
                         <div class="flex items-center space-x-2">
                         <div x-data="{ quantity: 1 }" class="flex items-center space-x-2">
-                        <button 
-                            @click="quantity = Math.max(1, quantity - 1)"
-                            class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
-                        >-</button>
+                            <button 
+                                @click="quantity = Math.max(1, quantity - 1)"
+                                class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
+                            >-</button>
 
-                        <input 
-                            type="number" 
-                            x-model="quantity"
-                            name="cantidad"
-                            min="1"
-                            class="w-16 text-center text-xl bg-gray-900 border border-gray-700 rounded-lg p-1"
-                        />
+                            <input 
+                                type="number" 
+                                x-model="quantity"
+                                name="cantidad"
+                                min="1"
+                                class="w-16 text-center text-xl bg-gray-900 border border-gray-700 rounded-lg p-1"
+                            />
 
-                        <button 
-                            @click="quantity++"
-                            class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
-                        >+</button>
-                    </div>
-
-
-
-
+                            <button 
+                                @click="quantity++"
+                                class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
+                            >+</button>
+                        </div>
+                        </div>
                     </div>
                 </div>
 
@@ -174,5 +161,4 @@
             </div>
         </div>
     </div>
-
-    
+@endsection
