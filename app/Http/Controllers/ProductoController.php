@@ -87,7 +87,7 @@ class ProductoController extends Controller
             'descripcion' => $request->descripcion, 
             'stock' => $request->stock,
             'imagen_principal' => $rutaImagenPrincipal,
-            'marca' => $request->marca,
+            'fk_marca' => $request->marca,
             'descuento' => $request->descuento,
         ]);
 

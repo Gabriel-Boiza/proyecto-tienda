@@ -5,8 +5,13 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ClienteLoginController;
+
 
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
+
+Route::get('/loginCliente', [ClienteLoginController::class, 'showLoginForm']);
+Route::post('/requestLoginCliente', [ClienteLoginController::class, 'loginCliente']);
 
 
 // Rutas públicas (para usuarios/clientes)

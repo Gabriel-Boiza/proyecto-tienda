@@ -10,7 +10,7 @@
     <div class="max-w-md w-full bg-gray-800 rounded-lg shadow-xl p-8">
         <div class="mb-8 text-center">
             <h2 class="text-3xl font-bold text-purple-500 mb-2">Bienvenido</h2>
-            <p class="text-gray-400">Ingresa a tu cuenta de periféricos</p>
+            <p class="text-gray-400">Ingresa a tu cuenta de PePeriféricos</p>
         </div>
         
         <form action="login" method="POST" class="space-y-6">
@@ -64,13 +64,6 @@
                 Iniciar sesión
             </button>
         </form>
-        
-        <p class="mt-6 text-center text-sm text-gray-400">
-            ¿No tienes una cuenta?
-            <a href="#" class="text-purple-400 hover:text-purple-300 font-medium">
-                Regístrate aquí
-            </a>
-        </p>
     </div>
 </body>
 </html>
