@@ -37,7 +37,7 @@ class ClienteLoginController extends Controller
                 return redirect()->intended('/');
             }
             return back()->withErrors([
-                'email' => 'Las credenciales no coinciden con nuestros registros.',
+                'email' => 'El mail o la contraseña son incorrectos.',
             ]);
      }
 

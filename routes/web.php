@@ -12,6 +12,7 @@ Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
 
 Route::get('/loginCliente', [ClienteLoginController::class, 'showLoginForm']);
 Route::post('/requestLoginCliente', [ClienteLoginController::class, 'loginCliente']);
+Route::get('/logoutCliente', [ClienteLoginController::class, 'logout']);
 
 
 // Rutas públicas (para usuarios/clientes)

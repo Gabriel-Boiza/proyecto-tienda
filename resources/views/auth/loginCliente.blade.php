@@ -64,6 +64,17 @@
                 Iniciar sesión
             </button>
         </form>
+        @if ($errors->any())
+            <div class="text-red-500 text-sm">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+
         
         <p class="mt-6 text-center text-sm text-gray-400">
             ¿No tienes una cuenta?

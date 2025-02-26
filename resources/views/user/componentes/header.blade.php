@@ -51,7 +51,7 @@
                                 group-hover:opacity-100 group-hover:pointer-events-auto 
                                 "
                     >
-                        @if(isset($_SESSION['usuario']))
+                        @if(Session::Has('cliente_id'))
                             <a href="/perfil" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mi Perfil</a>
                             <a href="/mis-pedidos" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mis Pedidos</a>
                             <div class="border-t border-gray-700 my-2"></div>
