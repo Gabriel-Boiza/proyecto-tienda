@@ -38,7 +38,32 @@ class ProductosSeeder extends Seeder
             ['id_producto' => 9, 'id_categoria' => 7],
             ['id_producto' => 10, 'id_categoria' => 7],
         ]);
+
+        DB::table('productos_categorias')->insert([
+            ['id_producto' => 1, 'id_categoria' => 7],
+            ['id_producto' => 2, 'id_categoria' => 7],
+            ['id_producto' => 3, 'id_categoria' => 7],
+            ['id_producto' => 4, 'id_categoria' => 7],
+            ['id_producto' => 5, 'id_categoria' => 7],
+            ['id_producto' => 6, 'id_categoria' => 7],
+            ['id_producto' => 7, 'id_categoria' => 7],
+            ['id_producto' => 8, 'id_categoria' => 7],
+            ['id_producto' => 9, 'id_categoria' => 7],
+            ['id_producto' => 10, 'id_categoria' => 7],
+        ]);
         
+        DB::table('productos_caracteristicas')->insert([
+            ['id_producto' => 1, 'id_caracteristica' => 1],
+            ['id_producto' => 2, 'id_caracteristica' => 2],
+            ['id_producto' => 3, 'id_caracteristica' => 3],
+            ['id_producto' => 4, 'id_caracteristica' => 4],
+            ['id_producto' => 5, 'id_caracteristica' => 5],
+            ['id_producto' => 6, 'id_caracteristica' => 6],
+            ['id_producto' => 7, 'id_caracteristica' => 7],
+            ['id_producto' => 8, 'id_caracteristica' => 8],
+            ['id_producto' => 9, 'id_caracteristica' => 9],
+            ['id_producto' => 10, 'id_caracteristica' => 10],
+        ]);
     }
 }
 

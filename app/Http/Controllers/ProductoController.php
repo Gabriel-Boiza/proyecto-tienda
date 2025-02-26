@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
 use App\Models\Marca;
+use App\Models\Caracteristica;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -52,6 +53,7 @@ class ProductoController extends Controller
     {
         $categorias = Categoria::select('id', 'nombre_categoria')->get()->toArray();
         $marcas = Marca::all();
+        $caracteristicas = Caracteristica::all();
         return view("app-admin/productos/crear", compact('categorias', 'marcas'));
     }
 
@@ -87,7 +89,7 @@ class ProductoController extends Controller
             'descripcion' => $request->descripcion, 
             'stock' => $request->stock,
             'imagen_principal' => $rutaImagenPrincipal,
-            'marca' => $request->marca,
+            'fk_marca' => $request->marca,  
             'descuento' => $request->descuento,
         ]);
 
