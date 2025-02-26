@@ -123,7 +123,7 @@
                 
                 <!-- Contenedor para las características -->
                 <div id="caracteristicas-container">
-                    <div class="caracteristica-input">
+                    <div class="caracteristica-input    ">
                         <input type="text" name="caracteristicas[]" class="appearance-none w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500" placeholder="Añadir característica">
                     </div>
                 </div>

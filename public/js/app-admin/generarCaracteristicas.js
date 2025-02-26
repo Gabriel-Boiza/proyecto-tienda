@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function(event){
     funcionCrear();
+    funcionAgregar();
 })
 
 function funcionCrear(){
@@ -22,6 +23,27 @@ async function consultaCrear(nuevaCaracteristica) {
     });
     
     if(respuesta.ok){
-        console.log(await respuesta.json());  // Mostrar el mensaje de éxito
+        console.log(await respuesta.json());  
     }
 }
+
+function funcionAgregar() {
+    let agregarBtn = document.getElementById("agregarCaracteristica");
+    let container = document.getElementById("caracteristicas-container");
+
+    agregarBtn.addEventListener('click', function(event) {
+
+        let nuevoDiv = document.createElement('div');
+        nuevoDiv.classList.add('caracteristica-input');
+
+        let nuevoInput = document.createElement('input');
+        nuevoInput.type = 'text';
+        nuevoInput.name = 'caracteristicas[]';
+        nuevoInput.classList.add('appearance-none', 'w-full', 'bg-zinc-800', 'border', 'border-zinc-700', 'rounded-md', 'px-4', 'py-2', 'text-white', 'focus:border-purple-500', 'focus:ring-1', 'focus:ring-purple-500', 'mt-3');
+        nuevoInput.placeholder = 'Añadir característica';
+
+        nuevoDiv.appendChild(nuevoInput);
+
+        container.appendChild(nuevoDiv);
+    });
+}   
