@@ -54,7 +54,7 @@ class ProductoController extends Controller
         $categorias = Categoria::select('id', 'nombre_categoria')->get()->toArray();
         $marcas = Marca::all();
         $caracteristicas = Caracteristica::all();
-        return view("app-admin/productos/crear", compact('categorias', 'marcas'));
+        return view("app-admin/productos/crear", compact('categorias', 'marcas', 'caracteristicas'));
     }
 
     /**
@@ -71,6 +71,7 @@ class ProductoController extends Controller
             'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
             'categorias' => 'nullable|array', 
             'marcas' => 'nullable|array', 
+            'caracteristicas' => 'nullable|array', 
             'imagenes_adicionales' => 'nullable|array',
             'descuento' => 'integer',
         ]);
@@ -92,6 +93,13 @@ class ProductoController extends Controller
             'fk_marca' => $request->marca,  
             'descuento' => $request->descuento,
         ]);
+
+        foreach($request->caracteristicas as $index => $caracteristica){
+            DB::table('productos_caracteristicas')->insert([
+                'id_producto' => $producto->id,
+                'id_caracteristica' => $caracteristica, 
+            ]);
+        }
 
         if ($request->has('imagenes_adicionales')) {
             foreach ($request->file('imagenes_adicionales') as $imagenAdicional) {
@@ -121,7 +129,7 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {
-        $producto = Producto::with(['categorias', 'marca'])->find($id);
+        $producto = Producto::with(['categorias', 'marca', 'caracteristicas'])->find($id);
         $imagenesAdicionales = DB::table('imagenes_adicionales')
         ->where('id_producto', $id) 
         ->get();
@@ -135,14 +143,15 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        $producto = Producto::with(['categorias','marca'])->findOrFail($id);
+        $producto = Producto::with(['categorias','marca', 'caracteristicas'])->findOrFail($id);
         $categorias = Categoria::all();
+        $caracteristicas = Caracteristica::all();
         $marcas = Marca::all();
         $imagenesAdicionales = DB::table('imagenes_adicionales')
             ->where('id_producto', $id) 
             ->get();
     
-        return view("app-admin.productos.editar", compact('producto', 'categorias','marcas','imagenesAdicionales'));
+        return view("app-admin.productos.editar", compact('producto', 'categorias','marcas','imagenesAdicionales', 'caracteristicas'));
     }
 
     /**

@@ -123,8 +123,13 @@
                 
                 <!-- Contenedor para las características -->
                 <div id="caracteristicas-container">
-                    <div class="caracteristica-input    ">
-                        <input type="text" name="caracteristicas[]" class="appearance-none w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500" placeholder="Añadir característica">
+                    <div class="caracteristica-input">
+                        <select name="caracteristicas[]" class="appearance-none w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+                            <option value="" disabled selected>Seleccionar característica</option>
+                            @foreach($caracteristicas as $caracteristica)
+                                <option value="{{ $caracteristica->id }}">{{ $caracteristica->nombre }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 
@@ -132,7 +137,7 @@
                 <button type="button" id="agregarCaracteristica" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md">
                     Añadir otra característica
                 </button>
-
+                
                 <!-- Botón para crear una nueva característica (acción personalizada) -->
                 <button type="button" id="crearCaracteristica" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md">
                     Crear nueva característica
