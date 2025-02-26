@@ -40,7 +40,7 @@ class LangPublishCommand extends Command
             realpath(__DIR__.'/../../Translation/lang/en/auth.php') => 'auth.php',
             realpath(__DIR__.'/../../Translation/lang/en/pagination.php') => 'pagination.php',
             realpath(__DIR__.'/../../Translation/lang/en/passwords.php') => 'passwords.php',
-            realpath(__DIR__.'/../../Translation/lang/en/validation.php') => 'validation.php',
+            realpath(__DIR__.'/../../Translation/lang/es/validation.php') => 'validation.php',
         ];
 
         foreach ($stubs as $from => $to) {

@@ -2,12 +2,14 @@
     <div class="container mx-auto px-4 py-3">
         <div class="flex justify-between items-center">
             <!-- Logo -->
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
-                    <span class="text-xl font-bold text-white">T</span>
+             <a href="{{ url('/') }}" class="block">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
+                        <span class="text-xl font-bold text-white">T</span>
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-wide">PePeriféricos</span>
                 </div>
-                <span class="text-xl font-bold text-white tracking-wide">PePeriféricos</span>
-            </div>
+            </a>
 
             <!-- Search and Icons -->
             <div class="hidden md:flex items-center space-x-6">
@@ -30,14 +32,16 @@
                 </a>
 
                 <!-- Cart -->
-                <div class="relative group">
-                    <button class="p-2 hover:text-purple-500 transition-colors">
-                        <svg class="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                    </button>
-                    <span class="absolute -top-2 -right-2 bg-gradient-to-br from-purple-500 to-purple-700 text-xs text-white font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">3</span>
-                </div>
+                 <a href="/carrito">
+                    <div class="relative group">
+                        <button class="p-2 hover:text-purple-500 transition-colors">
+                            <svg class="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </button>
+                        <span class="absolute -top-2 -right-2 bg-gradient-to-br from-purple-500 to-purple-700 text-xs text-white font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">3</span>
+                    </div>
+                </a>
 
                 <!-- User Menu -->
                 <div class="relative group">
@@ -58,7 +62,7 @@
                             <a href="/logoutCliente" class="block px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors">Cerrar Sesión</a>
                         @else
                             <a href="/loginCliente" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Iniciar Sesión</a>
-                            <a href="/registro" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Registrarse</a>
+                            <a href="/registroCliente" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Registrarse</a>
                         @endif
                     </div>
                 </div>

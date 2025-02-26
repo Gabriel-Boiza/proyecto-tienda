@@ -78,7 +78,7 @@
         
         <p class="mt-6 text-center text-sm text-gray-400">
             ¿No tienes una cuenta?
-            <a href="#" class="text-purple-400 hover:text-purple-300 font-medium">
+            <a href="/registroCliente" class="text-purple-400 hover:text-purple-300 font-medium">
                 Regístrate aquí
             </a>
         </p>

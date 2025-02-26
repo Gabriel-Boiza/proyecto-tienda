@@ -47,6 +47,11 @@ class ClienteLoginController extends Controller
          return back();
      }
 
+     public function registro()
+     {
+         return view('auth.registroCliente');
+     }
+
 
     public function index()
     {
@@ -66,8 +71,33 @@ class ClienteLoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:clientes,email',
+            'contraseña' => 'required|min:6',
+            'teléfono' => 'nullable|string|max:20',
+            'dirección' => 'nullable|string|max:255',
+            'ciudad' => 'nullable|string|max:100',
+            'codigo_postal' => 'nullable|string|max:20',
+            'pais' => 'nullable|string|max:3',
+        ]);
+
+        $cliente = Cliente::create([
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'email' => $request->email,
+            'password' => Hash::make($request->contraseña),
+            'telefono' => $request->teléfono,
+            'direccion' => $request->dirección,
+            'ciudad' => $request->ciudad,
+            'codigo_postal' => $request->codigo_postal,
+            'pais' => $request->pais,
+        ]);
+
+        session()->flash('success', 'Cuenta creada con éxito.');
+        return view('auth.loginCliente');
+       }
 
     /**
      * Display the specified resource.

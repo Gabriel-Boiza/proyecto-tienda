@@ -116,9 +116,9 @@
                 </div>
 
                 <div class="space-y-4">
-                    <button 
+                    <button data-product-id="{{ $producto->id }}"
                         @click="showNotification = true; setTimeout(() => showNotification = false, 3000)"
-                        class="w-full bg-purple-600 hover:bg-purple-700 py-4 rounded-lg font-bold transform hover:scale-105 transition-all duration-200"
+                        class="add-to-cart-button w-full bg-purple-600 hover:bg-purple-700 py-4 rounded-lg font-bold transform hover:scale-105 transition-all duration-200"
                     >
                         Añadir al Carrito
                     </button>
@@ -162,3 +162,13 @@
         </div>
     </div>
 @endsection
+
+<script>
+    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+    button.addEventListener('click', function () {
+        const productId = button.getAttribute('data-product-id');
+        const quantity = 1; // Puedes obtener la cantidad de un input si lo deseas
+        addToCart(productId, quantity);
+    });
+});
+</script>

@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ClienteLoginController;
+use App\Http\Controllers\CarritoController;
 
 
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
@@ -13,6 +14,15 @@ Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
 Route::get('/loginCliente', [ClienteLoginController::class, 'showLoginForm']);
 Route::post('/requestLoginCliente', [ClienteLoginController::class, 'loginCliente']);
 Route::get('/logoutCliente', [ClienteLoginController::class, 'logout']);
+Route::get('/registroCliente', [ClienteLoginController::class, 'registro']);
+Route::post('/registradoCliente', [ClienteLoginController::class, 'store']);
+
+
+Route::post('/addCart', [CarritoController::class, 'addToCart']);
+Route::post('/cartDatabase', [CarritoController::class, 'syncCartWithDatabase']);
+Route::get('/carrito', [CarritoController::class, 'showCart'])->name('carrito.show');
+
+
 
 
 // Rutas públicas (para usuarios/clientes)

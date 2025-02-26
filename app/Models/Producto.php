@@ -19,4 +19,8 @@ class Producto extends Model
     public function marca(){
         return $this->belongsTo(Marca::class, 'fk_marca');  
     }
+    public function carritos()
+    {
+        return $this->hasMany(Carrito::class);
+    }
 }
