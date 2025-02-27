@@ -181,7 +181,7 @@ class ProductoController extends Controller
             'descripcion' => $request->descripcion,
             'stock' => $request->stock,
             'fk_marca' => $request->fk_marca, // Guardar la marca seleccionada
-
+            'stock' => 'required|integer|min:0',
         ]);
     
         // Actualizar la imagen principal si se sube una nueva

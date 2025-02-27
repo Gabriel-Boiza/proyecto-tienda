@@ -110,96 +110,42 @@
             @endforeach
         </select>
     </div>
-
+    <!-- Contenedor para las características -->
     <div class="space-y-4">
-    <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Características</h2>
-    
-    <div id="caracteristicas-container">
-        @foreach($producto->caracteristicas as $caracteristicaProducto)
-            <div class="caracteristica-input flex items-center gap-2 mb-2">
-                <select name="caracteristicas[]" class="appearance-none flex-grow bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
-                    <option value="" disabled>Seleccionar característica</option>
-                    @foreach($caracteristicas as $caracteristica)
-                        <option value="{{ $caracteristica->id }}" {{ $caracteristicaProducto->id == $caracteristica->id ? 'selected' : '' }}>
-                            {{ $caracteristica->nombre }}
-                        </option>
-                    @endforeach
-                </select>
-                <button type="button" class="deleteCaracteristica text-red-500 hover:text-red-700 p-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 6h18"></path>
-                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                    </svg>
-                </button>
-            </div>
-        @endforeach
-    </div>
-    
-    <!-- Botón para añadir otra característica -->
-    <button type="button" id="agregarCaracteristica" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md">
-        Añadir otra característica
-    </button>
-    
-    <!-- Botón para crear una nueva característica (acción personalizada) -->
-    <button type="button" id="crearCaracteristica" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md">
-        Crear nueva característica
-    </button>
-</div>
+        <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Características</h2>
+        <div id="caracteristicas-container ">
+            <div class="caracteristica-input flex flex-wrap">
+           
+                    <select name="caracteristicas[]" class="appearance-none w-[95%] bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+                        <option value="" disabled selected>Seleccionar característica</option>
+                        @foreach($caracteristicas as $caracteristica)
+                            <option value="{{ $caracteristica->id }}">{{ $caracteristica->nombre }}</option>
+                        @endforeach
+                    </select>
+                 
+                    <button type='button' id='deleteBtn' class='text-red-500 mt-3 p-2'><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 6h18"></path>
+                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                    </button>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Agregar event listeners a los botones de eliminar existentes
-        document.querySelectorAll('.deleteCaracteristica').forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.closest('.caracteristica-input').remove();
-            });
-        });
+            </div>
+        </div>
         
-        // Función para agregar nuevas características
-        document.getElementById('agregarCaracteristica').addEventListener('click', function() {
-            // Clonar el primer select para obtener la estructura
-            let primeraCaracteristica = document.querySelector('.caracteristica-input');
-            if (!primeraCaracteristica) return;
-            
-            let nuevoDiv = document.createElement('div');
-            nuevoDiv.classList.add('caracteristica-input', 'flex', 'items-center', 'gap-2', 'mb-2');
-            
-            // Clonar el select
-            let selectOriginal = document.querySelector('select[name="caracteristicas[]"]');
-            let nuevoSelect = selectOriginal.cloneNode(true);
-            nuevoSelect.selectedIndex = 0; // Resetear la selección
-            
-            // Crear el botón para eliminar
-            let deleteBtn = document.createElement('button');
-            deleteBtn.type = 'button';
-            deleteBtn.classList.add('deleteCaracteristica', 'text-red-500', 'hover:text-red-700', 'p-2');
-            deleteBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 6h18"></path>
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                </svg>
-            `;
-            
-            // Agregar funcionalidad para eliminar
-            deleteBtn.addEventListener('click', function() {
-                nuevoDiv.remove();
-            });
-            
-            // Añadir elementos al div
-            nuevoDiv.appendChild(nuevoSelect);
-            nuevoDiv.appendChild(deleteBtn);
-            
-            // Añadir al contenedor
-            document.getElementById('caracteristicas-container').appendChild(nuevoDiv);
-        });
-    });
-</script>
+        <!-- Botón para añadir otra característica -->
+        <button type="button" id="agregarCaracteristica" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md">
+            Añadir otra característica
+        </button>
+        
+        <!-- Botón para crear una nueva característica (acción personalizada) -->
+        <button type="button" id="crearCaracteristica" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md">
+            Crear nueva característica
+        </button>
+    </div>
+
     
 
     <!-- Imágenes -->
@@ -280,7 +226,9 @@
 </form> 
         </main>
     </div>
-
+    <script src="{{ asset('js/app-admin/editarCaracteristicas.js') }}"></script>
+    
+    
     <script>
 
         const marcaInput = document.getElementById('marca');

@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Caracteristica;
+use App\Models\Producto;
 
 class CaracteristicaController extends Controller
-{
+{   
+
+
+    public function apiCaracteristicas($id){
+        $caracteristicas = Caracteristica::all();
+        $producto_caracteristicas = Producto::with('caracteristicas')->find($id);
+
+        return response()->json(['caracteristicas' => $caracteristicas, 'productos_caracteristicas' => $producto_caracteristicas]);
+    } 
     /**
      * Display a listing of the resource.
      */
