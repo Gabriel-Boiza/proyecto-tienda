@@ -40,11 +40,11 @@ class CaracteristicaController extends Controller
 
         $valor = $request->input('caracteristica');
 
-        Caracteristica::create([
+        $caracteristica = Caracteristica::create([
             'nombre' => $valor
         ]);
         
-        return response()->json(['message' => 'Característica creada con éxito', $valor]);
+        return response()->json(['message' => 'Característica creada con éxito', 'nombre' => $valor, 'id' => $caracteristica->id]);
     }
     
     

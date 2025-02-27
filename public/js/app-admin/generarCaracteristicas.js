@@ -23,9 +23,25 @@ async function consultaCrear(nuevaCaracteristica) {
     });
     
     if(respuesta.ok){
-        console.log(await respuesta.json());  
+        actualizarSelects(await respuesta.json())
     }
 }
+
+function actualizarSelects(response){
+
+    let selects = document.querySelectorAll('select[name="caracteristicas[]"]');
+
+    Array.from(selects).forEach(select => {
+        const option = document.createElement('option')
+        option.value = response.id
+        option.textContent = response.nombre
+        
+        select.appendChild(option)
+        
+    });
+    
+}
+
 
 function funcionAgregar() {
     let agregarBtn = document.getElementById("agregarCaracteristica");
