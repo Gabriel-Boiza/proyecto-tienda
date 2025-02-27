@@ -181,8 +181,18 @@ class ProductoController extends Controller
             'descripcion' => $request->descripcion,
             'stock' => $request->stock,
             'fk_marca' => $request->fk_marca, // Guardar la marca seleccionada
-            'stock' => 'required|integer|min:0',
         ]);
+
+        DB::table('productos_caracteristicas')->where('id_producto', $id)->delete();
+
+        if(isset($request->caracteristicas)){
+            foreach($request->caracteristicas as $index => $caracteristica){
+                DB::table('productos_caracteristicas')->insert([
+                    'id_producto' => $producto->id,
+                    'id_caracteristica' => $caracteristica, 
+                ]);
+            }   
+        }
     
         // Actualizar la imagen principal si se sube una nueva
         if ($request->hasFile('imagen_principal')) {

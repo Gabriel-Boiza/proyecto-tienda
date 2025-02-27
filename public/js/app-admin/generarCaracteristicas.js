@@ -30,10 +30,7 @@ async function consultaCrear(nuevaCaracteristica) {
 function funcionAgregar() {
     let agregarBtn = document.getElementById("agregarCaracteristica");
     let container = document.getElementById("caracteristicas-container");
-    
-    // No vamos a modificar el select inicial ya que está generado en HTML con Blade
-    
-    // Función para crear un nuevo select con las mismas opciones que el select inicial
+
     function crearSelect() {
         // Clonar el select inicial para obtener todas sus opciones generadas por Blade
         let selectOriginal = document.querySelector('select[name="caracteristicas[]"]');
