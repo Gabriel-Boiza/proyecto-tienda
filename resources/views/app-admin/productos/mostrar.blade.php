@@ -4,7 +4,6 @@
 
 @section('contentAdmin')
    
-   
 <div class="flex justify-between items-center mb-8">
     <h1 class="text-xl font-bold">Detalle del Producto</h1>
     <a href="/productos" class="text-gray-400 hover:text-white">
@@ -114,6 +113,19 @@
                 <span class="px-3 py-1 bg-zinc-700 rounded-full text-sm">
                     {{$producto->marca->nombre}}
                 </span>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">
+            Características
+        </h2>
+        <div class="flex flex-wrap gap-2">
+            @foreach($producto->caracteristicas as $caracteristica)
+                <span class="px-3 py-1 bg-zinc-700 rounded-full text-sm">
+                    {{ $caracteristica->nombre }}
+                </span>
+            @endforeach
         </div>
     </div>
 

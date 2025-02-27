@@ -98,20 +98,52 @@
                 </div>
             </div>
 
+            <!-- marcas -->
+
+
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Marcas</h2>
-                <div class="grid grid-cols-3 gap-4">
-                    @foreach($marcas as $marca)
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" 
-                                    name="marca" 
-                                    value="{{$marca->id}}" 
-                                    class="rounded text-purple-500 bg-zinc-800 border-zinc-700">
-                                <span>{{$marca->nombre}}</span>
-                            </label>
-                    @endforeach
+                <div class="space-y-4">
+
+                    <select id="marca" name="marca" 
+                        class="appearance-none w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+                        @foreach($marcas as $marca)
+                            <option value="{{ $marca->id }}">
+                                {{ $marca->nombre }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
+
+            <!-- caracteristicas -->
+
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold border-b border-zinc-700 pb-2">Características</h2>
+                
+                <!-- Contenedor para las características -->
+                <div id="caracteristicas-container">
+                    <div class="caracteristica-input">
+                        <select name="caracteristicas[]" class="appearance-none w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+                            <option value="" disabled selected>Seleccionar característica</option>
+                            @foreach($caracteristicas as $caracteristica)
+                                <option value="{{ $caracteristica->id }}">{{ $caracteristica->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Botón para añadir otra característica -->
+                <button type="button" id="agregarCaracteristica" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md">
+                    Añadir otra característica
+                </button>
+                
+                <!-- Botón para crear una nueva característica (acción personalizada) -->
+                <button type="button" id="crearCaracteristica" class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md">
+                    Crear nueva característica
+                </button>
+            </div>
+
 
             <!-- Imágenes -->
             <div class="space-y-4">
@@ -180,6 +212,9 @@
         </form>
     </div>
 </div>
+
+<script src="{{ asset('js/app-admin/generarCaracteristicas.js') }}"></script>
+
 
 <script>
     const maxImages = 4;

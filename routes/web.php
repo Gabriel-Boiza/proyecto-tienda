@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\CaracteristicaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ClienteLoginController;
 use App\Http\Controllers\CarritoController;
@@ -48,10 +49,12 @@ Route::middleware('auth')->group(function () {
         'categorias' => CategoriaController::class,
         'productos' => ProductoController::class,
         'marcas' => MarcaController::class,
+        'caracteristicas' => CaracteristicaController::class,
     ]);
 
     Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 
     Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
     Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
+    Route::get('/api/caracteristicas/{id}', [CaracteristicaController::class, 'apiCaracteristicas']);
 
 });

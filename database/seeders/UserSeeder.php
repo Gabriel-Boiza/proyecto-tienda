@@ -14,14 +14,14 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Administrador',
             'email' => 'admin@example.com',
-            'password' => Hash::make('password123'), // Usa Hash::make() para cifrar la contraseña
+            'password' => Hash::make('a'), // Usa Hash::make() para cifrar la contraseña
         ]);
 
         // Crear más usuarios si es necesario
         User::create([
             'name' => 'Usuario de prueba',
             'email' => 'user@example.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('a'),
         ]);
 
         // Si usas Factory, también puedes generar varios usuarios de forma más sencilla

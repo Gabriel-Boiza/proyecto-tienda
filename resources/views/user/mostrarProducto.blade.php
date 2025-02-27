@@ -141,19 +141,9 @@
                         <div>
                             <h4 class="font-semibold mb-2">Características</h4>
                             <ul class="space-y-2 text-gray-400">
-                                <li>• Switches Cherry MX Red</li>
-                                <li>• RGB personalizable</li>
-                                <li>• Construcción en aluminio</li>
-                                <li>• Teclas PBT</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold mb-2">Contenido</h4>
-                            <ul class="space-y-2 text-gray-400">
-                                <li>• Teclado mecánico</li>
-                                <li>• Cable USB-C</li>
-                                <li>• Reposamuñecas</li>
-                                <li>• Manual de usuario</li>
+                                @foreach($producto->caracteristicas as $caracteristica)
+                                    <li>• {{ $caracteristica->nombre }}</li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
