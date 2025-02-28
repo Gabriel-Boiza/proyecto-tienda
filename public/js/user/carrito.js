@@ -30,3 +30,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     });
 });
+// Filtrar los productos en el localStorage que empiezan con 'productoIdCart'
+let cart = [];
+for (let i = 0; i < localStorage.length; i++) {
+    let key = localStorage.key(i);
+    if (key.startsWith('productoIdCart')) {
+        let producto = JSON.parse(localStorage.getItem(key));
+        cart.push(producto);
+    }
+}
+
+// Si hay productos en el carrito, enviarlos al backend
+if (cart.length > 0) {
+    // Obtener el ID del cliente desde la sesión
+    const clienteId = "{{ Session::get('cliente_id') }}";  // Acceder al cliente desde la sesión
+
+    // Hacer una solicitud al backend para sincronizar el carrito
+    fetch('/sync-cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            cliente_id: clienteId,
+            cart: cart
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        // El carrito se ha sincronizado correctamente, puedes borrar el localStorage
+        localStorage.clear();  // O puedes eliminar solo las claves del carrito: localStorage.removeItem('productoIdCart');
+    })
+    .catch(error => console.error('Error sincronizando el carrito:', error));
+}
+

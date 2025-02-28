@@ -20,6 +20,7 @@ Route::post('/registradoCliente', [ClienteLoginController::class, 'store']);
 
 
 Route::get('/carrito', [CarritoController::class, 'index']);
+Route::post('/sync-cart', [CarritoController::class, 'syncCart']);
 
 
 
