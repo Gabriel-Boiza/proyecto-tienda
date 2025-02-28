@@ -18,9 +18,8 @@ Route::get('/registroCliente', [ClienteLoginController::class, 'registro']);
 Route::post('/registradoCliente', [ClienteLoginController::class, 'store']);
 
 
-Route::post('/addCart', [CarritoController::class, 'addToCart']);
-Route::post('/cartDatabase', [CarritoController::class, 'syncCartWithDatabase']);
-Route::get('/carrito', [CarritoController::class, 'showCart'])->name('carrito.show');
+
+Route::get('/carrito', [CarritoController::class, 'index']);
 
 
 
