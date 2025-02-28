@@ -58,36 +58,26 @@ class ProductosSeeder extends Seeder
                 'pedido_id' => 1, // Pedido de Juan Pérez
                 'producto_id' => 1, // Producto 1
                 'cantidad' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'pedido_id' => 1, // Pedido de Juan Pérez
                 'producto_id' => 2, // Producto 2
                 'cantidad' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'pedido_id' => 2, // Pedido de Ana Gómez
                 'producto_id' => 1, // Producto 1
                 'cantidad' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'pedido_id' => 3, // Otro pedido de Juan Pérez
                 'producto_id' => 3, // Producto 3
                 'cantidad' => 5,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'pedido_id' => 4, // Pedido de Ana Gómez
                 'producto_id' => 2, // Producto 2
                 'cantidad' => 4,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
         ]);
     }

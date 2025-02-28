@@ -36,8 +36,9 @@ class ClientesController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
+    {   
+        $cliente = Cliente::with('pedidos')->find($id);
+        return view('app-admin.clientes.mostrar', compact('cliente'));
     }
 
     /**

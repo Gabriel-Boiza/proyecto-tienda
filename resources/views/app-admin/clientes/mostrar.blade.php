@@ -5,7 +5,28 @@
 @section('contentAdmin')
 <div class="flex-1 p-6">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-xl font-bold">Historial de Pedidos</h1>
+        <h1 class="text-xl font-bold">Historial de Pedidos - {{ $cliente['nombre'] }} {{ $cliente['apellido'] }}</h1>
+        <a href="{{ route('clientes.index') }}" class="bg-gray-600 text-white px-4 py-2 rounded-md inline-block hover:bg-gray-700">
+            Volver a Clientes
+        </a>
+    </div>
+
+    <!-- Client Info Card -->
+    <div class="bg-zinc-800/50 rounded-lg p-4 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+                <p class="text-gray-400 text-sm">Email</p>
+                <p>{{ $cliente['email'] }}</p>
+            </div>
+            <div>
+                <p class="text-gray-400 text-sm">Teléfono</p>
+                <p>{{ $cliente['telefono'] }}</p>
+            </div>
+            <div>
+                <p class="text-gray-400 text-sm">Dirección</p>
+                <p>{{ $cliente['direccion'] }}, {{ $cliente['ciudad'] }}, {{ $cliente['codigo_postal'] }}, {{ $cliente['pais'] }}</p>
+            </div>
+        </div>
     </div>
 
     <!-- Orders Table -->
@@ -21,7 +42,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($pedidos as $pedido)
+                @foreach($cliente['pedidos'] as $pedido)
                 <tr class="border-b border-zinc-700 hover:bg-zinc-700/50">
                     <td class="p-4">{{ $pedido['id'] }}</td>
                     <td class="p-4">{{ $pedido['created_at'] ? date('d/m/Y', strtotime($pedido['created_at'])) : 'N/A' }}</td>
@@ -42,8 +63,8 @@
                             </select>
                         </form>
                     </td>
-                    <td>
-                        <div>
+                    <td class="p-4">
+                        <div class="flex space-x-2">
                             <a href="{{ route('pedidos.show', $pedido['id']) }}" title="Ver detalles del pedido" class="text-blue-400 hover:text-blue-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
