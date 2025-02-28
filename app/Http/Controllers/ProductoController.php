@@ -19,6 +19,7 @@ class ProductoController extends Controller
         //return response()->json($productos);
         return view('user/favoritos', compact('productos', 'categorias'));
     }
+    
     public function destacados(){
         $productos = Producto::whereRelation('categorias', 'nombre_categoria', 'destacado')->get();  
         $categorias = Categoria::withCount('productos')->get(); 

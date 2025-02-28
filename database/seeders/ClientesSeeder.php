@@ -13,23 +13,34 @@ class ClientesSeeder extends Seeder
      */
     public function run()
     {
-        Cliente::create([
-            'nombre' => 'Juan',
-            'apellido' => 'Pérez',
-            'email' => 'juan.perez@example.com',
-            'telefono' => '612345678',
-            'direccion' => 'Calle Falsa 123, Ciudad, País',
-            'password' => bcrypt('password123'),
-        ]);
+        $clientes = [
+            [
+                'nombre' => 'Juan',
+                'apellido' => 'Pérez',
+                'email' => 'juan.perez@example.com',
+                'telefono' => '612345678',
+                'direccion' => 'Calle Falsa 123',
+                'ciudad' => 'Ciudad',
+                'codigo_postal' => '08001',
+                'pais' => 'España',
+                'password' => bcrypt('password123'),
+            ],
+            [
+                'nombre' => 'Ana',
+                'apellido' => 'Gómez',
+                'email' => 'ana.gomez@example.com',
+                'telefono' => '612345679',
+                'direccion' => 'Avenida Principal 456',
+                'ciudad' => 'Ciudad',
+                'codigo_postal' => '08002',
+                'pais' => 'España',
+                'password' => bcrypt('password456'),
+            ]
+        ];
         
-        Cliente::create([
-            'nombre' => 'Ana',
-            'apellido' => 'Gómez',
-            'email' => 'ana.gomez@example.com',
-            'telefono' => '612345679',
-            'direccion' => 'Avenida Principal 456, Ciudad, País',
-            'password' => bcrypt('password456'),
-        ]);
+        foreach ($clientes as $cliente) {
+            Cliente::create($cliente);
+        } 
         
 
     }

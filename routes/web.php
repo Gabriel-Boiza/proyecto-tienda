@@ -8,6 +8,9 @@ use App\Http\Controllers\CaracteristicaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ClienteLoginController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\PedidosController;
+use App\Http\Controllers\ClientesController;
+
 
 
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
@@ -50,6 +53,8 @@ Route::middleware('auth')->group(function () {
         'productos' => ProductoController::class,
         'marcas' => MarcaController::class,
         'caracteristicas' => CaracteristicaController::class,
+        'clientes' => ClientesController::class,
+        'pedidos' => PedidosController::class,
     ]);
 
     Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 

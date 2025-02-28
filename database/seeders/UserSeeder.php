@@ -24,8 +24,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('a'),
         ]);
 
-        // Si usas Factory, también puedes generar varios usuarios de forma más sencilla
-        // User::factory(10)->create(); // Esto creará 10 usuarios utilizando una fábrica (si la tienes definida)
+
     }
 }
 
