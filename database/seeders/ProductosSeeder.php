@@ -52,6 +52,44 @@ class ProductosSeeder extends Seeder
             ['id_producto' => 9, 'id_caracteristica' => 9],
             ['id_producto' => 10, 'id_caracteristica' => 10],
         ]);
+
+        DB::table('productos_pedidos')->insert([
+            [
+                'pedido_id' => 1, // Pedido de Juan Pérez
+                'producto_id' => 1, // Producto 1
+                'cantidad' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'pedido_id' => 1, // Pedido de Juan Pérez
+                'producto_id' => 2, // Producto 2
+                'cantidad' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'pedido_id' => 2, // Pedido de Ana Gómez
+                'producto_id' => 1, // Producto 1
+                'cantidad' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'pedido_id' => 3, // Otro pedido de Juan Pérez
+                'producto_id' => 3, // Producto 3
+                'cantidad' => 5,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'pedido_id' => 4, // Pedido de Ana Gómez
+                'producto_id' => 2, // Producto 2
+                'cantidad' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }
 
