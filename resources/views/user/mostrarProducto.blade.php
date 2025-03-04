@@ -38,7 +38,6 @@
                 </div>
             </div>
 
-            <!-- Product Info -->
             <div class="space-y-6">
                 <div>
                     <h1 class="text-3xl font-bold mb-2">{{$producto->nombre}}</h1>
@@ -70,25 +69,6 @@
 
                 <div class="space-y-4">
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">Color</h3>
-                        <div class="flex space-x-4">
-                            <button 
-                                @click="selectedColor = 'negro'"
-                                class="w-12 h-12 rounded-full border-2 hover:scale-110 transition-transform"
-                                :class="{'border-purple-500': selectedColor === 'negro', 'border-transparent': selectedColor !== 'negro'}"
-                            >
-                                <span class="block w-full h-full rounded-full bg-gray-900"></span>
-                            </button>
-                            <button 
-                                @click="selectedColor = 'blanco'"
-                                class="w-12 h-12 rounded-full border-2 hover:scale-110 transition-transform"
-                                :class="{'border-purple-500': selectedColor === 'blanco', 'border-transparent': selectedColor !== 'blanco'}"
-                            >
-                                <span class="block w-full h-full rounded-full bg-gray-100"></span>
-                            </button>
-                        </div>
-                    </div>
-
                     <div>
                         <h3 class="text-lg font-semibold mb-2">Cantidad</h3>
                         <div class="flex items-center space-x-2">
@@ -153,12 +133,3 @@
     </div>
 @endsection
 
-<script>
-    document.querySelectorAll('.add-to-cart-button').forEach(button => {
-    button.addEventListener('click', function () {
-        const productId = button.getAttribute('data-product-id');
-        const quantity = 1; // Puedes obtener la cantidad de un input si lo deseas
-        addToCart(productId, quantity);
-    });
-});
-</script>
