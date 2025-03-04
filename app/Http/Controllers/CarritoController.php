@@ -18,25 +18,5 @@ class CarritoController extends Controller
         return view('user/carrito', compact('productos', 'categorias'));
     }
 
-    public function syncCart(Request $request)
-    {
-        $cliente = Cliente::find(Session::get('cliente_id'));
-
-        if (!$cliente) {
-            return response()->json(['error' => 'No authenticated user'], 401);
-        }
-
-        $cartItems = $request->input('cart');
-
-        foreach ($cartItems as $item) {
-            Carrito::create([
-                'cliente_id' => $cliente->id,
-                'producto_id' => $item['producto_id'],
-                'cantidad' => $item['cantidad'],
-            ]);
-        }
-
-        return response()->json(['success' => 'Cart synced successfully']);
-    }
 
 }

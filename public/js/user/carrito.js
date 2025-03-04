@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-
+console.log(localStorage);
     const carritoBtn = document.getElementsByClassName('carrito');
     const carritoNum = document.querySelector('.carritoNum');
     
@@ -28,39 +28,49 @@ document.addEventListener("DOMContentLoaded", function(event) {
             }
             actualizarCarritoNum();
         });
-    });
+    }); 
 });
-// Filtrar los productos en el localStorage que empiezan con 'productoIdCart'
-let cart = [];
-for (let i = 0; i < localStorage.length; i++) {
-    let key = localStorage.key(i);
-    if (key.startsWith('productoIdCart')) {
-        let producto = JSON.parse(localStorage.getItem(key));
-        cart.push(producto);
+document.getElementById('loginForm').addEventListener('click', function(event){
+    event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+    let cartItems = Object.keys(localStorage)
+        .filter(key => key.startsWith('productoCart'))  // Filtra solo las claves del carrito
+        .map(key => JSON.parse(localStorage.getItem(key))); // Convierte cada valor JSON en objeto
+
+    // Si hay productos en el carrito, enviarlos al backend
+    if (cartItems.length > 0) {
+
+        // Formatear los datos para que el backend los entienda
+        let cartData = cartItems.map(item => ({
+            producto_id: item.id, // Extrae el ID del producto
+            cantidad: item.cantidad || 1 // Usa la cantidad si está guardada, de lo contrario, 1
+        }));
+
+        // Hacer una solicitud al backend para sincronizar el carrito
+        fetch('/requestLoginCliente', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({
+                cart: cartData,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Carrito sincronizado:', data);
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('productoCart')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            document.getElementById('loginForm').submit();
+        })
+        .catch(error => console.error('Error sincronizando el carrito:', error));
+    } else {
+        document.getElementById('loginForm').submit();
     }
-}
-
-// Si hay productos en el carrito, enviarlos al backend
-if (cart.length > 0) {
-    // Obtener el ID del cliente desde la sesión
-    const clienteId = "{{ Session::get('cliente_id') }}";  // Acceder al cliente desde la sesión
-
-    // Hacer una solicitud al backend para sincronizar el carrito
-    fetch('/sync-cart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            cliente_id: clienteId,
-            cart: cart
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        // El carrito se ha sincronizado correctamente, puedes borrar el localStorage
-        localStorage.clear();  // O puedes eliminar solo las claves del carrito: localStorage.removeItem('productoIdCart');
-    })
-    .catch(error => console.error('Error sincronizando el carrito:', error));
-}
+});
 
