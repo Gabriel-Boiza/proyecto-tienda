@@ -16,12 +16,17 @@ class CaracteristicaController extends Controller
 
         return response()->json(['caracteristicas' => $caracteristicas, 'productos_caracteristicas' => $producto_caracteristicas]);
     } 
+
+    public function apiCaracteristicasCrud(){
+        $caracteristicas = Caracteristica::all();
+        return response()->json(['caracteristicas' => $caracteristicas]);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('app-admin.caracteristicas.leer');
     }
 
     /**
@@ -69,7 +74,14 @@ class CaracteristicaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $caracteristica = Caracteristica::find($id);
+        $caracteristica->nombre = $request->caracteristica;
+
+        $caracteristica->save();
+
+        $datos = ['message' => 'Categoría actualizada correctamente', 'caracteristica' => $caracteristica];
+
+        return response()->json($datos);
     }
 
     /**
@@ -77,6 +89,9 @@ class CaracteristicaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $caracteristica = Caracteristica::find($id);
+        $caracteristica->delete();
+
+        return response()->json(['message' => 'Caracteristica eliminado correctamente']);
     }
 }

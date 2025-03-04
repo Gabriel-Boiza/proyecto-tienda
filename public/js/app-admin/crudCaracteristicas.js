@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(event){
-    generarCategoria();
+    console.log("dsfa");
+    
+    generarcaracteristica();
     generarTablas();
 });
 
@@ -8,24 +10,23 @@ function generarTablas(){
     container.className = 'w-full max-w-[60%]';
     container.innerHTML = '';
 
-    fetch('/api/categorias')
+    fetch('/api/caracteristica')
     .then(response => response.json())  
     .then(data => {
-        data.forEach(categoria => {
-            const categoriaDiv = document.createElement('div');
-            categoriaDiv.className = 'w-full bg-zinc-800/50 p-4 mb-2 rounded-lg flex justify-between items-center';
+        console.log(data);
         
-            // Crear input en lugar de span
-            const inputCategoria = document.createElement('input');
-            inputCategoria.type = 'text';
-            inputCategoria.value = categoria.nombre_categoria;
-            inputCategoria.className = 'bg-transparent text-gray-300 focus:outline-none w-full';
+        data.caracteristicas.forEach(caracteristica => {
+            const caracteristicaDiv = document.createElement('div');
+            caracteristicaDiv.className = 'w-full bg-zinc-800/50 p-4 mb-2 rounded-lg flex justify-between items-center';
         
-            // Contenedor para los botones
+            const inputCaracteristica = document.createElement('input');
+            inputCaracteristica.type = 'text';
+            inputCaracteristica.value = caracteristica.nombre;
+            inputCaracteristica.className = 'bg-transparent text-gray-300 focus:outline-none w-full';
+        
             const botonesContainer = document.createElement('div');
             botonesContainer.className = 'flex gap-2';
         
-            // Botón de editar
             const editBtn = document.createElement('button');
 
             editBtn.innerHTML = `
@@ -34,9 +35,8 @@ function generarTablas(){
                 </svg>
             `;
             editBtn.className = 'text-gray-400 hover:text-white p-1 transition-colors';
-            editBtn.onclick = () => editarCategoria(categoria.id, inputCategoria.value);
+            editBtn.onclick = () => editarcaracteristica(caracteristica.id, inputCaracteristica.value);
         
-            // Botón de eliminar
             const deleteBtn = document.createElement('button');
             deleteBtn.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -44,26 +44,25 @@ function generarTablas(){
                 </svg>
             `;
             deleteBtn.className = 'text-gray-400 hover:text-white p-1 transition-colors';
-            deleteBtn.onclick = () => eliminarCategoria(categoria.id);
+            deleteBtn.onclick = () => eliminarcaracteristica(caracteristica.id);
         
-            // Agregar botones al contenedor
             botonesContainer.appendChild(editBtn);
             botonesContainer.appendChild(deleteBtn);
         
-            categoriaDiv.appendChild(inputCategoria);
-            categoriaDiv.appendChild(botonesContainer);
+            caracteristicaDiv.appendChild(inputCaracteristica);
+            caracteristicaDiv.appendChild(botonesContainer);
         
-            container.appendChild(categoriaDiv);
+            container.appendChild(caracteristicaDiv);
         });
     })
-    .catch(error => console.error('Error al cargar las categorias:', error));
+    .catch(error => console.error('Error al cargar las caracteristicas:', error));
 }
 
-async function editarCategoria(id, nuevoNombre) {
-    // Validar la categoría antes de continuar
-    if (!validarCategoria) return false;
+async function editarcaracteristica(id, nuevoNombre) {
 
-    const url = `categorias/${id}`;
+    if (!validarcaracteristica) return false;
+
+    const url = `caracteristicas/${id}`;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     
     const opciones = {
@@ -72,34 +71,34 @@ async function editarCategoria(id, nuevoNombre) {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken
         },
-        body: JSON.stringify({ categoria: nuevoNombre })
+        body: JSON.stringify({ caracteristica: nuevoNombre })
     };
 
     try {
         const response = await fetch(url, opciones);
 
-        if (!response.ok) {throw new Error('Error al actualizar la categoría')}
+        if (!response.ok) {throw new Error('Error al actualizar la caracteristica')}
 
         const data = await response.json();
         generarTablas(); // Refresca la tabla tras la actualización
         return data;
         
     } catch (error) {
-        alert('Error al actualizar la categoría');
+        alert('Error al actualizar la caracteristica');
     }
 }
 
 
-function eliminarCategoria(id){
-    if(confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
-        fetch(`categorias/${id}`, {
+function eliminarcaracteristica(id){
+    if(confirm('¿Estás seguro de que deseas eliminar esta caracteristica')) {
+        fetch(`caracteristicas/${id}`, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             }
         })
         .then(response => {
-            if(!response.ok) {throw new Error('Error al actualizar la categoría')}
+            if(!response.ok) {throw new Error('Error al actualizar la caracteristica')}
             generarTablas();
 
         })
@@ -107,28 +106,28 @@ function eliminarCategoria(id){
     }
 }
 
-function generarCategoria() {
+function generarcaracteristica() {
     let form = document.getElementById('formulario');
     let input = document.getElementById('generarInput');
     let container = document.getElementById('container');
 
     form.addEventListener('submit', async function(event){
         event.preventDefault();
-        let categoria = input.value.trim();
+        let caracteristica = input.value.trim();
         
-        if (!validarCategoria(categoria)) {
-            alert("El nombre de la categoria no puede repetirse, contener carácteres especiales o estar vacío");
+        if (!validarcaracteristica(caracteristica)) {
+            alert("El nombre de la caracteristica no puede repetirse, contener carácteres especiales o estar vacío");
             return;
         }
 
         try {
-            const response = await fetch('categorias', {
+            const response = await fetch('caracteristicas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 },
-                body: JSON.stringify({ categoria: categoria })
+                body: JSON.stringify({ caracteristica: caracteristica })
             });
 
             const data = await response.json();
@@ -137,47 +136,26 @@ function generarCategoria() {
                 if (data.errors) {
                     alert(Object.values(data.errors).flat().join(' '));
                 } else {
-                    alert("Error al crear la categoría.");
+                    alert("Error al crear la caracteristica.");
                 }
                 return;
             }
 
-            input.value = ''; // Limpiar input si todo sale bien
-            generarTablas(); // Refrescar lista de categorías
+            input.value = ''; 
+            generarTablas();
 
         } catch (error) {
             console.error('Error:', error);
-            alert("El nombre de la categoria no puede repetirse, contener carácteres especiales o estar vacío");
+            alert("El nombre de la caracteristica no puede repetirse, contener carácteres especiales o estar vacío");
         }
     });
 }
 
 // Validación en frontend
-function validarCategoria(categoria) {
-    if (!categoria) {
+function validarcaracteristica(caracteristica) {
+    if (!caracteristica) {
         return false;
     }
     const regex = /^[a-zA-Z0-9\s]+$/; 
-    return regex.test(categoria);
+    return regex.test(caracteristica);
 }
-
-
-document.getElementById("formulario").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evita el envío inmediato
-
-    const input = document.getElementById("generarInput");
-    const nombreCategoria = input.value;
-
-    // Lista de categorías actuales (esto debería ser dinámico, lo menciono solo como ejemplo)
-    const categoriasExistentes = Array.from(document.querySelectorAll("#container div")).map(div => div.textContent.trim().toLowerCase());
-
-    const resultado = validarCategoria(nombreCategoria, categoriasExistentes);
-
-    if (!resultado.valido) {
-        alert(resultado.mensaje);
-        return; // No envía el formulario si hay errores
-    }
-
-    // Si no hay errores, continuar con el envío del formulario
-    this.submit();
-});

@@ -61,5 +61,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
     Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
     Route::get('/api/caracteristicas/{id}', [CaracteristicaController::class, 'apiCaracteristicas']);
+    Route::get('api/caracteristica', [CaracteristicaController::class, 'apiCaracteristicasCrud']);
 
 });

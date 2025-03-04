@@ -6,7 +6,7 @@
     <title>Document</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="{{ asset('js/app-admin/generarCategorias.js') }}"></script>
+    <script src="{{ asset('js/app-admin/crudCaracteristicas.js') }}"></script>
 </head>
 <body class="bg-zinc-900 text-white p-8">
     <div class="flex">
@@ -17,10 +17,10 @@
                 @csrf
                 <div class="w-full">
                     <input 
-                        name="nombre_categoria" 
+                        name="caracteristica" 
                         id="generarInput" 
                         type="text" 
-                        placeholder="Nombre de la categoria" 
+                        placeholder="Nombre de la caracteristica" 
                         class="w-[70%] p-2 rounded-md bg-zinc-800 text-gray-300 placeholder-gray-400"
                     >
                     @error('nombre_categoria')
@@ -37,7 +37,6 @@
             <div id="container" class="bg-zinc-800/50 rounded-lg w-full max-w-[60%]"> </div>
         </main>
     </div>
-
 
 </body>
 </html>

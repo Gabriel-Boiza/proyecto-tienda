@@ -151,6 +151,6 @@ class CategoriaController extends Controller
         $categoria = Categoria::find($id);
         $categoria->delete();
 
-        return response()->json(['message' => 'Producto eliminado correctamente']);
+        return response()->json(['message' => 'Categoria eliminado correctamente']);
     }
 }

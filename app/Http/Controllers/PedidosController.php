@@ -53,7 +53,14 @@ class PedidosController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        echo $id;
+        echo $request->estado;
+
+        $pedido = Pedido::find($id);
+        $pedido->estado = $request->estado;
+        $pedido->save();    
+
+        return redirect()->back();
     }
 
     /**

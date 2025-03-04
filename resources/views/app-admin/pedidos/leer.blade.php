@@ -17,7 +17,6 @@
                     <th class="p-4">Fecha</th>
                     <th class="p-4">Total</th>
                     <th class="p-4">Estado</th>
-                    <th class="p-4">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,13 +26,13 @@
                     <td class="p-4">{{ $pedido['created_at'] ? date('d/m/Y', strtotime($pedido['created_at'])) : 'N/A' }}</td>
                     <td class="p-4">{{ number_format($pedido['total'], 2) }} €</td>
                     <td class="p-4">
-                        <form action="" method="POST" class="m-0">
+                        <form action="pedidos/{{$pedido->id}}" method="POST" class="m-0">
                             @csrf
                             @method('PUT')
                             <select 
                                 name="estado"
                                 class="estado-pedido bg-zinc-700 text-white border border-zinc-600 rounded px-2 py-1 text-sm w-full"
-                                onchange="this.form.submit()"
+                                onchange="form.submit()"
                             >
                                 <option value="pendiente" {{ $pedido['estado'] == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
                                 <option value="enviado" {{ $pedido['estado'] == 'enviado' ? 'selected' : '' }}>Enviado</option>
@@ -42,16 +41,7 @@
                             </select>
                         </form>
                     </td>
-                    <td>
-                        <div>
-                            <a href="{{ route('pedidos.show', $pedido['id']) }}" title="Ver detalles del pedido" class="text-blue-400 hover:text-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </td>
+                
                 </tr>
                 @endforeach
             </tbody>
