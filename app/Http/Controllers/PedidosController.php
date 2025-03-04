@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pedido;
+use App\Models\Cliente;
 
 class PedidosController extends Controller
 {
@@ -14,6 +15,24 @@ class PedidosController extends Controller
     {
         $pedidos = Pedido::all();
         return view('app-admin.pedidos.leer', compact('pedidos'));
+    }
+
+    public function userIndex($id){
+        $pedidos = Cliente::with('pedidos')->find($id)->pedidos;
+        return view('user.misPedidos', compact('pedidos'));
+    }
+
+    public function cancelarPedido($id){
+        $pedido = Pedido::find($id);
+        $pedido->estado = 'cancelado';
+        $pedido->save();
+
+        return redirect()->back();
+    }
+
+    public function productosPedido($id){
+        $productos = Pedido::with('productos')->find($id)->productos;
+        return view('user.productosPedido', compact('productos'));
     }
 
     /**

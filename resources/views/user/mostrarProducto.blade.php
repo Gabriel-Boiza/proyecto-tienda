@@ -18,7 +18,7 @@
             <!-- Product Images -->
             <div class="space-y-4">
                 <div class="relative bg-gray-800 rounded-lg overflow-hidden">
-                    <img :src="images[currentImage]" alt="Product image" class="w-full h-96 object-cover">
+                    <img :src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-96 object-cover">
                     @if($producto->descuento != 0)
                     <div class="absolute top-4 left-4 bg-purple-600 px-3 py-1 rounded-full text-sm font-semibold">
                         -{{$producto->descuento}}%

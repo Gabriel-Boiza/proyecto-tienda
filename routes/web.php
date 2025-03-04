@@ -33,6 +33,7 @@ Route::get('/carrito', [CarritoController::class, 'showCart'])->name('carrito.sh
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('perfil/{id}', [ClientesController::class, 'userShow']);
 
 Route::get('/', [ProductoController::class, 'destacados']);
 Route::get('/favoritos', [ProductoController::class, 'favoritos']);     
@@ -41,6 +42,12 @@ Route::get('/categoria/{id}', [CategoriaController::class, 'userShow']);
 
 Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 
 Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
+
+Route::get('/mis-pedidos/{id}', [PedidosController::class, 'userIndex']);
+Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']);
+Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
+
+
 
 
 Route::middleware('auth')->group(function () {
