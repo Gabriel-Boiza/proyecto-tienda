@@ -22,7 +22,7 @@ class PedidosSeeder extends Seeder
             [
                 'cliente_id' => 2,
                 'total' => 89.99,
-                'estado' => 'procesando',
+                'estado' => 'enviado',
             ],
             [
                 'cliente_id' => 1,

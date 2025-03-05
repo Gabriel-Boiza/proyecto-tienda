@@ -43,6 +43,7 @@ Route::get('/periferico/{id}', [ProductoController::class, 'userShow']);
 Route::get('/categoria/{id}', [CategoriaController::class, 'userShow']); 
 
 Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 
+Route::post('/api/productosBusqueda', [ProductoController::class, 'obtenerProductosBusqueda']); 
 Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
 
 Route::get('/mis-pedidos/{id}', [PedidosController::class, 'userIndex']);

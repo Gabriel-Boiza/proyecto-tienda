@@ -2,7 +2,6 @@
 
 @section('content')
 
-<!-- Hero Section -->
 <div class="relative bg-gradient-to-r from-purple-900 to-blue-900">
     <div class="absolute inset-0 bg-black/50"></div>
     <div class="relative container mx-auto px-4 py-24">
@@ -18,7 +17,18 @@
     </div>
 </div>
 
-<!-- Featured Products -->
+<div class="container mx-auto px-4 py-8">
+    <form class="max-w-3xl mx-auto" action="" method="GET">
+        <div class="relative">
+            <input id='busqueda' 
+                type="text" 
+                placeholder="Busca periféricos gaming..." 
+                class="w-full px-4 py-3 pr-12 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-600 transition-all duration-300"
+            >
+        </div>
+    </form>
+</div>
+
 <div class="container mx-auto px-4 py-16">
     <h2 class="text-3xl font-bold mb-8">Productos Destacados</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -66,7 +76,6 @@
     </div>
 </div>
 
-<!-- Categories -->
 <div class="container mx-auto px-4 py-16">
     <h2 class="text-3xl font-bold mb-8">Categorías</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -85,6 +94,6 @@
 </div>
 
 <script src="{{ asset('js/user/carrito.js') }}"></script>
-
 <script src="{{ asset('js/user/favoritos.js') }}"></script>
+<script src="{{ asset('js/user/busquedaProductos.js') }}"></script>
 @endsection

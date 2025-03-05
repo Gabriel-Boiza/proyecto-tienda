@@ -40,13 +40,13 @@
     <div class="invoice-header">
         <div>
             <h1>Factura</h1>
-            <p>Número de Pedido: 1</p>
+            <p>Número de Pedido: {{$pedido->id}}</p>
         </div>
         <div>
             <h3>Datos de Envío</h3>
-            <p>Dirección Falsa 123</p>
-            <p>Ciudad, 08001</p>
-            <p>España</p>
+            <p>{{$pedido->cliente->nombre}}</p>
+            <p>{{$pedido->cliente->ciudad}}, {{$pedido->cliente->codigo_postal}}</p>
+            <p>{{$pedido->cliente->pais}}</p>
         </div>
     </div>
 
@@ -60,23 +60,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Ratón Logitech G Pro</td>
-                    <td>Ratón gaming profesional con sensor HERO</td>
-                    <td>89.99 €</td>
-                </tr>
-                <tr>
-                    <td>Teclado mecánico Corsair K95</td>
-                    <td>Teclado mecánico con retroiluminación RGB</td>
-                    <td>149.99 €</td>
-                </tr>
+                @foreach($productos as $producto)
+                    <tr>
+                        <td>{{$producto->nombre}}</td>
+                        <td>{{$producto->descripcion}}</td>
+                        <td>{{$producto->precio}}€</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 
     <div class="invoice-total">
-        <p>Total: 150.75 €</p>
-        <p>Estado del Pedido: Cancelado</p>
+        <p>Total: {{$pedido->total}} €</p>
+        <p>Estado del Pedido: {{$pedido->estado}}</p>
     </div>
 </body>
 </html>

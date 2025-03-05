@@ -39,6 +39,11 @@ class ProductoController extends Controller
 
         return response()->json($productos);
     }
+
+    public function obtenerProductosBusqueda(Request $request){
+        $productos = Producto::with('categorias')->get(); 
+        return response()->json($productos);
+    }
     
     public function index()
     {
