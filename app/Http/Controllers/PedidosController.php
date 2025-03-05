@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use App\Models\Cliente;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+
+use Illuminate\Support\Facades\Route;
 
 class PedidosController extends Controller
 {
@@ -33,6 +36,18 @@ class PedidosController extends Controller
     public function productosPedido($id){
         $productos = Pedido::with('productos')->find($id)->productos;
         return view('user.productosPedido', compact('productos'));
+    }
+
+    public function generarPdf($id){
+
+        
+    $pedido = Pedido::with('productos', 'cliente')->findOrFail($id);
+    $productos = $pedido->productos;
+
+    $pdf = PDF::loadView('user.pdf.factura', compact('productos', 'pedido'));
+
+    return $pdf->stream('pedido.pdf'); 
+        
     }
 
     /**

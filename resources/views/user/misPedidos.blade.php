@@ -1,6 +1,5 @@
 @extends('welcome')
 
-@section('title', 'Mis Pedidos - Tienda de Teclados Gaming')
 
 @section('content')
     <!-- Hero Section -->
@@ -86,7 +85,7 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td class="py-4 px-4">
+                                    <td class="py-4 px-4 flex">
                                         <a href="/productosPedido/{{ $pedido->id }}" class="text-purple-500 hover:text-purple-400 mr-3">
                                             Ver detalles
                                         </a>
@@ -95,6 +94,11 @@
                                                 Cancelar
                                             </a>
                                         @endif
+                                        <a href="/generarPdf/{{$pedido->id}}" title="Generar factura" class="text-blue-400 hover:text-blue-300 ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                            </svg>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -13,6 +13,8 @@ use App\Http\Controllers\ClientesController;
 
 
 
+
+
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
 
 Route::get('/loginCliente', [ClienteLoginController::class, 'showLoginForm']);
@@ -46,6 +48,7 @@ Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias'])
 Route::get('/mis-pedidos/{id}', [PedidosController::class, 'userIndex']);
 Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']);
 Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
+Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
 
 
 
