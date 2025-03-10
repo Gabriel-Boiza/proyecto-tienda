@@ -22,38 +22,19 @@ class ClienteLoginController extends Controller
  
      public function loginCliente(Request $request)
      {
-
-            $request->validate([
-                'email' => 'required',
-                'password' => 'required',
-            ]);
-            
-            $cliente = Cliente::where('email', $request->email)->first();
-
-            if ($cliente && Hash::check($request->password, $cliente->password)) {
-
-                Session::put('cliente_id', $cliente->id);
-                Session::put('cliente_email', $cliente->email);
-
-                $productos = $request->cart ?? [];
-                
-                foreach ($productos as $producto) {
-                    Carrito::updateOrCreate(
-                        [
-                            'cliente_id' => $cliente->id,
-                            'producto_id' => $producto['producto_id']
-                        ],
-                        [
-                            'cantidad' => $producto['cantidad']
-                        ]
-                    );
-
-                }
-
-                     
-
-            }
-            return redirect()->intended(default: '/');
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        
+        $cliente = Cliente::where('email', $request->email)->first();
+    
+        if ($cliente && Hash::check($request->password, $cliente->password)) {
+            Session::put('cliente_id', $cliente->id);
+            Session::put('cliente_email', $cliente->email);
+        }
+    
+        return redirect()->intended('/');
 
 
 

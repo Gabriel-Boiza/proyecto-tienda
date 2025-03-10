@@ -1,35 +1,57 @@
-document.addEventListener("DOMContentLoaded", function(event) {
-console.log(localStorage);
-    const carritoBtn = document.getElementsByClassName('carrito');
-    const carritoNum = document.querySelector('.carritoNum');
-    
-    // Actualizar el número de productos en el carrito
-    const actualizarCarritoNum = () => {
-        const carrito = Object.keys(localStorage).filter(key => key.startsWith('productoCart')).length;
-        carritoNum.textContent = carrito;
-    }
-    actualizarCarritoNum();
+document.addEventListener("DOMContentLoaded", function() {
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-    Array.from(carritoBtn).forEach(btn => {
+    // Función para actualizar el ícono de cada producto dependiendo si está en el carrito
+    function actualizarIconoCarrito() {
+        const carritoIconos = document.querySelectorAll('.carrito-icono');
 
-        let producto = JSON.parse(btn.value);
-        let productoIdCart =  'productoCart' + producto.id;
-        if (localStorage.getItem(productoIdCart)) {
-            btn.innerHTML = '<svg class="w-5 h-5" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>';
-        }
-        btn.addEventListener('click', function(event){
+        carritoIconos.forEach(icono => {
+            const productoId = icono.closest('.producto').dataset.productoId;
             
-            if (localStorage.getItem(productoIdCart)) {
-                localStorage.removeItem(productoIdCart)
-                btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>';
+            // Si el producto está en el carrito, cambiar el color del ícono
+            if (carrito.some(producto => producto.id == productoId)) {
+                icono.classList.add('text-green-500');  // Color verde si está en el carrito
+                icono.classList.remove('text-gray-300'); // Remover el color gris
             } else {
-                localStorage.setItem(productoIdCart, JSON.stringify(producto));
-                btn.innerHTML = '<svg class="w-5 h-5" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>';
+                icono.classList.add('text-gray-300');  // Color gris si no está en el carrito
+                icono.classList.remove('text-green-500'); // Remover el color verde
             }
-            actualizarCarritoNum();
         });
-    }); 
+    }
+
+    // Llamar a la función para actualizar los íconos al cargar la página
+    actualizarIconoCarrito();
+
+    // Añadir o quitar productos del carrito al hacer click en el ícono
+    document.querySelectorAll('.carrito-icono').forEach(icono => {
+        icono.addEventListener('click', function() {
+            const productoId = this.closest('.producto').dataset.productoId;
+            const productoIndex = carrito.findIndex(producto => producto.id == productoId);
+
+            if (productoIndex > -1) {
+                // El producto ya está en el carrito, quitarlo
+                carrito.splice(productoIndex, 1);
+            } else {
+                // El producto no está en el carrito, añadirlo
+                const producto = {
+                    id: productoId,
+                    nombre: this.closest('.producto').querySelector('.producto-info').textContent,
+                    cantidad: 1
+                };
+                carrito.push(producto);
+            }
+
+            // Guardar el carrito en el localStorage
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+
+            // Actualizar los íconos después de modificar el carrito
+            actualizarIconoCarrito();
+        });
+    });
 });
+
+
+
 document.getElementById('loginForm').addEventListener('click', function(event){
     event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
     let cartItems = Object.keys(localStorage)
@@ -46,11 +68,13 @@ document.getElementById('loginForm').addEventListener('click', function(event){
         }));
 
         // Hacer una solicitud al backend para sincronizar el carrito
-        fetch('/requestLoginCliente', {
+        let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch('/api/carrito', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify({
                 cart: cartData,

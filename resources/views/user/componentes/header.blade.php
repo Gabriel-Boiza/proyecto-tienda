@@ -72,6 +72,7 @@
 </nav>
 
 <script>
+var usuarioAutenticado = @json(session()->has('cliente_id'));
 document.getElementById('search').addEventListener('input', function() {
     const query = this.value;
     const resultsContainer = document.getElementById('search-results');
