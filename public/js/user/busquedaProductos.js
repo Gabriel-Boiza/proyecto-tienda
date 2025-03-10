@@ -25,7 +25,7 @@ async function busqueda(input) {
 
     let contenedor = document.getElementById('productos-buscados');
     contenedor.innerHTML = "";
-    
+    document.getElementById("subtitulo").innerHTML = "Productos buscados"
     productos.forEach(producto => {
         generarProductos(producto, contenedor)
     });

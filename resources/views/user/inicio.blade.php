@@ -33,7 +33,7 @@
 </div>
 
 <div class="container mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold mb-8">Productos Destacados</h2>
+    <h2 id="subtitulo" class="text-3xl font-bold mb-8">Productos Destacados</h2>
     <div id="productos-buscados" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         @foreach($productos as $producto)
         <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300">
@@ -82,6 +82,22 @@
             </div>
         </div>
         @endforeach
+    </div>
+    <div class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold mb-8">Categorías</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($categorias as $categoria)
+            <a href="categoria/{{$categoria->id}}" class="group">
+                <div class="bg-gray-800 rounded-xl p-6 text-center hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-purple-600/10 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center group-hover:bg-purple-600/20 transition-colors">
+                        <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">{{$categoria->nombre_categoria}}</h3>
+                    <p class="text-gray-400 text-sm">{{$categoria->productos_count}} productos</p>
+                </div>
+            </a>
+            @endforeach
+        </div>
     </div>
 </div>
 
