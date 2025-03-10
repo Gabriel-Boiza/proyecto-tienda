@@ -41,7 +41,8 @@ class ProductoController extends Controller
     }
 
     public function obtenerProductosBusqueda(Request $request){
-        $productos = Producto::with('categorias')->get(); 
+        $productos = Producto::with('categorias')->where('nombre', 'LIKE', '%'.$request->valorBusqueda.'%')->get(); 
+        
         return response()->json($productos);
     }
     
