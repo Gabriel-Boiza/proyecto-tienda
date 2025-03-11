@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cliente;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use App\Models\Carrito;
 use App\Http\Controllers\Controller;
 
 class ClienteLoginController extends Controller
@@ -21,24 +22,22 @@ class ClienteLoginController extends Controller
  
      public function loginCliente(Request $request)
      {
-             
-            $request->validate([
-                'email' => 'required',
-                'password' => 'required',
-            ]);
-            
-            $cliente = Cliente::where('email', $request->email)->first();
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        
+        $cliente = Cliente::where('email', $request->email)->first();
+    
+        if ($cliente && Hash::check($request->password, $cliente->password)) {
+            Session::put('cliente_id', $cliente->id);
+            Session::put('cliente_email', $cliente->email);
+        }
+    
+        return redirect()->intended('/');
 
-            if ($cliente && Hash::check($request->password, $cliente->password)) {
 
-                Session::put('cliente_id', $cliente->id);
-                Session::put('cliente_email', $cliente->email);
 
-                return redirect()->intended('/');
-            }
-            return back()->withErrors([
-                'email' => 'El mail o la contraseña son incorrectos.',
-            ]);
      }
 
      public function logout()

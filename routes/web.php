@@ -8,41 +8,47 @@ use App\Http\Controllers\CaracteristicaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ClienteLoginController;
 use App\Http\Controllers\CarritoController;
+use App\Models\Carrito;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\ClientesController;
 
 
-
+// Rutas de productos
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
 
+// Rutas de login y registro de cliente
 Route::get('/loginCliente', [ClienteLoginController::class, 'showLoginForm']);
-Route::post('/requestLoginCliente', [ClienteLoginController::class, 'loginCliente']);
 Route::get('/logoutCliente', [ClienteLoginController::class, 'logout']);
 Route::get('/registroCliente', [ClienteLoginController::class, 'registro']);
 Route::post('/registradoCliente', [ClienteLoginController::class, 'store']);
+Route::post('/requestLoginCliente', [ClienteLoginController::class, 'loginCliente']);
+
+// Rutas del carrito
+Route::get('/carrito', [CarritoController::class, 'index']); // Esta ruta puede ser la vista del carrito
+
+Route::get('/api/carrito/{clienteId}', [CarritoController::class, 'obtenerCarrito']);
 
 
-Route::post('/addCart', [CarritoController::class, 'addToCart']);
-Route::post('/cartDatabase', [CarritoController::class, 'syncCartWithDatabase']);
-Route::get('/carrito', [CarritoController::class, 'showCart'])->name('carrito.show');
+Route::delete('/api/carrito/{clienteId}/{productoId}', [CarritoController::class, 'eliminarProductoDelCarrito']);
 
+// Ruta para obtener el carrito en formato JSON
+Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); // Devuelve el carrito como JSON
 
+// Ruta para actualizar el carrito en la base de datos (usando POST)
+Route::post('/api/carrito', [CarritoController::class, 'actualizarCarrito']); // Actualiza el carrito en la base de datos
 
-
-// Rutas públicas (para usuarios/clientes)
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
+// Rutas de la tienda
 Route::get('/', [ProductoController::class, 'destacados']);
 Route::get('/favoritos', [ProductoController::class, 'favoritos']);     
 Route::get('/periferico/{id}', [ProductoController::class, 'userShow']); 
 Route::get('/categoria/{id}', [CategoriaController::class, 'userShow']); 
 
 Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 
-Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
+Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']);
 
-
+// Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {
     Route::get('/app-admin', function () {
         return view('app-admin.inicio');
@@ -57,10 +63,7 @@ Route::middleware('auth')->group(function () {
         'pedidos' => PedidosController::class,
     ]);
 
-    Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 
-    Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
     Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
-    Route::get('/api/caracteristicas/{id}', [CaracteristicaController::class, 'apiCaracteristicas']);
-    Route::get('api/caracteristica', [CaracteristicaController::class, 'apiCaracteristicasCrud']);
 
 });
+

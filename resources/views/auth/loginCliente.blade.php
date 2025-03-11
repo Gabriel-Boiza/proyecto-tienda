@@ -13,7 +13,7 @@
             <p class="text-gray-400">Ingresa a tu cuenta de PePeriféricos</p>
         </div>
         
-        <form action="requestLoginCliente" method="POST" class="space-y-6">
+        <form action="requestLoginCliente" method="POST" class="space-y-6" id="loginForm">
         @csrf
             
             <div>

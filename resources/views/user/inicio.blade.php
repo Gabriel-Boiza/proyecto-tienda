@@ -23,8 +23,8 @@
     <h2 class="text-3xl font-bold mb-8">Productos Destacados</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         @foreach($productos as $producto)
-        <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300">
-    <div class="relative">
+        <div class="producto bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300" data-producto-id="{{$producto->id}}">
+        <div class="relative">
         <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-48 object-cover">
         @if($producto->descuento != 0)
         <div class="absolute top-2 left-2 bg-purple-600 px-2 py-1 rounded text-sm">-{{$producto->descuento}}%</div>
@@ -34,13 +34,13 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
             </button>
             <button value='{{$producto}}' class="carrito p-2 bg-gray-900/50 rounded-full hover:bg-gray-900 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                <svg class="carrito-icono w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             </button>
         </div>
     </div>
     <div class="p-4">
-        <h3 class="font-bold text-lg mb-2">{{$producto->nombre}}</h3>
-        <p class="text-gray-400 text-sm mb-3">{{$producto->descripcion}}</p>
+    <h3 class="producto-info font-bold text-lg mb-2">{{$producto->nombre}}</h3>
+    <p class="text-gray-400 text-sm mb-3">{{$producto->descripcion}}</p>
         <div class="flex items-center mb-3">
             <div class="flex text-yellow-400 mr-2">
                 @for($i = 0; $i < 5; $i++)
@@ -84,7 +84,6 @@
     </div>
 </div>
 
-<script src="{{ asset('js/user/carrito.js') }}"></script>
-
 <script src="{{ asset('js/user/favoritos.js') }}"></script>
+
 @endsection

@@ -1,8 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfTokenElement ? csrfTokenElement.content : '';
+    const cliente = document.querySelector('meta[name="cliente-id"]')?.content;
+
+    if (!cliente) {
+        console.error("No se encontró el ID del cliente.");
+        return;
+    }
+
     const obtenerProductosCarrito = () => {
-        return Object.keys(localStorage)
-            .filter(key => key.startsWith('productoCart'))
-            .map(key => JSON.parse(localStorage.getItem(key)));
+        return fetch(`/api/carrito/${cliente}`)
+            .then(response => response.json())
+            .then(data => data.carrito || [])
+            .catch(error => {
+                console.error("Error obteniendo el carrito:", error);
+                return [];
+            });
     };
 
     const calcularTotales = (productos) => ({
@@ -11,9 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ahorroTotal: productos.reduce((suma, producto) => suma + (producto.precio * (producto.descuento / 100)), 0)
     });
 
-    const formatearPrecio = (precio) => `${precio.toFixed(2)}€`;
-
+    const formatearPrecio = (precio) => {
+        if (typeof precio !== 'number' || isNaN(precio)) {
+            console.error('Precio inválido:', precio);
+            return '0.00€';
+        }
+        return `${precio.toFixed(2)}€`;
+    };
+    
     const generarHTMLProducto = (producto) => {
+        console.log('Producto recibido:', producto); // 🔍 Verifica los datos antes de usarlos
+
         const precioDescontado = producto.descuento > 0 
             ? producto.precio * (1 - producto.descuento / 100) 
             : producto.precio;
@@ -42,66 +63,51 @@ document.addEventListener('DOMContentLoaded', () => {
                             ` : ''}
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-6">
-                        <button class="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg flex items-center gap-2 transition-colors" onclick="añadirAlCarrito(${producto.id})">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                            </svg>
-                            Añadir al Carrito
-                        </button>
-                        <a href="periferico/${producto.id}" class="text-purple-500 hover:text-purple-400 flex items-center gap-2">
-                            Ver Detalles
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </a>
-                    </div>
                 </div>
             </div>
         `;
     };
 
     const actualizarEstadisticas = (totales) => {
-        // Si no hay productos, mostrar valores en 0
-        const totalProductos = totales.totalProductos || 0;
-        const valorTotal = totales.valorTotal || 0;
-        const ahorroTotal = totales.ahorroTotal || 0;
-
         document.querySelector('.grid-cols-1.md\\:grid-cols-3').innerHTML = `
             <div class="bg-gray-800 p-6 rounded-xl">
                 <p class="text-gray-400 mb-1">Total Productos</p>
-                <p class="text-3xl font-bold">${totalProductos}</p>
+                <p class="text-3xl font-bold">${totales.totalProductos}</p>
             </div>
             <div class="bg-gray-800 p-6 rounded-xl">
                 <p class="text-gray-400 mb-1">Valor Total</p>
-                <p class="text-3xl font-bold">${formatearPrecio(valorTotal)}</p>
+                <p class="text-3xl font-bold">${formatearPrecio(totales.valorTotal)}</p>
             </div>
             <div class="bg-gray-800 p-6 rounded-xl">
                 <p class="text-gray-400 mb-1">Ahorro Total</p>
-                <p class="text-3xl font-bold text-green-500">${formatearPrecio(ahorroTotal)}</p>
+                <p class="text-3xl font-bold text-green-500">${formatearPrecio(totales.ahorroTotal)}</p>
             </div>
         `;
     };
 
     window.eliminarDeCarrito = (productoId) => {
-        localStorage.removeItem('productoCart' + productoId);
-        renderizarCarrito();
+        fetch(`/api/carrito/${cliente}/${productoId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Producto eliminado del carrito:", data);
+            renderizarCarrito();
+        })
+        .catch(error => console.error("Error eliminando producto del carrito:", error));
     };
 
-    window.añadirAlCarrito = (productoId) => {
-        console.log(`Añadiendo producto ${productoId} al carrito`);
-    };
-
-    const renderizarCarrito = () => {
-        const productos = obtenerProductosCarrito();
+    const renderizarCarrito = async () => {
+        const productos = await obtenerProductosCarrito();
         const contenedorProductos = document.querySelector('.space-y-6');
         const estadoVacio = document.querySelector('.hidden.text-center');
 
         if (productos.length === 0) {
             contenedorProductos.innerHTML = '';
             estadoVacio.classList.remove('hidden');
-            // Asegurarse de que las estadísticas también se actualicen con valores en 0
             actualizarEstadisticas({ totalProductos: 0, valorTotal: 0, ahorroTotal: 0 });
         } else {
             estadoVacio.classList.add('hidden');
