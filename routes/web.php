@@ -55,9 +55,7 @@ Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/app-admin', function () {
-        return view('app-admin.inicio');
-    })->name('app-admin');
+    Route::get('app-admin', [ProductoController::class, 'appAdmin'])->name('app-admin'); 
 
     Route::resources([
         'categorias' => CategoriaController::class,

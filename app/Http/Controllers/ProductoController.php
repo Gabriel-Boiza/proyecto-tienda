@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\Cliente;
 use App\Models\Marca;
+use App\Models\Pedido;
 use App\Models\Caracteristica;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +15,32 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
+
+
+
+
+    public function appAdmin(){
+        $productos = Producto::withCount([
+            'pedidos as total_vendidos' => function ($query) {
+                $query->select(DB::raw('SUM(cantidad)'));
+            }
+        ])
+        ->orderBy('total_vendidos', 'desc')
+        ->limit(5)
+        ->get();
+
+        $pedidosActivos = Pedido::where('estado', 'enviado')->count();
+        $totalPedidos = Pedido::sum('total'); 
+        $clientesActivos = Cliente::count();
+        $nombre = auth()->user()->name; // Accede al nombre del usuario autenticado
+
+
+        $pedidos = Pedido::with('productos', 'cliente')->limit(3)->get();
+        
+
+        return view('app-admin.inicio', compact('productos', 'pedidos', 'pedidosActivos', 'totalPedidos', 'clientesActivos', 'nombre'));
+    }
+    
     public function favoritos(){
         $productos = Producto::whereRelation('categorias', 'nombre_categoria', 'destacado')->get();  
         $categorias = Categoria::withCount('productos')->get(); 

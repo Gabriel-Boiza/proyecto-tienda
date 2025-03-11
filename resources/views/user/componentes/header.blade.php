@@ -5,7 +5,7 @@
              <a href="{{ url('/') }}" class="block">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
-                        <span class="text-xl font-bold text-white">T</span>
+                        <img src="{{asset('img/productos/logo.png')}}" alt="">
                     </div>
                     <span class="text-xl font-bold text-white tracking-wide">PePeriféricos</span>
                 </div>
