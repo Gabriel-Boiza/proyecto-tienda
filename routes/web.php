@@ -11,51 +11,26 @@ use App\Models\Carrito;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
-
+// Rutas de productos
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
 
+// Rutas de login y registro de cliente
 Route::get('/loginCliente', [ClienteLoginController::class, 'showLoginForm']);
 Route::get('/logoutCliente', [ClienteLoginController::class, 'logout']);
 Route::get('/registroCliente', [ClienteLoginController::class, 'registro']);
 Route::post('/registradoCliente', [ClienteLoginController::class, 'store']);
-
-
-
-Route::get('/carrito', [CarritoController::class, 'index']);
-Route::post('/api/carrito', [CarritoController::class, 'actualizarCarrito']);
 Route::post('/requestLoginCliente', [ClienteLoginController::class, 'loginCliente']);
 
+// Rutas del carrito
+Route::get('/carrito', [CarritoController::class, 'index']); // Esta ruta puede ser la vista del carrito
 
-Route::get('/carrito', function () {
-    $clienteId = Session::get('cliente_id');
-    $carrito = Carrito::where('cliente_id', $clienteId)
-                      ->join('productos', 'carritos.producto_id', '=', 'productos.id')
-                      ->select('productos.id', 'productos.nombre', 'carritos.cantidad')
-                      ->get();
+// Ruta para obtener el carrito en formato JSON
+Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); // Devuelve el carrito como JSON
 
-    return response()->json(['carrito' => $carrito]);
-});
+// Ruta para actualizar el carrito en la base de datos (usando POST)
+Route::post('/api/carrito', [CarritoController::class, 'actualizarCarrito']); // Actualiza el carrito en la base de datos
 
-Route::post('/carrito', function (Request $request) {
-    $clienteId = Session::get('cliente_id');
-    
-    $productoId = $request->producto_id;
-    $cantidad = $request->cantidad ?? 1;
-
-    Carrito::updateOrCreate(
-        ['cliente_id' => $clienteId, 'producto_id' => $productoId],
-        ['cantidad' => $cantidad]
-    );
-
-    return response()->json(['message' => 'Carrito actualizado']);
-});
-
-
-// Rutas públicas (para usuarios/clientes)
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
+// Rutas de la tienda
 Route::get('/', [ProductoController::class, 'destacados']);
 Route::get('/favoritos', [ProductoController::class, 'favoritos']);     
 Route::get('/periferico/{id}', [ProductoController::class, 'userShow']); 
@@ -63,9 +38,8 @@ Route::get('/categoria/{id}', [CategoriaController::class, 'userShow']);
 
 Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 
 Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']);
-Route::get('/api/carrito', [CarritoController::class,'obtenerCarrito']);
 
-
+// Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {
     Route::get('/app-admin', function () {
         return view('app-admin.inicio');
@@ -77,8 +51,6 @@ Route::middleware('auth')->group(function () {
         'marcas' => MarcaController::class,
     ]);
 
-    Route::get('/api/productos', [ProductoController::class, 'obtenerProductos']); 
-    Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
     Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
-
 });
+

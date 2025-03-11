@@ -23,8 +23,8 @@
     <h2 class="text-3xl font-bold mb-8">Productos Destacados</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         @foreach($productos as $producto)
-        <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300">
-    <div class="relative">
+        <div class="producto bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300" data-producto-id="{{$producto->id}}">
+        <div class="relative">
         <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-48 object-cover">
         @if($producto->descuento != 0)
         <div class="absolute top-2 left-2 bg-purple-600 px-2 py-1 rounded text-sm">-{{$producto->descuento}}%</div>
@@ -39,8 +39,8 @@
         </div>
     </div>
     <div class="p-4">
-        <h3 class="font-bold text-lg mb-2">{{$producto->nombre}}</h3>
-        <p class="text-gray-400 text-sm mb-3">{{$producto->descripcion}}</p>
+    <h3 class="producto-info font-bold text-lg mb-2">{{$producto->nombre}}</h3>
+    <p class="text-gray-400 text-sm mb-3">{{$producto->descripcion}}</p>
         <div class="flex items-center mb-3">
             <div class="flex text-yellow-400 mr-2">
                 @for($i = 0; $i < 5; $i++)
@@ -85,4 +85,6 @@
 </div>
 
 <script src="{{ asset('js/user/favoritos.js') }}"></script>
+<script src="{{ asset('js/user/carrito.js') }}" defer></script>
+
 @endsection

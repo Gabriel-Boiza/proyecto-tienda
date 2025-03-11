@@ -19,41 +19,38 @@ class CarritoController extends Controller
         return view('user/carrito', compact('productos', 'categorias'));
     }
 
-    public function obtenerCarrito(){
-        $clienteId = Session::get('cliente_id');
-
-        if (!$clienteId) {
-            return response()->json(['error' => 'No autenticado'], 401);
-        }
-
-        // Consultar los productos en el carrito de la base de datos
-        $carrito = DB::table('carritos')
-            ->where('cliente_id', $clienteId)
-            ->join('productos', 'carritos.producto_id', '=', 'productos.id')
-            ->select('productos.id', 'productos.nombre', 'productos.precio', 'carritos.cantidad')
-            ->get();
+    public function obtenerCarrito()
+    {
+        $clienteId = Session::get('cliente_id'); // Obtén el ID del cliente desde la sesión
+        $carrito = Carrito::where('cliente_id', $clienteId)
+                          ->join('productos', 'carritos.producto_id', '=', 'productos.id')
+                          ->select('productos.id', 'productos.nombre', 'carritos.cantidad')
+                          ->get();
 
         return response()->json(['carrito' => $carrito]);
     }
 
-    public function actualizarCarrito(Request $request) {
-        $request->validate([
-            'producto_id' => 'required|integer',
-            'cantidad' => 'required|integer|min:1',
-        ]);
+    // Actualizar el carrito del cliente
+    public function actualizarCarrito(Request $request)
+{
+    $clienteId = Session::get('cliente_id');
+    $productos = $request->cart;
 
-        $clienteId = session('cliente_id');
+    foreach ($productos as $producto) {
+        $productoId = $producto['id'];  // Asumiendo que el producto tiene un campo 'id'
+        $cantidad = $producto['cantidad'];
 
-        if (!$clienteId) {
-            return response()->json(['error' => 'Usuario no autenticado'], 401);
+        // Asegúrate de que tanto el producto_id como la cantidad estén presentes
+        if (isset($productoId) && isset($cantidad)) {
+            Carrito::updateOrCreate(
+                ['cliente_id' => $clienteId, 'producto_id' => $productoId],
+                ['cantidad' => $cantidad]
+            );
         }
-
-        $carrito = Carrito::updateOrCreate(
-            ['cliente_id' => $clienteId, 'producto_id' => $request->producto_id],
-            ['cantidad' => $request->cantidad]
-        );
-
-        return response()->json(['message' => 'Carrito actualizado', 'carrito' => $carrito]);
     }
+
+    return response()->json(['message' => 'Carrito sincronizado correctamente']);
+}
+
 
 }

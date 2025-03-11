@@ -6,6 +6,12 @@
     <title>PePeriféricos - Gaming Peripherals</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if(session('cliente_id')) <!-- Verifica si el cliente está autenticado -->
+        <meta name="user-authenticated" content="true">
+    @else
+        <meta name="user-authenticated" content="false">
+    @endif
+
 
 
 </head>
