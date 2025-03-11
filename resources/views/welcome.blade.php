@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @if(session('cliente_id')) <!-- Verifica si el cliente está autenticado -->
         <meta name="user-authenticated" content="true">
+        <meta name="cliente-id" content = "{{ session('cliente_id') }}">
     @else
         <meta name="user-authenticated" content="false">
     @endif

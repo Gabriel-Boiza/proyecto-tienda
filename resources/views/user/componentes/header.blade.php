@@ -145,4 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(localStorage.getItem('productoCart'));
 });
 </script>
-<script src="{{ asset('js/user/carrito.js') }}"></script>
+@if(session('cliente_id')) <!-- Verifica si el cliente está autenticado -->
+    <script src="{{ asset('js/user/carritoLogueado.js') }}"></script>
+@else
+    <script src="{{ asset('js/user/carrito.js') }}"></script>
+@endif

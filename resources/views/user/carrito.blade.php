@@ -43,7 +43,9 @@
     </div>
 </div>
 
-
-<script src="{{ asset('js/user/generarVistaCarrito.js') }}"></script>
-
+@if(session('cliente_id'))
+    <script src="{{ asset('js/user/generarVistaCarritoLogueado.js') }}"></script>
+@else
+    <script src="{{ asset('js/user/generarVistaCarrito.js') }}"></script>
+@endif
 @endsection

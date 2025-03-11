@@ -24,6 +24,11 @@ Route::post('/requestLoginCliente', [ClienteLoginController::class, 'loginClient
 // Rutas del carrito
 Route::get('/carrito', [CarritoController::class, 'index']); // Esta ruta puede ser la vista del carrito
 
+Route::get('/api/carrito/{clienteId}', [CarritoController::class, 'obtenerCarrito']);
+
+
+Route::delete('/api/carrito/{clienteId}/{productoId}', [CarritoController::class, 'eliminarProductoDelCarrito']);
+
 // Ruta para obtener el carrito en formato JSON
 Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); // Devuelve el carrito como JSON
 

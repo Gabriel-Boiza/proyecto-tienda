@@ -85,6 +85,5 @@
 </div>
 
 <script src="{{ asset('js/user/favoritos.js') }}"></script>
-<script src="{{ asset('js/user/carrito.js') }}" defer></script>
 
 @endsection
