@@ -33,12 +33,13 @@ class ProductoController extends Controller
         $totalPedidos = Pedido::sum('total'); 
         $clientesActivos = Cliente::count();
         $nombre = auth()->user()->name; // Accede al nombre del usuario autenticado
+        $pedidosTotales = Pedido::count();
 
 
         $pedidos = Pedido::with('productos', 'cliente')->limit(3)->get();
         
 
-        return view('app-admin.inicio', compact('productos', 'pedidos', 'pedidosActivos', 'totalPedidos', 'clientesActivos', 'nombre'));
+        return view('app-admin.inicio', compact('productos', 'pedidos', 'pedidosActivos', 'totalPedidos', 'clientesActivos', 'nombre', 'pedidosTotales'));
     }
     
     public function favoritos(){

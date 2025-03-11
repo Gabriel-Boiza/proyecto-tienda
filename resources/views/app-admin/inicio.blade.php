@@ -36,10 +36,10 @@
     </div>
     <div class="bg-zinc-800/50 border border-zinc-700 rounded-md p-6">
         <div class="flex justify-between items-center mb-4">
-            <h3 class="text-gray-400">Conversion Rate</h3>
+            <h3 class="text-gray-400">Pedidos totales</h3>
             <i data-feather="trending-up" class="text-purple-500"></i>
         </div>
-        <div class="text-2xl font-bold">4.5%</div>
+        <div class="text-2xl font-bold">{{$pedidosTotales}}</div>
     </div>
 </div>
 
