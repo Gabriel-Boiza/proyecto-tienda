@@ -28,9 +28,10 @@ class CarritoController extends Controller
             ->select(
                 'productos.id',
                 'productos.nombre',
-                'productos.precio', // 👈 Agregamos el precio
-                'productos.descuento', // 👈 Agregamos el descuento
-                'productos.imagen_principal', // 👈 Agregamos la imagen
+                'productos.descripcion',
+                'productos.precio',
+                'productos.descuento', 
+                'productos.imagen_principal', 
                 'carritos.cantidad'
             )
             ->get();
