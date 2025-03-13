@@ -5,7 +5,7 @@
              <a href="{{ url('/') }}" class="block">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
-                        <span class="text-xl font-bold text-white">T</span>
+                        <img src="{{asset('img/productos/logo.png')}}" alt="">
                     </div>
                     <span class="text-xl font-bold text-white tracking-wide">PePeriféricos</span>
                 </div>
@@ -56,8 +56,9 @@
                                 "
                     >
                         @if(Session::Has('cliente_id'))
-                            <a href="/perfil" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mi Perfil</a>
-                            <a href="/mis-pedidos" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mis Pedidos</a>
+
+                            <a href="/perfil/{{Session::get('cliente_id')}}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mi Perfil</a>
+                            <a href="/mis-pedidos/{{Session::get('cliente_id')}}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Mis Pedidos</a>
                             <div class="border-t border-gray-700 my-2"></div>
                             <a href="/logoutCliente" class="block px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors">Cerrar Sesión</a>
                         @else

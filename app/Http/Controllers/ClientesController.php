@@ -41,6 +41,11 @@ class ClientesController extends Controller
         return view('app-admin.clientes.mostrar', compact('cliente'));
     }
 
+    public function userShow($id){
+        $cliente = Cliente::find($id);
+        return view('user.perfil', compact('cliente'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
