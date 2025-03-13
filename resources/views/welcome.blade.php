@@ -6,13 +6,7 @@
     <title>PePeriféricos - Gaming Peripherals</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    @if(session('cliente_id')) <!-- Verifica si el cliente está autenticado -->
-        <meta name="user-authenticated" content="true">
-        <meta name="cliente-id" content = "{{ session('cliente_id') }}">
-    @else
-        <meta name="user-authenticated" content="false">
-    @endif
+
 
 
 
@@ -29,4 +23,17 @@
     @include('user.componentes.footer')
 
     
-    
+        <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/67d2a21a3a7b24190be9844e/1im7cidp9';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
