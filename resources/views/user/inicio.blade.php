@@ -102,6 +102,6 @@
 </div>
 
 <script src="{{ asset('js/user/carrito.js') }}"></script>
-
+<script src="{{ asset('js/user/busquedaProductos.js') }}"></script>
 <script src="{{ asset('js/user/favoritos.js') }}"></script>
 @endsection

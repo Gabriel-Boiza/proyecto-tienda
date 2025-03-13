@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const input = document.getElementById('busqueda');
 
     input.addEventListener('input', async function(event){
+        
         busqueda(input.value)
         
     })
