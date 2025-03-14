@@ -1,5 +1,21 @@
 const spanValorCarrito = document.getElementById('valorCarrito');
 
+function actualizarCarritoLogged(carrito, producto, btn){
+    const existeEnCarrito = carrito.carrito.some(valor => valor.id === producto.id);
+    btn.innerHTML = iconoCarrito(existeEnCarrito); 
+    spanValorCarrito.textContent = carrito.carrito.length;
+}
+
+async function agregarDB(producto, btn){
+    btn.innerHTML = iconoCarrito(true)
+    peticionFetch('/api/carrito', 'POST', producto);
+}
+
+async function deleteDB(producto, btn){
+    btn.innerHTML = iconoCarrito(false)
+    peticionFetch(`/api/carrito/${producto.id}`, 'DELETE', producto);
+}
+
 function actualizarCarrito(){
     let longitudCarrito = Object.keys(localStorage).filter(key => key.startsWith('productoCarrito')).length //obtiene la longitud del carrito
     spanValorCarrito.textContent = longitudCarrito;
@@ -23,12 +39,20 @@ function localStorageCarrito(producto, productoId, existe){
     }
 }
 
-function agregarCarritoLogueado(existe){
-    if(existe){
-        console.log("quitar de la bbdd");
+
+async function clickBtn(producto, btn){
+    let carrito = await retornarCarrito()
+
+    if(carrito.carrito.some(valor => valor.id === producto.id)){
+        deleteDB(producto, btn)
+        spanValorCarrito.textContent = parseInt(spanValorCarrito.textContent) - 1;
     }
     else{
-        console.log("añadir a la bbdd");
-        
+        agregarDB(producto, btn)
+        spanValorCarrito.textContent = parseInt(spanValorCarrito.textContent) + 1;
     }
+}
+
+async function retornarCarrito(){
+    return await peticionFetch('/api/carrito', 'GET', null)
 }

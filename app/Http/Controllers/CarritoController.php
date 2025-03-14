@@ -39,51 +39,24 @@ class CarritoController extends Controller
         return response()->json(['carrito' => $carrito]);
     }
 
+    public function store(Request $request){
+        $carrito = Carrito::create([
+            'producto_id' => $request->input('id'),
+            'cliente_id' => Session::get('cliente_id'),
+            'cantidad' => 1,
+        ]);
 
-    // Actualizar el carrito del cliente
-    public function actualizarCarrito(Request $request)
-    {
-        $clienteId = Session::get('cliente_id');
-        $productos = $request->cart;
-    
-        foreach ($productos as $producto) {
-            $productoId = $producto['id'];
-            $cantidad = $producto['cantidad'];
-    
-            // Verificar si el producto ya existe en el carrito del cliente
-            $carritoExistente = Carrito::where('cliente_id', $clienteId)
-                                       ->where('producto_id', $productoId)
-                                       ->first();
-    
-            if ($carritoExistente) {
-                // Si el producto ya existe, actualizar la cantidad
-                $carritoExistente->update(['cantidad' => $cantidad]);
-            } else {
-                // Si el producto no existe, crearlo
-                Carrito::create([
-                    'cliente_id' => $clienteId,
-                    'producto_id' => $productoId,
-                    'cantidad' => $cantidad
-                ]);
-            }
-        }
-    
-        return response()->json(['message' => 'Carrito sincronizado correctamente']);
+        return response()->json($carrito);
     }
 
-    public function eliminarProductoDelCarrito($clienteId, $productoId)
-    {
-        $carrito = Carrito::where('cliente_id', $clienteId)->where('producto_id', $productoId)->first();
-
-        if (!$carrito) {
-            return response()->json(['error' => 'Producto no encontrado en el carrito'], 404);
-        }
-
+    public function destroy(string $id){
+        $carrito = Carrito::where([
+            'producto_id' => $id,
+            'cliente_id' => Session::get('cliente_id')
+        ])->first();
         $carrito->delete();
-
-        return response()->json(['message' => 'Producto eliminado del carrito']);
+        return response()->json('Eliminado exitosamente');
     }
-
     
 
 

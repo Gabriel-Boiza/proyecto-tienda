@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     actualizarCarrito()
 
+    localStorage.setItem('flagLogged', false)
+
     const carritoBtn = document.getElementsByClassName('carrito');
     Array.from(carritoBtn).forEach(btn => {
         let producto = JSON.parse(btn.value);

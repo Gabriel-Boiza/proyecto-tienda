@@ -36,15 +36,12 @@ Route::get('/api/carrito/{clienteId}', [CarritoController::class, 'obtenerCarrit
 
 Route::delete('/api/carrito/{clienteId}/{productoId}', [CarritoController::class, 'eliminarProductoDelCarrito']);
 
-// Ruta para obtener el carrito en formato JSON
-Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); // Devuelve el carrito como JSON
+Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); 
 
-// Ruta para actualizar el carrito en la base de datos (usando POST)
-Route::post('/api/carrito', [CarritoController::class, 'actualizarCarrito']); // Actualiza el carrito en la base de datos
+Route::post('/api/carrito', [CarritoController::class, 'store']);
 
-// Rutas de la tienda
+Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy']);
 
-// Rutas públicas (para usuarios/clientes)
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
