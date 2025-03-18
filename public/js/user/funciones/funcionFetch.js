@@ -16,7 +16,7 @@ async function peticionFetch(url, metodo, body) { //funcion para generalizar con
     const response = await fetch(url, opciones);
 
     if (!response.ok) {throw new Error(`Error en la petición`)}
-
+    
     const data = await response.json(); 
     return data; 
 

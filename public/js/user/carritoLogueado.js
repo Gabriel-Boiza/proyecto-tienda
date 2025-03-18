@@ -1,6 +1,10 @@
 
 
 document.addEventListener("DOMContentLoaded", async function() {
+    await sincronizarCarrito()
+
+    console.log(localStorage);
+
     borrarCarritoLocal()
 
     localStorage.setItem('flagLogged', true) //este script solo se ejecutara si el usuario esta logeado, entonces al estarlo sera true.
@@ -29,17 +33,22 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 
 
-function sincronizarCarrito(){
-    console.log(localStorage);
+async function sincronizarCarrito() {
+    let carrito = [];
+
+    Object.keys(localStorage).forEach(clave => {
+        if (clave.startsWith('productoCarrito')) {
+            carrito.push(JSON.parse(localStorage.getItem(clave)));
+        }
+    });
+
+    await peticionFetch('/sincronizarCarrito', 'POST', carrito);
 }
 
-function borrarCarritoLocal(){
-    for (let i = 0; i < localStorage.length; i++) {
-        let clave = localStorage.key(i); 
-    
-
+function borrarCarritoLocal() {
+    Object.keys(localStorage).forEach(clave => {
         if (clave.startsWith('productoCarrito')) {
             localStorage.removeItem(clave);
         }
-    }
+    });
 }

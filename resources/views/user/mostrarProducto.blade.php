@@ -49,7 +49,6 @@
                                 </svg>
                             </template>
                         </div>
-                        <span class="text-gray-400">(150 reviews)</span>
                     </div>
                 </div>
 
@@ -72,22 +71,14 @@
                     <div>
                         <h3 class="text-lg font-semibold mb-2">Cantidad</h3>
                         <div class="flex items-center space-x-2">
-                        <div x-data="{ quantity: 1 }" class="flex items-center space-x-2">
-                            <button 
-                                @click="quantity = Math.max(1, quantity - 1)"
+                        <div class="flex items-center space-x-2">
+                            <button id='restar'
                                 class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
                             >-</button>
 
-                            <input 
-                                type="number" 
-                                x-model="quantity"
-                                name="cantidad"
-                                min="1"
-                                class="w-16 text-center text-xl bg-gray-900 border border-gray-700 rounded-lg p-1"
-                            />
+                            <input id='cantidadProducto' type='text' value=1 class="w-16 text-center text-xl bg-gray-900 border border-gray-700 rounded-lg p-1"/>
 
-                            <button 
-                                @click="quantity++"
+                            <button id='sumar'
                                 class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700"
                             >+</button>
                         </div>
@@ -96,11 +87,11 @@
                 </div>
 
                 <div class="space-y-4">
-                    <button data-product-id="{{ $producto->id }}"
-                        @click="showNotification = true; setTimeout(() => showNotification = false, 3000)"
+                <button id="agregar"
+                        value="{{ Session::has('cliente_id') ? $producto->id : json_encode($producto) }}"
                         class="add-to-cart-button w-full bg-purple-600 hover:bg-purple-700 py-4 rounded-lg font-bold transform hover:scale-105 transition-all duration-200"
                     >
-                        Añadir al Carrito
+                        Agregar al carrito
                     </button>
                     <button class="w-full bg-gray-800 hover:bg-gray-700 py-4 rounded-lg font-bold">
                         Añadir a Favoritos
@@ -131,5 +122,11 @@
             </div>
         </div>
     </div>
+
+    @if(Session::get('cliente_id'))
+    <script src="{{ asset('js/user/verMasProductoLogueado.js') }}"></script>
+    @else
+    <script src="{{ asset('js/user/verMasProducto.js') }}"></script>
+    @endif
 @endsection
 

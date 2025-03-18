@@ -32,4 +32,10 @@ class Producto extends Model
     public function pedidos(){
         return $this->belongsToMany(Pedido::class, 'productos_pedidos', 'producto_id', 'pedido_id');
     }
+
+    public function clientes()
+    {
+        return $this->belongsToMany(Cliente::class, 'carritos', 'producto_id', 'cliente_id')
+                    ->withPivot('cantidad');
+    }
 }

@@ -38,7 +38,13 @@ Route::delete('/api/carrito/{clienteId}/{productoId}', [CarritoController::class
 
 Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); 
 
+Route::get('/verCarrito', [CarritoController::class, 'show']); 
+
 Route::post('/api/carrito', [CarritoController::class, 'store']);
+
+Route::post('/sincronizarCarrito', [CarritoController::class, 'sincronizarCarrito']);
+
+Route::post('/agregarCarrito', [CarritoController::class, 'agregarCarrito']);
 
 Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy']);
 

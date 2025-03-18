@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const carritoBtn = document.getElementsByClassName('carrito');
     Array.from(carritoBtn).forEach(btn => {
         let producto = JSON.parse(btn.value);
+        producto.cantidad = 1
         let productoId = 'productoCarrito' + producto.id; 
 
         btn.innerHTML = iconoCarrito(localStorage.getItem(productoId) !== null); //si encuentra el producto envia true

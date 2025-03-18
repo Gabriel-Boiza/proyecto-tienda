@@ -1,7 +1,6 @@
 @extends('welcome')
 
 @section('content')
-
 <div class="bg-gray-900 py-8">
     <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold flex items-center gap-3">
@@ -13,19 +12,138 @@
     </div>
 </div>
 
-
 <div class="container mx-auto px-4 py-12">
-    
+    @if(session('cliente_id') && isset($clienteProductos) && count($clienteProductos->productos) > 0)
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-       
+        <div class="md:col-span-2">
+            <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    Productos en tu carrito
+                </h2>
+                <div class="space-y-4">
+                    @foreach($clienteProductos->productos as $producto)
+                    <div class="border-b border-gray-700 pb-4 last:border-0 last:pb-0">
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="{{ asset($producto->imagen_principal) }}" alt="{{ $producto->nombre }}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-grow">
+                                <h3 class="font-medium">{{ $producto->nombre }}</h3>
+                                <p class="text-gray-400 text-sm">{{ Str::limit($producto->descripcion, 60) }}</p>
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="flex items-center gap-2">
+                                        <button class="update-quantity" data-producto-id="{{ $producto->id }}" data-action="decrease">
+                                            <svg class="w-5 h-5 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                                            </svg>
+                                        </button>
+                                        <span class="px-3 py-1 bg-gray-700 rounded-md product-quantity">{{ $producto->pivot->cantidad }}</span>
+                                        <button class="update-quantity" data-producto-id="{{ $producto->id }}" data-action="increase">
+                                            <svg class="w-5 h-5 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <button class="remove-product" data-producto-id="{{ $producto->id }}">
+                                        <svg class="w-5 h-5 text-red-500 hover:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold">{{ number_format($producto->precio, 2) }}€</div>
+                                <div class="text-sm text-gray-400">Total: {{ number_format($producto->precio * $producto->pivot->cantidad, 2) }}€</div>
+                                @if($producto->stock <= 0)
+                                <div class="text-xs text-red-500 mt-1">Agotado</div>
+                                @elseif($producto->stock < 5)
+                                <div class="text-xs text-yellow-500 mt-1">¡Solo {{ $producto->stock }} disponibles!</div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <div class="bg-gray-800 rounded-lg p-6 sticky top-6">
+                <h2 class="text-xl font-bold mb-4">Resumen del pedido</h2>
+                
+                @php
+                    $subtotal = 0;
+                    $productosNoDisponibles = false;
+                    
+                    foreach($clienteProductos->productos as $producto) {
+                        $subtotal += $producto->precio * $producto->pivot->cantidad;
+                        if($producto->stock <= 0) {
+                            $productosNoDisponibles = true;
+                        }
+                    }
+                    
+                    $iva = $subtotal * 0.21;
+                    $total = $subtotal + $iva;
+                @endphp
+                
+                <div class="space-y-3 mb-6">
+                    <div class="flex justify-between text-gray-400">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">{{ number_format($subtotal, 2) }}€</span>
+                    </div>
+                    <div class="flex justify-between text-gray-400">
+                        <span>IVA (21%):</span>
+                        <span id="iva">{{ number_format($iva, 2) }}€</span>
+                    </div>
+                    <div class="border-t border-gray-700 pt-3 flex justify-between font-bold">
+                        <span>Total:</span>
+                        <span id="total" class="text-xl text-purple-500">{{ number_format($total, 2) }}€</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <button id="proceder-compra" class="w-full bg-purple-600 hover:bg-purple-700 py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" {{ $productosNoDisponibles ? 'disabled' : '' }}>
+                        Proceder al pago
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </button>
+                    
+                    <a href="/" class="w-full bg-gray-700 hover:bg-gray-600 py-3 rounded-lg flex items-center justify-center gap-2 text-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Seguir comprando
+                    </a>
+                </div>
+                
+                @if($productosNoDisponibles)
+                <div class="mt-4 p-3 bg-red-900/30 border border-red-500/30 rounded-lg text-sm text-red-400">
+                    <p>Algunos productos de tu carrito no están disponibles. Por favor, elimínalos para continuar.</p>
+                </div>
+                @endif
+                
+                <div class="mt-6">
+                    <div class="text-sm text-gray-400 mb-2">Datos de envío:</div>
+                    <div class="bg-gray-700/50 p-3 rounded-lg">
+                        <p class="font-medium">{{ $clienteProductos->nombre }} {{ $clienteProductos->apellido }}</p>
+                        <p class="text-sm text-gray-400">{{ $clienteProductos->direccion }}</p>
+                        <p class="text-sm text-gray-400">{{ $clienteProductos->codigo_postal }}, {{ $clienteProductos->ciudad }}</p>
+                        <p class="text-sm text-gray-400">{{ $clienteProductos->pais }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-   
-    <div class="space-y-6">
-       
+    @else
+    <div id="carritoLocalStorage" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <!-- Aquí se cargarán los productos del localStorage -->
     </div>
-
-    <div class="hidden text-center py-16">
+    
+    <div id="carritoVacio" class="text-center py-16 hidden">
         <div class="bg-gray-800/50 rounded-full w-20 h-20 mx-auto flex items-center justify-center mb-6">
             <svg class="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -41,11 +159,212 @@
             </svg>
         </a>
     </div>
+    @endif
 </div>
 
 @if(session('cliente_id'))
     <script src="{{ asset('js/user/generarVistaCarritoLogueado.js') }}"></script>
 @else
-    <script src="{{ asset('js/user/generarVistaCarrito.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarCarritoLocalStorage();
+            
+            // Actualizar carrito cuando se añaden o eliminan productos
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.update-quantity')) {
+                    const button = e.target.closest('.update-quantity');
+                    const productoId = button.dataset.productoId;
+                    const action = button.dataset.action;
+                    actualizarCantidad(productoId, action);
+                }
+                
+                if (e.target.closest('.remove-product')) {
+                    const button = e.target.closest('.remove-product');
+                    const productoId = button.dataset.productoId;
+                    eliminarProducto(productoId);
+                }
+            });
+            
+            // Función para cargar productos del localStorage
+            function cargarCarritoLocalStorage() {
+                const carritoContainer = document.getElementById('carritoLocalStorage');
+                const carritoVacio = document.getElementById('carritoVacio');
+                let productos = [];
+                let hayProductos = false;
+                
+                // Recorrer todos los items del localStorage
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    // Verificar si la clave comienza con 'productoCarrito'
+                    if (key && key.startsWith('productoCarrito')) {
+                        hayProductos = true;
+                        const producto = JSON.parse(localStorage.getItem(key));
+                        productos.push(producto);
+                    }
+                }
+                
+                if (!hayProductos) {
+                    carritoVacio.classList.remove('hidden');
+                    return;
+                }
+                
+                let html = `
+                <div class="md:col-span-2">
+                    <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                            </svg>
+                            Productos en tu carrito
+                        </h2>
+                        <div class="space-y-4">`;
+                
+                let subtotal = 0;
+                let productosNoDisponibles = false;
+                
+                productos.forEach(producto => {
+                    subtotal += producto.precio * producto.cantidad;
+                    
+                    if (producto.stock <= 0) {
+                        productosNoDisponibles = true;
+                    }
+                    
+                    html += `
+                    <div class="border-b border-gray-700 pb-4 last:border-0 last:pb-0">
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="${producto.imagen_principal}" alt="${producto.nombre}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-grow">
+                                <h3 class="font-medium">${producto.nombre}</h3>
+                                <p class="text-gray-400 text-sm">${producto.descripcion.substring(0, 60)}${producto.descripcion.length > 60 ? '...' : ''}</p>
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="flex items-center gap-2">
+                                        <button class="update-quantity" data-producto-id="${producto.id}" data-action="decrease">
+                                            <svg class="w-5 h-5 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                                            </svg>
+                                        </button>
+                                        <span class="px-3 py-1 bg-gray-700 rounded-md product-quantity">${producto.cantidad}</span>
+                                        <button class="update-quantity" data-producto-id="${producto.id}" data-action="increase">
+                                            <svg class="w-5 h-5 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <button class="remove-product" data-producto-id="${producto.id}">
+                                        <svg class="w-5 h-5 text-red-500 hover:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold">${producto.precio.toFixed(2)}€</div>
+                                <div class="text-sm text-gray-400">Total: ${(producto.precio * producto.cantidad).toFixed(2)}€</div>
+                                ${producto.stock <= 0 ? 
+                                    '<div class="text-xs text-red-500 mt-1">Agotado</div>' : 
+                                    (producto.stock < 5 ? 
+                                        `<div class="text-xs text-yellow-500 mt-1">¡Solo ${producto.stock} disponibles!</div>` : 
+                                        '')}
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-gray-800 rounded-lg p-6 sticky top-6">
+                        <h2 class="text-xl font-bold mb-4">Resumen del pedido</h2>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-gray-400">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">${subtotal.toFixed(2)}€</span>
+                            </div>
+                            <div class="flex justify-between text-gray-400">
+                                <span>IVA (21%):</span>
+                                <span id="iva">${(subtotal * 0.21).toFixed(2)}€</span>
+                            </div>
+                            <div class="border-t border-gray-700 pt-3 flex justify-between font-bold">
+                                <span>Total:</span>
+                                <span id="total" class="text-xl text-purple-500">${(subtotal * 1.21).toFixed(2)}€</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button id="proceder-compra" class="w-full bg-purple-600 hover:bg-purple-700 py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" ${productosNoDisponibles ? 'disabled' : ''}>
+                                Proceder al pago
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </button>
+                            
+                            <a href="/" class="w-full bg-gray-700 hover:bg-gray-600 py-3 rounded-lg flex items-center justify-center gap-2 text-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                                </svg>
+                                Seguir comprando
+                            </a>
+                        </div>
+                        
+                        ${productosNoDisponibles ? `
+                        <div class="mt-4 p-3 bg-red-900/30 border border-red-500/30 rounded-lg text-sm text-red-400">
+                            <p>Algunos productos de tu carrito no están disponibles. Por favor, elimínalos para continuar.</p>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="mt-6">
+                            <div class="text-sm text-gray-400 mb-2">Datos de envío:</div>
+                            <div class="bg-gray-700/50 p-3 rounded-lg">
+                                <p class="font-medium">Inicia sesión para completar tu compra</p>
+                                <p class="text-sm text-gray-400">O continúa como invitado</p>
+                                <div class="mt-2">
+                                    <a href="/login" class="text-sm text-purple-400 hover:text-purple-300">Iniciar sesión</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                
+                carritoContainer.innerHTML = html;
+            }
+            
+            // Función para actualizar la cantidad de un producto
+            function actualizarCantidad(productoId, action) {
+                const key = `productoCarrito${productoId}`;
+                const productoString = localStorage.getItem(key);
+                
+                if (productoString) {
+                    const producto = JSON.parse(productoString);
+                    
+                    if (action === 'increase') {
+                        producto.cantidad++;
+                    } else if (action === 'decrease' && producto.cantidad > 1) {
+                        producto.cantidad--;
+                    }
+                    
+                    // Actualizar en localStorage
+                    localStorage.setItem(key, JSON.stringify(producto));
+                    
+                    // Recargar la vista
+                    cargarCarritoLocalStorage();
+                }
+            }
+            
+            // Función para eliminar un producto
+            function eliminarProducto(productoId) {
+                const key = `productoCarrito${productoId}`;
+                localStorage.removeItem(key);
+                
+                // Recargar la vista
+                cargarCarritoLocalStorage();
+            }
+        });
+    </script>
 @endif
 @endsection
