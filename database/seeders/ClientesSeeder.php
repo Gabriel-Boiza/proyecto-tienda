@@ -23,7 +23,7 @@ class ClientesSeeder extends Seeder
                 'ciudad' => 'Ciudad',
                 'codigo_postal' => '08001',
                 'pais' => 'España',
-                'password' => bcrypt('password123'),
+                'password' => bcrypt('aaaaaa'),
             ],
             [
                 'nombre' => 'Ana',
