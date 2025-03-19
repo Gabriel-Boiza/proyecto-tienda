@@ -70,7 +70,7 @@ Route::get('/mis-pedidos/{id}', [PedidosController::class, 'userIndex']);
 Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']);
 Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
 Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
-
+Route::post('/products/store', [ProductoController::class, 'guardarImagen'])->name('products.store');
 
 
 
@@ -87,6 +87,8 @@ Route::middleware('auth')->group(function () {
         'pedidos' => PedidosController::class,
     ]);
 
+    Route::get('/api/caracteristicas/{id}', [CaracteristicaController::class, 'apiCaracteristicas']);
+    Route::get('/api/caracteristica', [CaracteristicaController::class, 'apiCaracteristicasCrud']);
     Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
 
 });

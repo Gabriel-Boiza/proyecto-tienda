@@ -391,3 +391,96 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ajustar el canvas cuando la ventana cambie de tamaño
     window.addEventListener('resize', resizeCanvas);
 });
+ 
+function saveCanvasAsProduct() {
+    console.log('Iniciando guardado...');
+    
+    const loadingIndicator = showLoadingIndicator();
+    const canvas = document.getElementById('productCanvas');
+    const canvasImage = canvas.toDataURL('image/png');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    fetch('/products/store', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            image: canvasImage
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                console.error('Error response:', text);
+                throw new Error('Error en la respuesta del servidor');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Respuesta exitosa:', data);
+        hideLoadingIndicator(loadingIndicator);
+        if (data.success) {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Producto añadido al carrito',
+                    icon: 'success',
+                    confirmButtonColor: '#6366f1'
+                }).then(() => {
+                    window.location.href = data.redirect;
+                });
+            } else {
+                alert('¡Producto añadido al carrito!');
+                window.location.href = data.redirect;
+            }
+        } else {
+            throw new Error(data.message || 'Error al guardar el diseño');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        hideLoadingIndicator(loadingIndicator);
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Error',
+                text: error.message,
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+        } else {
+            alert('Error: ' + error.message);
+        }
+    });
+}
+
+// Funciones auxiliares para UI
+function showLoadingIndicator() {
+    const loader = document.createElement('div');
+    loader.className = 'fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50';
+    loader.innerHTML = `
+        <div class="bg-white p-5 rounded-lg flex flex-col items-center">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600"></div>
+            <p class="mt-2 text-gray-700">Guardando diseño...</p>
+        </div>
+    `;
+    document.body.appendChild(loader);
+    return loader;
+}
+
+function hideLoadingIndicator(loader) {
+    if (loader && loader.parentNode) {
+        loader.parentNode.removeChild(loader);
+    }
+}
+
+// Agregar el evento click al botón de guardar
+document.addEventListener('DOMContentLoaded', function() {
+    const saveButton = document.getElementById('saveButton');
+    if (saveButton) {
+        saveButton.addEventListener('click', saveCanvasAsProduct);
+    }
+});
