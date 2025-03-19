@@ -35,7 +35,7 @@ function localStorageCarrito(producto, productoId, existe){
         localStorage.removeItem(productoId)
     }
     else{ //si no existe lo añade al carrito
-        localStorage.setItem(productoId, producto)
+        localStorage.setItem(productoId, JSON.stringify(producto))
     }
 }
 

@@ -1,7 +1,8 @@
 
 
 document.addEventListener("DOMContentLoaded", function() {
-
+    console.log(localStorage);
+    
     actualizarCarrito()
 
     localStorage.setItem('flagLogged', false)
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         btn.addEventListener('click', function(event){
             //primero se añade o se quita del localstorage con la primera funcion, y se comprueba el estado para determinar el icono con la segunda
-            localStorageCarrito(JSON.stringify(producto), productoId, localStorage.getItem(productoId) !== null);
+            localStorageCarrito(producto, productoId, localStorage.getItem(productoId) !== null);
             btn.innerHTML = iconoCarrito(localStorage.getItem(productoId) !== null); 
             actualizarCarrito()
         })

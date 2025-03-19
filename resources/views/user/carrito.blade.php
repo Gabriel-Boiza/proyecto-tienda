@@ -139,8 +139,17 @@
         </div>
     </div>
     @else
-    <div id="carritoLocalStorage2" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <!-- Aquí se cargarán los productos del localStorage -->
+    <div  class="grid grid-cols-2 md:grid-cols-2 gap-6 mb-12">
+        <div id="carritoLocalStorage2">
+            <!--Espacio generado por js -->
+        </div>
+        <div class="bg-gray-800 rounded-lg p-6 text-center">
+            <h2 class="text-xl font-bold mb-4">Inicia sesión para continuar</h2>
+            <a href="/loginCliente" 
+            class="w-full bg-purple-600 hover:bg-purple-700 py-3 rounded-lg text-white font-bold inline-block">
+                Iniciar sesión
+            </a>
+        </div>
         <script src="{{ asset('js/user/generarVistaCarrito.js') }}"></script>
     </div>
     

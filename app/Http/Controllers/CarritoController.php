@@ -62,14 +62,16 @@ class CarritoController extends Controller
                 'producto_id' => $carritoCliente['id'],
             ])->first();
 
-            if($carrito != null){
-                array_push($array, $carrito);
-            }
-            else{
+            if($carrito == null){
                 Carrito::create([
                     'cliente_id' => Session::get('cliente_id'),
                     'producto_id' => $carritoCliente['id'],
                     'cantidad' => $carritoCliente['cantidad'],
+                ]);
+            }
+            else{
+                $carrito->update([
+                    'cantidad' => $carrito->cantidad + $carritoCliente['cantidad'],
                 ]);
             }
         }

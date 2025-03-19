@@ -112,7 +112,7 @@ async function generarProductos(producto, contenedor) {
 
         btnCarrito.addEventListener('click', function(event){
 
-            
+            producto.cantidad = 1
             localStorageCarrito(producto, 'productoCarrito' + producto.id, existe)
             existe = localStorage.getItem('productoCarrito'+producto.id) !== null
             actualizarCarrito(producto, 'productoCarrito' + producto.id, existe)
