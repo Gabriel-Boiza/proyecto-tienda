@@ -324,6 +324,15 @@ class ProductoController extends Controller
         return response()->json($productos);
     }
 
+    // En tu controlador
+    public function getProductosStock() {
+
+        $productos = Producto::select('nombre', 'stock')->orderBy('stock', 'desc')->get();
+
+        return response()->json($productos);
+    }
+
+
 
     
 }

@@ -8,6 +8,8 @@ use App\Models\Cliente;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PedidosController extends Controller
 {
@@ -104,4 +106,50 @@ class PedidosController extends Controller
     {
         //
     }
+
+    public function obtenerProductosMasVendidos()
+    {
+        // Suponiendo que tienes la tabla 'productos_pedidos' y la columna 'total' para las ventas
+        $productos = DB::table('productos_pedidos')
+            ->select('producto_id', DB::raw('count(*) as total'))
+            ->groupBy('producto_id')
+            ->orderByDesc('total')
+            ->get();
+
+        // Obtener nombres de los productos
+        $productos = $productos->map(function ($producto) {
+            $producto->nombre = DB::table('productos')
+                ->where('id', $producto->producto_id)
+                ->value('nombre');
+            return $producto;
+        });
+
+        // Retornar los productos como JSON
+        return response()->json($productos);
+    }
+
+    public function obtenerPedidosMensuales()
+    {
+        // Establecer la localización en español
+        Carbon::setLocale('es');
+
+        // Obtener los pedidos agrupados por mes y año usando el campo 'created_at'
+        $pedidosMensuales = DB::table('pedidos')
+            ->select(DB::raw('YEAR(created_at) as anio, MONTH(created_at) as mes, COUNT(*) as total'))
+            ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
+            ->orderBy('anio', 'asc')
+            ->orderBy('mes', 'asc')
+            ->get();
+
+        // Transformar los datos para usarlos fácilmente en el gráfico
+        $pedidosMensuales = $pedidosMensuales->map(function ($pedido) {
+            // Crear un campo de nombre para cada mes en español y capitalizar la primera letra
+            $pedido->mes_nombre = ucfirst(Carbon::createFromDate($pedido->anio, $pedido->mes, 1)->locale('es')->monthName) . ' ' . $pedido->anio;
+            return $pedido;
+        });
+
+        return response()->json($pedidosMensuales);
+    }
+
+
 }

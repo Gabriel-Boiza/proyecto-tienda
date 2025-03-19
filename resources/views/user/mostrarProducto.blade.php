@@ -16,16 +16,74 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Product Images -->
-            <div class="space-y-4">
+            <div class="space-y-4 relative">
+                <div class="bg-gray-900 p-3 rounded-lg flex items-center justify-between space-x-4">
+            <!-- Herramientas de dibujo -->
+                    <div class="flex space-x-2">
+                        <button id="pencilTool" class="tool-btn bg-purple-600 p-2 rounded-lg hover:bg-purple-700 active">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </button>
+                        <button id="textTool" class="tool-btn bg-gray-700 p-2 rounded-lg hover:bg-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </button>
+                        <button id="eraserTool" class="tool-btn bg-gray-700 p-2 rounded-lg hover:bg-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                        <!-- Nuevo botón de imagen -->
+                        <label for="imageInput" class="tool-btn bg-gray-700 p-2 rounded-lg hover:bg-gray-600 cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </label>
+                        <input type="file" id="imageInput" accept="image/*" class="hidden">
+                    </div>
+
+                    <!-- Color y grosor -->
+                    <div class="flex items-center space-x-4">
+                        <input type="color" id="colorPicker" class="w-8 h-8 rounded cursor-pointer" value="#FF0000">
+                        <div class="flex items-center space-x-2">
+                            <input type="range" id="lineWidth" min="1" max="20" value="2" 
+                                class="w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                            <span id="lineWidthValue" class="text-sm text-white">2px</span>
+                        </div>
+                    </div>
+
+                    <!-- Botón de borrar todo -->
+                    <button id="clearCanvas" class="bg-red-600 p-2 rounded-lg hover:bg-red-700">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
                 <div class="relative bg-gray-800 rounded-lg overflow-hidden">
-                    <img :src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-96 object-cover">
+                    <img src="{{ asset('storage/' . $producto->imagen_principal) }}" 
+                         alt="{{$producto->nombre}}" 
+                         class="w-full h-96 object-cover" 
+                         id="product-image">
+                         <div class="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <div class="w-48 h-48"> <!-- 256x256 píxeles -->
+                                <canvas id="productCanvas"
+                                        class="w-full h-full border-2 border-purple-500 rounded-lg"
+                                        style="background: transparent;">
+                                </canvas>
+                            </div>
+                        </div>
+                   
                     @if($producto->descuento != 0)
                     <div class="absolute top-4 left-4 bg-purple-600 px-3 py-1 rounded-full text-sm font-semibold">
                         -{{$producto->descuento}}%
                     </div>
                     @endif
+                    
                 </div>
-                <div class="grid grid-cols-4 gap-4">
+
+                <div class="grid grid-cols-4 gap-4 mt-4">
                     <template x-for="(image, index) in images" :key="index">
                         <button 
                             @click="currentImage = index"
@@ -37,6 +95,7 @@
                     </template>
                 </div>
             </div>
+
 
             <div class="space-y-6">
                 <div>
@@ -132,4 +191,7 @@
         </div>
     </div>
 @endsection
+
+<script src='{{asset("js/user/canvasImagen.js")}}'></script>
+
 

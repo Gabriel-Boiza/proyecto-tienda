@@ -21,6 +21,10 @@ use App\Http\Controllers\ClientesController;
 
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
 
+Route::get('/productos-stock', [ProductoController::class, 'getProductosStock']);
+Route::get('/productos-vendidos',[PedidosController::class, 'obtenerProductosMasVendidos']);
+
+
 // Rutas de login y registro de cliente
 Route::get('/loginCliente', [ClienteLoginController::class, 'showLoginForm']);
 Route::get('/logoutCliente', [ClienteLoginController::class, 'logout']);
@@ -41,6 +45,8 @@ Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); // Dev
 
 // Ruta para actualizar el carrito en la base de datos (usando POST)
 Route::post('/api/carrito', [CarritoController::class, 'actualizarCarrito']); // Actualiza el carrito en la base de datos
+
+Route::get('/pedidos-mensuales', [PedidosController::class, 'obtenerPedidosMensuales']);
 
 // Rutas de la tienda
 

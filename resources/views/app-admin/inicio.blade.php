@@ -80,15 +80,36 @@
     </div>
 </div>
 
-<!-- Top Products -->
-<div id="graficoContainer" data-productos='@json($productos)'>
-    <canvas id="graficoCanvas" class=" w-1/2 bg-zinc-800/50 border border-zinc-700 rounded-md p-6">
+<div class="max-w-5xl ml-0">
+    <div class="flex flex-row flex-wrap md:flex-nowrap gap-8">
+        <!-- Gráfico de productos más vendidos -->
+        <div class="w-full md:w-1/2 rounded-lg shadow ">
+            <h2 class="text-xl font-bold text-white mb-4">Productos más vendidos</h2>
+            <div id="graficoContainer" class="space-y-2"></div>
+        </div>
 
-    </canvas>
+        <!-- Gráfico de ventas mensuales -->
+        <div class="w-full md:w-1/2 rounded-lg shadow">
+            <h2 class="text-xl font-bold text-white mb-4">Ventas mensuales</h2>
+            <div id="graficoPedidosMensuales" class="space-y-2"></div>
+        </div>
+
+        <!-- Gráfico de cantidad de productos en stock -->
+        <div class="w-full md:w-1/2 rounded-lg shadow">
+            <h2 class="text-xl font-bold text-white mb-4">Cantidad de productos en stock</h2>
+            <div id="graficoStock" class="space-y-2"></div>
+        </div>
+    </div>
 </div>
 
 
 
-<script src='{{asset("js/app-admin/canvas.js")}}'></script>
+
+
+
+
+<script src='{{asset("js/app-admin/ventasMensuales.js")}}'></script>
+<script src='{{asset("js/app-admin/productosMasVendidos.js")}}'></script>
+<script src='{{asset("js/app-admin/productosEnStock.js")}}'></script>
 
 @endsection
