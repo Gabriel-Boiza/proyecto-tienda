@@ -23,9 +23,9 @@
                     </svg>
                     Productos en tu carrito
                 </h2>
-                <div class="space-y-4">
+                <div id='contenedorPrincipal' class="space-y-4">
                     @foreach($clienteProductos->productos as $producto)
-                    <div class="border-b border-gray-700 pb-4 last:border-0 last:pb-0">
+                    <div  class="contenedorProducto border-b border-gray-700 pb-4 last:border-0 last:pb-0">
                         <div class="flex items-center gap-4">
                             <div class="w-20 h-20 bg-gray-700 rounded-lg overflow-hidden">
                                 <img src="{{ asset($producto->imagen_principal) }}" alt="{{ $producto->nombre }}" class="w-full h-full object-cover">
@@ -35,19 +35,19 @@
                                 <p class="text-gray-400 text-sm">{{ Str::limit($producto->descripcion, 60) }}</p>
                                 <div class="flex items-center justify-between mt-2">
                                     <div class="flex items-center gap-2">
-                                        <button class="update-quantity" data-producto-id="{{ $producto->id }}" data-action="decrease">
+                                        <button class="restarCantidad" data-id='{{$producto->id}}'>
                                             <svg class="w-5 h-5 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
                                             </svg>
                                         </button>
-                                        <span class="px-3 py-1 bg-gray-700 rounded-md product-quantity">{{ $producto->pivot->cantidad }}</span>
-                                        <button class="update-quantity" data-producto-id="{{ $producto->id }}" data-action="increase">
+                                        <span class='cantidadLogged' data-id='{{$producto->id}}' class="px-3 py-1 bg-gray-700 rounded-md">{{ $producto->pivot->cantidad }}</span>
+                                        <button data-id='{{$producto->id}}' class="sumarCantidad">
                                             <svg class="w-5 h-5 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                             </svg>
                                         </button>
                                     </div>
-                                    <button class="remove-product" data-producto-id="{{ $producto->id }}">
+                                    <button class="eliminar" data-id="{{ $producto->id }}">
                                         <svg class="w-5 h-5 text-red-500 hover:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                         </svg>
@@ -121,7 +121,7 @@
                 </div>
                 
                 @if($productosNoDisponibles)
-                <div class="mt-4 p-3 bg-red-900/30 border border-red-500/30 rounded-lg text-sm text-red-400">
+                <div id='noDisponibles' class="mt-4 p-3 bg-red-900/30 border border-red-500/30 rounded-lg text-sm text-red-400">
                     <p>Algunos productos de tu carrito no están disponibles. Por favor, elimínalos para continuar.</p>
                 </div>
                 @endif
@@ -138,10 +138,18 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('js/user/carrito/controlesCarritoLogueado.js') }}"></script>
+
+
+
+
+
+    
     @else
     <div  class="grid grid-cols-2 md:grid-cols-2 gap-6 mb-12">
         <div id="carritoLocalStorage2">
             <!--Espacio generado por js -->
+            <script src="{{ asset('js/user/carrito/generarVistaCarrito.js') }}"></script>
         </div>
         <div class="bg-gray-800 rounded-lg p-6 text-center">
             <h2 class="text-xl font-bold mb-4">Inicia sesión para continuar</h2>
@@ -150,7 +158,6 @@
                 Iniciar sesión
             </a>
         </div>
-        <script src="{{ asset('js/user/generarVistaCarrito.js') }}"></script>
     </div>
     
     <div id="carritoVacio" class="text-center py-16 hidden">

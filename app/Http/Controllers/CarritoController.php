@@ -121,6 +121,37 @@ class CarritoController extends Controller
         return response()->json('Eliminado exitosamente');
     }
 
+    public function actualizarCantidad(Request $request, string $id){
+        $cantidad = $request->all()[0];
+
+        $carrito = Carrito::where([
+            'producto_id' => $id,
+            'cliente_id' => Session::get('cliente_id')
+        ])->first();
+
+        $carrito->update([
+            'cantidad' => $cantidad,
+        ]);
+ 
+
+        return response()->json(['cantidad' => $cantidad]);
+    }
+
+    public function verificarStock(){
+        $carrito = Carrito::join('productos as p', 'carritos.producto_id', '=', 'p.id')
+        ->select('carritos.*', 'p.nombre', 'p.precio')->where([
+            'carritos.cliente_id' => Session::get('cliente_id'),
+            'p.stock' => 0,
+        ])
+        ->exists();
+        
+        if($carrito){
+            return response()->json(['respuesta' => $carrito]);
+        }
+        
+        return response()->json(['respuesta' => $carrito]);
+    }
+
 
 
 

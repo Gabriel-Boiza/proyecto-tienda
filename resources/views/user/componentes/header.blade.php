@@ -75,9 +75,9 @@
 <script src="{{ asset('js/user/funciones/funcionesCarrito.js') }}"></script>
 <script src="{{ asset('js/user/funciones/funcionFetch.js') }}"></script>
 @if(Session::Has('cliente_id'))
-    <script src="{{ asset('js/user/carritoLogueado.js') }}"></script>
+    <script src="{{ asset('js/user/carrito/carritoLogueado.js') }}"></script>
 @else
-    <script src="{{ asset('js/user/carrito.js') }}"></script>
+    <script src="{{ asset('js/user/carrito/carrito.js') }}"></script>
 @endif
 
 

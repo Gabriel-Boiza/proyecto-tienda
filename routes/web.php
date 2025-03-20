@@ -40,11 +40,15 @@ Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']);
 
 Route::get('/verCarrito', [CarritoController::class, 'show']); 
 
+Route::get('/verificarStock', [CarritoController::class, 'verificarStock']); 
+
 Route::post('/api/carrito', [CarritoController::class, 'store']);
 
 Route::post('/sincronizarCarrito', [CarritoController::class, 'sincronizarCarrito']);
 
 Route::post('/agregarCarrito', [CarritoController::class, 'agregarCarrito']);
+
+Route::post('/actualizarCantidad/{id}', [CarritoController::class, 'actualizarCantidad']);
 
 Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy']);
 
