@@ -76,6 +76,7 @@ Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']
 Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
 Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
 
+Route::get('/pedidos-mensuales', [PedidosController::class, 'obtenerPedidosMensuales']);
 
 Route::get('/pagarPedido', [PedidosController::class, 'pagarPedido']);
 
