@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\ClientesController;
-
+use App\Http\Controllers\GameController;
 
 // Rutas de productos
 
@@ -73,7 +73,9 @@ Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido'
 Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
 
 
+Route::get('/pagarPedido', [PedidosController::class, 'pagarPedido']);
 
+Route::get('/juego', [GameController::class, 'juego']);
 
 // Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {

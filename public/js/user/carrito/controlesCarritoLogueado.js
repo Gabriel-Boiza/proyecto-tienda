@@ -30,12 +30,15 @@ document.addEventListener('DOMContentLoaded', function(event){
 
     async function actualizarMensajeStock(){
         let respuesta = await peticionFetch('/verificarStock', 'GET', null);
-        console.log(respuesta.respuesta);
         
-        if(!respuesta.respuesta && document.getElementById('noDisponibles')){
+        if (!respuesta.respuesta && document.getElementById('noDisponibles')) {
             document.getElementById('noDisponibles').remove()
-            let btnProceder = document.getElementById('proceder-compra').disabled = false
+        
+            let btnProceder = document.getElementById('proceder-compra')
+            btnProceder.classList.remove('opacity-50', 'pointer-events-none')
+            btnProceder.setAttribute('data-enabled', 'true')
         }
+        
 
         
     }

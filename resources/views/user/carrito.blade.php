@@ -28,7 +28,7 @@
                     <div  class="contenedorProducto border-b border-gray-700 pb-4 last:border-0 last:pb-0">
                         <div class="flex items-center gap-4">
                             <div class="w-20 h-20 bg-gray-700 rounded-lg overflow-hidden">
-                                <img src="{{ asset($producto->imagen_principal) }}" alt="{{ $producto->nombre }}" class="w-full h-full object-cover">
+                                <img src="{{ asset('storage/' . $producto->imagen_principal) }}"alt="{{ $producto->nombre }}" class="w-full h-full object-cover">
                             </div>
                             <div class="flex-grow">
                                 <h3 class="font-medium">{{ $producto->nombre }}</h3>
@@ -75,29 +75,20 @@
                 <h2 class="text-xl font-bold mb-4">Resumen del pedido</h2>
                 
                 @php
-                    $subtotal = 0;
+                    $total = 0;
                     $productosNoDisponibles = false;
                     
                     foreach($clienteProductos->productos as $producto) {
-                        $subtotal += $producto->precio * $producto->pivot->cantidad;
+                        $total += $producto->precio * $producto->pivot->cantidad;
                         if($producto->stock <= 0) {
                             $productosNoDisponibles = true;
                         }
                     }
-                    
-                    $iva = $subtotal * 0.21;
-                    $total = $subtotal + $iva;
+
                 @endphp
                 
                 <div class="space-y-3 mb-6">
-                    <div class="flex justify-between text-gray-400">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">{{ number_format($subtotal, 2) }}€</span>
-                    </div>
-                    <div class="flex justify-between text-gray-400">
-                        <span>IVA (21%):</span>
-                        <span id="iva">{{ number_format($iva, 2) }}€</span>
-                    </div>
+
                     <div class="border-t border-gray-700 pt-3 flex justify-between font-bold">
                         <span>Total:</span>
                         <span id="total" class="text-xl text-purple-500">{{ number_format($total, 2) }}€</span>
@@ -105,12 +96,17 @@
                 </div>
                 
                 <div class="space-y-3">
-                    <button id="proceder-compra" class="w-full bg-purple-600 hover:bg-purple-700 py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" {{ $productosNoDisponibles ? 'disabled' : '' }}>
-                        Proceder al pago
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
-                    </button>
+                <a href="pagarPedido"
+                id="proceder-compra"
+                class="w-full bg-purple-600 hover:bg-purple-700 py-3 rounded-lg flex items-center justify-center gap-2 
+                        {{ $productosNoDisponibles ? 'opacity-50 pointer-events-none' : '' }}"
+                data-enabled="{{ $productosNoDisponibles ? 'false' : 'true' }}">
+                    Proceder al pago
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </a>
+
                     
                     <a href="/" class="w-full bg-gray-700 hover:bg-gray-600 py-3 rounded-lg flex items-center justify-center gap-2 text-center">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

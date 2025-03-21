@@ -9,30 +9,44 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
 });
 
+let temporizador; // Variable para el temporizador
+
 async function busqueda(input) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-    const response = await fetch('/api/productosBusqueda', {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-        body: JSON.stringify({ valorBusqueda: input }) 
-    });
+    clearTimeout(temporizador);
 
-    if (!response.ok) {throw new Error('Error al obtener los productos')}
+    temporizador = setTimeout(async () => {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-    const productos = await response.json();
+        try {
+            const response = await fetch('/api/productosBusqueda', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ valorBusqueda: input })
+            });
 
-    let contenedor = document.getElementById('productos-buscados');
-    contenedor.innerHTML = "";
-    document.getElementById("subtitulo").innerHTML = "Productos buscados"
-    productos.forEach(producto => {
-        generarProductos(producto, contenedor)
-    });
-    
+            if (!response.ok) {
+                throw new Error('Error al obtener los productos');
+            }
 
+            const productos = await response.json();
+
+            let contenedor = document.getElementById('productos-buscados');
+            contenedor.innerHTML = "";
+            document.getElementById("subtitulo").innerHTML = "Productos buscados";
+
+            productos.forEach(producto => {
+                generarProductos(producto, contenedor);
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }, 300); // Espera 300ms antes de ejecutar la búsqueda
 }
+
 
 async function generarProductos(producto, contenedor) {
 

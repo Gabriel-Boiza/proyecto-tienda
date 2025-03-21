@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use App\Models\Cliente;
+use App\Models\Carrito;
+use Illuminate\Support\Facades\Session;
+
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 use Illuminate\Support\Facades\Route;
@@ -50,12 +53,18 @@ class PedidosController extends Controller
         
     }
 
+    public function pagarPedido(){
+        $clienteProductos = Carrito::with('producto')->where('cliente_id', Session::get('cliente_id'))->get();
+        //return response()->json(['resultados' => $clienteProductos]);
+
+        return view('user.pagar', compact('clienteProductos'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
     }
 
     /**
