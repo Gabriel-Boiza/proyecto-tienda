@@ -9,32 +9,48 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
 });
 
+let temporizador; // Variable para el temporizador
+
 async function busqueda(input) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-    const response = await fetch('/api/productosBusqueda', {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-        body: JSON.stringify({ valorBusqueda: input }) 
-    });
+    clearTimeout(temporizador);
 
-    if (!response.ok) {throw new Error('Error al obtener los productos')}
+    temporizador = setTimeout(async () => {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-    const productos = await response.json();
+        try {
+            const response = await fetch('/api/productosBusqueda', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ valorBusqueda: input })
+            });
 
-    let contenedor = document.getElementById('productos-buscados');
-    contenedor.innerHTML = "";
-    document.getElementById("subtitulo").innerHTML = "Productos buscados"
-    productos.forEach(producto => {
-        generarProductos(producto, contenedor)
-    });
-    
+            if (!response.ok) {
+                throw new Error('Error al obtener los productos');
+            }
 
+            const productos = await response.json();
+
+            let contenedor = document.getElementById('productos-buscados');
+            contenedor.innerHTML = "";
+            document.getElementById("subtitulo").innerHTML = "Productos buscados";
+
+            productos.forEach(producto => {
+                generarProductos(producto, contenedor);
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }, 300); // Espera 300ms antes de ejecutar la búsqueda
 }
 
-function generarProductos(producto, contenedor) {
+
+async function generarProductos(producto, contenedor) {
+
+    carrito = await retornarCarrito()
    
     // Calcular el precio con descuento
     let productoId = 'productoFavs' + producto.id; 
@@ -86,19 +102,42 @@ function generarProductos(producto, contenedor) {
             localStorage.removeItem(productoId)
             btnFavoritos.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>';
         } else {
+            producto.cantidad = 1;
             localStorage.setItem(productoId, JSON.stringify(producto));
             btnFavoritos.innerHTML = '<svg class="w-5 h-5" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>';
         }
         
     })
+
     
     // Botón de carrito
     const btnCarrito = document.createElement('button');
+
+    if(localStorage.getItem('flagLogged') === 'true'){  //localstorage guarda los booleanos como strings
+
+        actualizarCarritoLogged(carrito, producto, btnCarrito)   
+        btnCarrito.addEventListener('click', function(event){
+            clickBtn(producto, btnCarrito)
+        })
+    }
+    else{
+        existe = localStorage.getItem('productoCarrito'+producto.id) !== null
+        btnCarrito.innerHTML = iconoCarrito(existe)
+
+        btnCarrito.addEventListener('click', function(event){
+
+            producto.cantidad = 1
+            localStorageCarrito(producto, 'productoCarrito' + producto.id, existe)
+            existe = localStorage.getItem('productoCarrito'+producto.id) !== null
+            actualizarCarrito(producto, 'productoCarrito' + producto.id, existe)
+            btnCarrito.innerHTML = iconoCarrito(existe)
+        })
+    }
+    
     btnCarrito.className = 'carrito p-2 bg-gray-900/50 rounded-full hover:bg-gray-900 transition-colors';
     btnCarrito.value = JSON.stringify(producto);
-    btnCarrito.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>';
     divBotones.appendChild(btnCarrito);
-    
+  
     divRelative.appendChild(divBotones);
     divProducto.appendChild(divRelative);
     

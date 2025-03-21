@@ -22,22 +22,21 @@ class ClienteLoginController extends Controller
  
      public function loginCliente(Request $request)
      {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-        
-        $cliente = Cliente::where('email', $request->email)->first();
-    
-        if ($cliente && Hash::check($request->password, $cliente->password)) {
-            Session::put('cliente_id', $cliente->id);
-            Session::put('cliente_email', $cliente->email);
-        }
-    
-        return redirect()->intended('/');
-
-
-
+         $request->validate([
+             'email' => 'required|email',
+             'password' => 'required|min:6',
+         ]);
+     
+         $cliente = Cliente::where('email', $request->email)->first();
+     
+         if ($cliente && Hash::check($request->password, $cliente->password)) {
+             Session::put('cliente_id', $cliente->id);
+             Session::put('cliente_email', $cliente->email);
+     
+             return redirect()->intended('/'); // Redirige a la ruta protegida que intentó acceder
+         }
+     
+         return back()->withErrors(['email' => 'Las credenciales no son correctas.'])->withInput();
      }
 
      public function logout()
