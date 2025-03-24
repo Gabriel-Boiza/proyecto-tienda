@@ -13,10 +13,11 @@ use App\Models\Cliente;
 class CarritoController extends Controller
 {
     public function index(){
-        $productos = Producto::whereRelation('categorias', 'nombre_categoria', 'destacado')->get();  
-        $categorias = Categoria::withCount('productos')->get(); 
-        //return response()->json($productos);
-        return view('user/carrito', compact('productos', 'categorias'));
+
+
+        $clienteProductos = Cliente::with('productos')->find(Session::get('cliente_id'));
+
+        return view('user/carrito', compact('clienteProductos'));
     }
 
     public function obtenerCarrito()
@@ -39,52 +40,119 @@ class CarritoController extends Controller
         return response()->json(['carrito' => $carrito]);
     }
 
+    public function store(Request $request){
+        $carrito = Carrito::create([
+            'producto_id' => $request->input('id'),
+            'cliente_id' => Session::get('cliente_id'),
+            'cantidad' => 1,
+        ]);
 
-    // Actualizar el carrito del cliente
-    public function actualizarCarrito(Request $request)
+        return response()->json($carrito);
+    }
+
+    public function sincronizarCarrito(Request $request)
     {
-        $clienteId = Session::get('cliente_id');
-        $productos = $request->cart;
+        $carritosCliente = $request->all();
+
+        $array = [];
     
-        foreach ($productos as $producto) {
-            $productoId = $producto['id'];
-            $cantidad = $producto['cantidad'];
-    
-            // Verificar si el producto ya existe en el carrito del cliente
-            $carritoExistente = Carrito::where('cliente_id', $clienteId)
-                                       ->where('producto_id', $productoId)
-                                       ->first();
-    
-            if ($carritoExistente) {
-                // Si el producto ya existe, actualizar la cantidad
-                $carritoExistente->update(['cantidad' => $cantidad]);
-            } else {
-                // Si el producto no existe, crearlo
+        foreach($carritosCliente as $index => $carritoCliente){
+            $carrito = Carrito::where([
+                'cliente_id' => Session::get('cliente_id'),
+                'producto_id' => $carritoCliente['id'],
+            ])->first();
+
+            if($carrito == null){
                 Carrito::create([
-                    'cliente_id' => $clienteId,
-                    'producto_id' => $productoId,
-                    'cantidad' => $cantidad
+                    'cliente_id' => Session::get('cliente_id'),
+                    'producto_id' => $carritoCliente['id'],
+                    'cantidad' => $carritoCliente['cantidad'],
+                ]);
+            }
+            else{
+                $carrito->update([
+                    'cantidad' => $carrito->cantidad + $carritoCliente['cantidad'],
                 ]);
             }
         }
-    
-        return response()->json(['message' => 'Carrito sincronizado correctamente']);
+        
+        return response()->json([
+            'mensaje' => $array
+        ]);
     }
-
-    public function eliminarProductoDelCarrito($clienteId, $productoId)
-    {
-        $carrito = Carrito::where('cliente_id', $clienteId)->where('producto_id', $productoId)->first();
-
-        if (!$carrito) {
-            return response()->json(['error' => 'Producto no encontrado en el carrito'], 404);
+    
+    public function agregarCarrito(Request $request){
+        $producto = $request->all();
+    
+        // Buscar el carrito asociado al cliente y producto
+        $carrito = Carrito::where([
+            'cliente_id' => Session::get('cliente_id'),
+            'producto_id' => $producto['idProducto'],
+        ])->first();  // Usa `first()` para obtener el primer resultado o `null`
+    
+        if($carrito != null){
+            // Si el carrito ya existe, actualiza la cantidad
+            $carrito->update([
+                'cantidad' => $carrito->cantidad + $producto['valor'],
+            ]);
         }
+        else{
+            // Si no existe, crea un nuevo carrito
+            Carrito::create([
+                'cliente_id' => Session::get('cliente_id'),
+                'producto_id' => $producto['idProducto'],
+                'cantidad' => $producto['valor'],  // La cantidad es igual al valor recibido
+            ]);
+        }
+    
+        return response()->json([
+            'mensaje' => 'Producto agregado al carrito',
+            'producto' => $producto  // Devolver los datos del producto
+        ]);
+    }
+    
 
+    public function destroy(string $id){
+        $carrito = Carrito::where([
+            'producto_id' => $id,
+            'cliente_id' => Session::get('cliente_id')
+        ])->first();
         $carrito->delete();
-
-        return response()->json(['message' => 'Producto eliminado del carrito']);
+        return response()->json('Eliminado exitosamente');
     }
 
-    
+    public function actualizarCantidad(Request $request, string $id){
+        $cantidad = $request->all()[0];
+
+        $carrito = Carrito::where([
+            'producto_id' => $id,
+            'cliente_id' => Session::get('cliente_id')
+        ])->first();
+
+        $carrito->update([
+            'cantidad' => $cantidad,
+        ]);
+ 
+
+        return response()->json(['cantidad' => $cantidad]);
+    }
+
+    public function verificarStock(){
+        $carrito = Carrito::join('productos as p', 'carritos.producto_id', '=', 'p.id')
+        ->select('carritos.*', 'p.nombre', 'p.precio')->where([
+            'carritos.cliente_id' => Session::get('cliente_id'),
+            'p.stock' => 0,
+        ])
+        ->exists();
+        
+        if($carrito){
+            return response()->json(['respuesta' => $carrito]);
+        }
+        
+        return response()->json(['respuesta' => $carrito]);
+    }
+
+
 
 
 }

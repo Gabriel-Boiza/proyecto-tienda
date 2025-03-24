@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\ClientesController;
-
+use App\Http\Controllers\GameController;
 
 // Rutas de productos
 
@@ -40,17 +40,22 @@ Route::get('/api/carrito/{clienteId}', [CarritoController::class, 'obtenerCarrit
 
 Route::delete('/api/carrito/{clienteId}/{productoId}', [CarritoController::class, 'eliminarProductoDelCarrito']);
 
-// Ruta para obtener el carrito en formato JSON
-Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); // Devuelve el carrito como JSON
+Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); 
 
-// Ruta para actualizar el carrito en la base de datos (usando POST)
-Route::post('/api/carrito', [CarritoController::class, 'actualizarCarrito']); // Actualiza el carrito en la base de datos
+Route::get('/verCarrito', [CarritoController::class, 'show']); 
 
-Route::get('/pedidos-mensuales', [PedidosController::class, 'obtenerPedidosMensuales']);
+Route::get('/verificarStock', [CarritoController::class, 'verificarStock']); 
 
-// Rutas de la tienda
+Route::post('/api/carrito', [CarritoController::class, 'store']);
 
-// Rutas públicas (para usuarios/clientes)
+Route::post('/sincronizarCarrito', [CarritoController::class, 'sincronizarCarrito']);
+
+Route::post('/agregarCarrito', [CarritoController::class, 'agregarCarrito']);
+
+Route::post('/actualizarCantidad/{id}', [CarritoController::class, 'actualizarCantidad']);
+
+Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy']);
+
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
@@ -70,9 +75,12 @@ Route::get('/mis-pedidos/{id}', [PedidosController::class, 'userIndex']);
 Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']);
 Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
 Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
-Route::post('/products/store', [ProductoController::class, 'guardarImagen'])->name('products.store');
 
+Route::get('/pedidos-mensuales', [PedidosController::class, 'obtenerPedidosMensuales']);
 
+Route::get('/pagarPedido', [PedidosController::class, 'pagarPedido']);
+
+Route::get('/juego', [GameController::class, 'juego']);
 
 // Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {
@@ -89,6 +97,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/api/caracteristicas/{id}', [CaracteristicaController::class, 'apiCaracteristicas']);
     Route::get('/api/caracteristica', [CaracteristicaController::class, 'apiCaracteristicasCrud']);
+
     Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
 
 });
