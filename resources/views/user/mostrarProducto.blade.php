@@ -91,7 +91,7 @@
                             class="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-purple-500 transition-all"
                             :class="{'ring-2 ring-purple-500': currentImage === index}"
                         >
-                            <img :src="image" alt="Thumbnail" class="w-full h-20 object-cover">
+                            <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="Thumbnail" class="w-full h-20 object-cover">
                         </button>
                     </template>
                 </div>
