@@ -17,6 +17,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Product Images -->
             <div class="space-y-4 relative">
+                @if($producto->personalizable==true)
                 <div class="bg-gray-900 p-3 rounded-lg flex items-center justify-between space-x-4">
             <!-- Herramientas de dibujo -->
                     <div class="flex space-x-2">
@@ -66,12 +67,14 @@
                         </svg>
                     </button>
                 </div>
+                @endif
                 <div class="relative bg-gray-800 rounded-lg overflow-hidden">
                     <img src="{{ asset('storage/' . $producto->imagen_principal) }}" 
                          alt="{{$producto->nombre}}" 
                          class="w-full h-96 object-cover" 
                          id="product-image">
-                         <div class="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        @if($producto->personalizable == true)
+                        <div class="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             <div class="w-48 h-48"> <!-- 256x256 píxeles -->
                                 <canvas id="productCanvas"
                                         class="w-full h-full border-2 border-purple-500 rounded-lg"
@@ -79,8 +82,8 @@
                                 </canvas>
                             </div>
                         </div>
+                        @endif
                    
-                    <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-96 object-cover">
                     @if($producto->descuento != 0)
                     <div class="absolute top-4 left-4 bg-purple-600 px-3 py-1 rounded-full text-sm font-semibold">
                         -{{$producto->descuento}}%

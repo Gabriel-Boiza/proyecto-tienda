@@ -393,67 +393,84 @@ document.addEventListener('DOMContentLoaded', function() {
 });
  
 function saveCanvasAsProduct() {
-    console.log('Iniciando guardado...');
+    // Obtener la imagen del producto
+    const productImage = document.getElementById('product-image');
     
+    // Crear un canvas temporal del tamaño de la imagen del producto
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = productImage.width;
+    tempCanvas.height = productImage.height;
+    
+    // Obtener el contexto del canvas temporal
+    const tempCtx = tempCanvas.getContext('2d');
+    
+    // Dibujar primero la imagen del producto
+    tempCtx.drawImage(productImage, 0, 0, tempCanvas.width, tempCanvas.height);
+    
+    // Obtener la posición y tamaño del canvas de personalización
+    const productCanvas = document.getElementById('productCanvas');
+    const canvasRect = productCanvas.getBoundingClientRect();
+    const imageRect = productImage.getBoundingClientRect();
+    
+    // Calcular la posición relativa del canvas de personalización
+    const x = (canvasRect.left - imageRect.left) * (tempCanvas.width / imageRect.width);
+    const y = (canvasRect.top - imageRect.top) * (tempCanvas.height / imageRect.height);
+    const width = canvasRect.width * (tempCanvas.width / imageRect.width);
+    const height = canvasRect.height * (tempCanvas.height / imageRect.height);
+    
+    // Dibujar el canvas de personalización sobre la imagen
+    tempCtx.drawImage(productCanvas, x, y, width, height);
+    
+    // Convertir el canvas combinado a base64
+    const finalImage = tempCanvas.toDataURL('image/png');
+    
+    // Mostrar indicador de carga
     const loadingIndicator = showLoadingIndicator();
-    const canvas = document.getElementById('productCanvas');
-    const canvasImage = canvas.toDataURL('image/png');
+    
+    // Obtener el token CSRF
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
-    fetch('/products/store', {
+    
+    // Crear el objeto FormData
+    const formData = new FormData();
+    formData.append('image', finalImage);
+    formData.append('producto_id', document.getElementById('agregar').value);
+    
+    // Enviar la imagen al servidor
+    fetch('/save-personalized', {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': csrfToken,
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            image: canvasImage
-        })
+        body: formData
     })
     .then(response => {
         if (!response.ok) {
-            return response.text().then(text => {
-                console.error('Error response:', text);
-                throw new Error('Error en la respuesta del servidor');
-            });
+            throw new Error('Error en la respuesta del servidor');
         }
         return response.json();
     })
     .then(data => {
-        console.log('Respuesta exitosa:', data);
         hideLoadingIndicator(loadingIndicator);
         if (data.success) {
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    title: '¡Éxito!',
-                    text: 'Producto añadido al carrito',
-                    icon: 'success',
-                    confirmButtonColor: '#6366f1'
-                }).then(() => {
-                    window.location.href = data.redirect;
-                });
-            } else {
-                alert('¡Producto añadido al carrito!');
-                window.location.href = data.redirect;
-            }
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Diseño guardado correctamente',
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+            });
         } else {
             throw new Error(data.message || 'Error al guardar el diseño');
         }
     })
     .catch(error => {
-        console.error('Error:', error);
         hideLoadingIndicator(loadingIndicator);
-        if (typeof Swal !== 'undefined') {
-            Swal.fire({
-                title: 'Error',
-                text: error.message,
-                icon: 'error',
-                confirmButtonColor: '#6366f1'
-            });
-        } else {
-            alert('Error: ' + error.message);
-        }
+        Swal.fire({
+            title: 'Error',
+            text: error.message,
+            icon: 'error',
+            confirmButtonColor: '#3085d6'
+        });
     });
 }
 

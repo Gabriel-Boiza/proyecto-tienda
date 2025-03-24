@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\PersonalizadosController;
 
 // Rutas de productos
 
@@ -75,6 +76,10 @@ Route::get('/mis-pedidos/{id}', [PedidosController::class, 'userIndex']);
 Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']);
 Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
 Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
+Route::post('/products/store', [ProductoController::class, 'guardarImagen'])->name('products.store');
+
+Route::post('/save-personalized', [PersonalizadosController::class, 'store'])->name('save.personalized');
+Route::get('/get-personalized/{producto_id}', [PersonalizadosController::class, 'getPersonalizedImage'])->name('get.personalized');
 
 Route::get('/pedidos-mensuales', [PedidosController::class, 'obtenerPedidosMensuales']);
 

@@ -28,7 +28,13 @@
                     <div  class="contenedorProducto border-b border-gray-700 pb-4 last:border-0 last:pb-0">
                         <div class="flex items-center gap-4">
                             <div class="w-20 h-20 bg-gray-700 rounded-lg overflow-hidden">
-                                <img src="{{ asset('storage/' . $producto->imagen_principal) }}"alt="{{ $producto->nombre }}" class="w-full h-full object-cover">
+                                <img src="{{ 
+                                $personalizado = App\Http\Controllers\PersonalizadosController::getPersonalizedImage($item->id) 
+                                    ? asset('storage/' . $personalizado->imagen_personalizada)
+                                    : asset('storage/' . $item->imagen_principal)
+                                                        }}" 
+                                    alt="{{$item->nombre}}" 
+                                    class="w-24 h-24 object-cover rounded-lg">                            
                             </div>
                             <div class="flex-grow">
                                 <h3 class="font-medium">{{ $producto->nombre }}</h3>

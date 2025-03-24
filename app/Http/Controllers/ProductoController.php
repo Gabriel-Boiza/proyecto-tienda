@@ -112,6 +112,7 @@ class ProductoController extends Controller
             'caracteristicas' => 'nullable|array', 
             'imagenes_adicionales' => 'nullable|array',
             'descuento' => 'integer',
+            'personalizable' => 'boolean',
         ]);
     
 
@@ -130,6 +131,7 @@ class ProductoController extends Controller
             'imagen_principal' => $rutaImagenPrincipal,
             'fk_marca' => $request->marca,  
             'descuento' => $request->descuento,
+            'personalizable' => $request->personalizable,
         ]);
 
         foreach($request->caracteristicas as $index => $caracteristica){
@@ -204,6 +206,7 @@ class ProductoController extends Controller
             'precio' => 'required|numeric|min:0',
             'descripcion' => 'nullable|string',
             'stock' => 'required|integer|min:0',
+            'descuento' => 'integer',
             'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'categorias' => 'nullable|array',
             'imagenes_adicionales' => 'nullable|array',
@@ -218,6 +221,8 @@ class ProductoController extends Controller
             'precio' => $request->precio,
             'descripcion' => $request->descripcion,
             'stock' => $request->stock,
+            'descuento' => $request->descuento,
+            'personalizable' => $request->has('personalizable') ? true : false,
             'fk_marca' => $request->fk_marca, // Guardar la marca seleccionada
         ]);
 
