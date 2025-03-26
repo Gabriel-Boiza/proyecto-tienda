@@ -57,9 +57,13 @@ class PedidosController extends Controller
 
     public function pagarPedido(){
         $clienteProductos = Carrito::with('producto')->where('cliente_id', Session::get('cliente_id'))->get();
+        
+        $total = $clienteProductos->sum(function ($item) {
+            return $item->producto->precio * $item->cantidad;
+        });
         //return response()->json(['resultados' => $clienteProductos]);
 
-        return view('user.pagar', compact('clienteProductos'));
+        return view('user.pagar', compact('clienteProductos', 'total'));
     }
 
     /**

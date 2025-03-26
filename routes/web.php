@@ -15,7 +15,7 @@ use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\PersonalizadosController;
-
+use App\Http\Controllers\PagoController;
 // Rutas de productos
 
 
@@ -88,6 +88,7 @@ Route::get('/pagarPedido', [PedidosController::class, 'pagarPedido']);
 
 Route::get('/juego', [GameController::class, 'juego']);
 
+Route::post('/pago', [PagoController::class, 'crearPago']);
 // Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {
     Route::get('app-admin', [ProductoController::class, 'appAdmin'])->name('app-admin'); 
