@@ -27,15 +27,16 @@
                     @foreach($clienteProductos->productos as $producto)
                     <div  class="contenedorProducto border-b border-gray-700 pb-4 last:border-0 last:pb-0">
                         <div class="flex items-center gap-4">
-                            <div class="w-20 h-20 bg-gray-700 rounded-lg overflow-hidden">
-                                <img src="{{ 
-                                $personalizado = App\Http\Controllers\PersonalizadosController::getPersonalizedImage($item->id) 
-                                    ? asset('storage/' . $personalizado->imagen_personalizada)
-                                    : asset('storage/' . $item->imagen_principal)
-                                                        }}" 
-                                    alt="{{$item->nombre}}" 
-                                    class="w-24 h-24 object-cover rounded-lg">                            
-                            </div>
+                        <div class="w-20 h-20 bg-gray-700 rounded-lg overflow-hidden">
+                            @php
+                                $personalizadosController = new App\Http\Controllers\PersonalizadosController();
+                                $personalizado = $personalizadosController->getPersonalizedImage($producto->id);
+                                $imagenUrl = $personalizado ? asset('storage/' . $personalizado->imagen) : asset('storage/' . $producto->imagen_principal);
+                            @endphp
+                            <img src="{{ $imagenUrl }}" 
+                                alt="{{ $producto->nombre }}" 
+                                class="w-20 h-20 object-cover">
+                        </div>
                             <div class="flex-grow">
                                 <h3 class="font-medium">{{ $producto->nombre }}</h3>
                                 <p class="text-gray-400 text-sm">{{ Str::limit($producto->descripcion, 60) }}</p>

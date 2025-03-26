@@ -18,12 +18,16 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastY = 0;
     let currentTool = 'pencil';
     let previousColor = '#FF0000';
-    let fontSize = 20; // Tamaño de fuente predeterminado
+    let fontSize = 20;
     let isTyping = false;
     let currentInput = null;
 
     // Configuración inicial del contexto
     function setupCanvas() {
+        // Ajustar el tamaño del canvas
+        const verticalOffset = 210;
+        canvas.style.marginTop = `${verticalOffset}px`;
+
         ctx.strokeStyle = colorPicker.value;
         ctx.lineWidth = lineWidthInput.value;
         ctx.lineCap = 'round';
@@ -393,85 +397,92 @@ document.addEventListener('DOMContentLoaded', function() {
 });
  
 function saveCanvasAsProduct() {
-    // Obtener la imagen del producto
-    const productImage = document.getElementById('product-image');
-    
-    // Crear un canvas temporal del tamaño de la imagen del producto
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = productImage.width;
-    tempCanvas.height = productImage.height;
-    
-    // Obtener el contexto del canvas temporal
-    const tempCtx = tempCanvas.getContext('2d');
-    
-    // Dibujar primero la imagen del producto
-    tempCtx.drawImage(productImage, 0, 0, tempCanvas.width, tempCanvas.height);
-    
-    // Obtener la posición y tamaño del canvas de personalización
-    const productCanvas = document.getElementById('productCanvas');
-    const canvasRect = productCanvas.getBoundingClientRect();
-    const imageRect = productImage.getBoundingClientRect();
-    
-    // Calcular la posición relativa del canvas de personalización
-    const x = (canvasRect.left - imageRect.left) * (tempCanvas.width / imageRect.width);
-    const y = (canvasRect.top - imageRect.top) * (tempCanvas.height / imageRect.height);
-    const width = canvasRect.width * (tempCanvas.width / imageRect.width);
-    const height = canvasRect.height * (tempCanvas.height / imageRect.height);
-    
-    // Dibujar el canvas de personalización sobre la imagen
-    tempCtx.drawImage(productCanvas, x, y, width, height);
-    
-    // Convertir el canvas combinado a base64
-    const finalImage = tempCanvas.toDataURL('image/png');
-    
     // Mostrar indicador de carga
     const loadingIndicator = showLoadingIndicator();
     
-    // Obtener el token CSRF
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-    
-    // Crear el objeto FormData
-    const formData = new FormData();
-    formData.append('image', finalImage);
-    formData.append('producto_id', document.getElementById('agregar').value);
-    
-    // Enviar la imagen al servidor
-    fetch('/save-personalized', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json',
-        },
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
+    try {
+        // Obtener la imagen del producto
+        const productImage = document.getElementById('product-image');
+        if (!productImage) {
+            throw new Error('No se encontró la imagen del producto');
         }
-        return response.json();
-    })
-    .then(data => {
-        hideLoadingIndicator(loadingIndicator);
-        if (data.success) {
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'Diseño guardado correctamente',
-                icon: 'success',
-                confirmButtonColor: '#3085d6'
-            });
-        } else {
-            throw new Error(data.message || 'Error al guardar el diseño');
+        
+        // Crear un canvas temporal
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = productImage.width;
+        tempCanvas.height = productImage.height;
+        
+        const tempCtx = tempCanvas.getContext('2d');
+        
+        // Dibujar la imagen del producto
+        tempCtx.drawImage(productImage, 0, 0, tempCanvas.width, tempCanvas.height);
+        
+        // Obtener el canvas de personalización
+        const productCanvas = document.getElementById('productCanvas');
+        if (!productCanvas) {
+            throw new Error('No se encontró el canvas de personalización');
         }
-    })
-    .catch(error => {
-        hideLoadingIndicator(loadingIndicator);
-        Swal.fire({
-            title: 'Error',
-            text: error.message,
-            icon: 'error',
-            confirmButtonColor: '#3085d6'
+        
+        const canvasRect = productCanvas.getBoundingClientRect();
+        const imageRect = productImage.getBoundingClientRect();
+        
+        // Calcular posiciones
+        const x = (canvasRect.left - imageRect.left) * (tempCanvas.width / imageRect.width);
+        const y = (canvasRect.top - imageRect.top) * (tempCanvas.height / imageRect.height);
+        const width = canvasRect.width * (tempCanvas.width / imageRect.width);
+        const height = canvasRect.height * (tempCanvas.height / imageRect.height);
+        
+        // Dibujar la personalización
+        tempCtx.drawImage(productCanvas, x, y, width, height);
+        
+        // Convertir a base64
+        const finalImage = tempCanvas.toDataURL('image/png');
+        
+        // Obtener el token CSRF
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        if (!csrfToken) {
+            throw new Error('Token CSRF no encontrado');
+        }
+        
+        // Preparar datos
+        const formData = new FormData();
+        formData.append('image', finalImage);
+        formData.append('producto_id', document.getElementById('agregar').value);
+        
+        // Enviar al servidor
+        fetch('/save-personalized', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.message || 'Error en el servidor');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            hideLoadingIndicator(loadingIndicator);
+            if (data.success) {
+                alert('Diseño guardado correctamente');
+            } else {
+                throw new Error(data.message || 'Error al guardar el diseño');
+            }
+        })
+        .catch(error => {
+            hideLoadingIndicator(loadingIndicator);
+            alert(error.message || 'Error al procesar la solicitud');
         });
-    });
+        
+    } catch (error) {
+        hideLoadingIndicator(loadingIndicator);
+        alert(error.message || 'Error al procesar la imagen');
+    }
 }
 
 // Funciones auxiliares para UI

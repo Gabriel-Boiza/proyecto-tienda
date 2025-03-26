@@ -55,7 +55,8 @@ Route::post('/agregarCarrito', [CarritoController::class, 'agregarCarrito']);
 
 Route::post('/actualizarCantidad/{id}', [CarritoController::class, 'actualizarCantidad']);
 
-Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy']);
+Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
+
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
