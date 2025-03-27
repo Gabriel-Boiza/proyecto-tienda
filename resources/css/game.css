@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .bg-gradient-animate {
+        @apply bg-gradient-to-br from-[rgb(132,21,223)] via-[rgb(36,80,201)] to-[rgb(126,47,187)] bg-[length:400%_400%] animate-gradient;
+    }
+
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .pattern-overlay {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    #game-container {
+        @apply relative w-full h-[400px] mx-auto border-2 border-purple-800/50 overflow-hidden rounded-xl bg-gray-800 shadow-xl shadow-purple-800/30;
+    }
+
+    #cube {
+        @apply absolute w-[50px] h-[50px] bg-blue-500 cursor-grab z-10 rounded-md shadow-md hidden;
+        transition: transform 0.1s;
+    }
+
+    #cube:active {
+        @apply cursor-grabbing scale-105;
+    }
+
+    #target {
+        @apply absolute w-[60px] h-[60px] border-2 border-dashed border-pink-600 rounded-md z-5 hidden;
+    }
+
+    #results {
+        @apply hidden;
+    }
+
+    .instruction-card {
+        @apply bg-gray-800 rounded-xl p-6 border border-gray-700/50 hover:-translate-y-1 transition-transform duration-300;
+    }
+
+    .instruction-icon-container {
+        @apply bg-purple-600/10 w-16 h-16 rounded-full mb-4 flex items-center justify-center;
+    }
+
+    .section-header {
+        @apply text-3xl font-bold mb-8 relative inline-block;
+    }
+
+    .section-header-underline {
+        @apply absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-purple-600 to-blue-600;
+    }
+
+    .game-control-panel {
+        @apply bg-gray-800 rounded-xl p-6 border border-gray-700/50;
+    }
+
+    .time-select {
+        @apply w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-600;
+    }
+
+    .game-button {
+        @apply px-6 py-3 rounded-lg font-bold transform hover:scale-105 transition-all duration-200 text-white shadow-lg;
+    }
+
+    .timer-bar {
+        @apply bg-gradient-to-r from-purple-600 to-blue-600 h-4 w-full transition-all duration-1000;
+    }
+
+    .results-stat-card {
+        @apply bg-gray-700/50 rounded-xl p-4 text-center;
+    }
+}
+

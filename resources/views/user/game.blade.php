@@ -217,8 +217,6 @@
     </div>
 </div>
 
-<script>
-
-</script>
+<script src="{{asset('js/user/game.js')}}"></script>
 
 @endsection
