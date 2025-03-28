@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Charge;
 use App\Models\Pedido;
+use App\Models\Producto;
 use App\Models\Carrito;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -22,38 +23,39 @@ class PagoController extends Controller
         Stripe::setApiKey(config('services.stripe.secret'));
     
         try {
-            // Obtener los carritos con la relación 'productos' correctamente
-            $carritos = Carrito::with('producto')  // Cambié 'producto' por 'productos'
-                ->where('cliente_id', Session::get('cliente_id'))
-                ->get();
+            $carritos = Carrito::with('producto')->where('cliente_id', Session::get('cliente_id'))->get();
+
+            foreach($carritos as $carrito){
+                if($carrito->producto->stock < $carrito->cantidad){
+                    return back()->with('error', 'Stock del producto insuficiente');
+                }
+            }
     
                 
-            // Crear el pedido
             $pedido = Pedido::create([
                 'cliente_id' => Session::get('cliente_id'),
                 'total' => $request->total,
                 'estado' => 'pendiente',
             ]);
     
-            // Insertar los productos en la tabla productos_pedidos
             foreach ($carritos as $carrito) {
                 DB::table('productos_pedidos')->insert([
                     'pedido_id' => $pedido->id,
                     'producto_id' => $carrito->producto_id,  
                     'cantidad' => $carrito->cantidad, 
                 ]);
-            
+                
+                DB::table('productos')->where('id', $carrito->producto_id)->decrement('stock', $carrito->cantidad);
                 $carrito->delete(); 
             }
     
             $charge = Charge::create([
-                'amount' => $request->total * 100, // Convertir a centavos
+                'amount' => $request->total * 100, 
                 'currency' => 'eur',
                 'description' => 'Pago en tu tienda online',
                 'source' => $request->stripeToken,
             ]);
     
-            // Redirigir con mensaje de éxito
             return back()->with('success', 'Pago realizado con éxito');
         } catch (\Exception $e) {
             return back()->with('error', 'Error en el pago: ' . $e->getMessage());

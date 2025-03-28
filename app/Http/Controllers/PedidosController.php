@@ -61,7 +61,7 @@ class PedidosController extends Controller
         $total = $clienteProductos->sum(function ($item) {
             return $item->producto->precio * $item->cantidad;
         });
-        //return response()->json(['resultados' => $clienteProductos]);
+        //return response()->json($clienteProductos);
 
         return view('user.pagar', compact('clienteProductos', 'total'));
     }
