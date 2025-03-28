@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PePeriféricos - Gaming Peripherals</title>
+    <title>PePeriféricos</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @vite('resources/css/app.css', 'resources/css/game.css')
+    @vite(['resources/css/app.css', 'resources/css/inicio.css'])
 
 
 
 </head>
-<body class="bg-gray-900 text-white" x-data="{ mobileMenu: false }">
+<body class="flex flex-col min-h-screen bg-gray-900 text-white">
     <!-- Navigation -->
     @include('user.componentes.header')
 
-    <main>
+    <main class="flex-grow">
         @yield('content')
     </main>
 

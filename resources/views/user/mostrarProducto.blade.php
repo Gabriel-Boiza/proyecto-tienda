@@ -94,8 +94,8 @@
                     @endif
 
                     @if($producto->descuento != 0)
-                    <div class="absolute top-4 left-4 bg-purple-600 px-3 py-1 rounded-full text-sm font-semibold">
-                        -{{$producto->descuento}}%
+                    <div class="span-descuento">
+                        -{{$producto->descuento}}%  
                     </div>
                     @endif
                 </div>
@@ -103,7 +103,6 @@
                 <div class="grid grid-cols-4 gap-4 mt-4">
                     <template x-for="(image, index) in images" :key="index">
                         <button 
-                            @click="currentImage = index"
                             class="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-purple-500 transition-all"
                             :class="{'ring-2 ring-purple-500': currentImage === index}"
                         >
@@ -130,9 +129,9 @@
 
                 <div class="space-y-4">
                     <div class="flex items-baseline space-x-4">
-                        <span class="text-4xl font-bold">{{$producto->precio}}€</span>
+                        <span class="text-4xl font-bold">{{ number_format($producto->precio * (1 - ($producto->descuento / 100)), 2) }}€</span>
                         @if($producto->descuento != 0)
-                        <span class="text-xl text-gray-400 line-through">149.99€</span>
+                        <span class="text-xl text-gray-400 line-through">{{$producto->precio}}€</span>
                         @endif
                     </div>
                     @if($producto->stock != 0)

@@ -86,7 +86,7 @@ Route::get('/pedidos-mensuales', [PedidosController::class, 'obtenerPedidosMensu
 
 Route::get('/pagarPedido', [PedidosController::class, 'pagarPedido']);
 
-Route::get('/juego', [GameController::class, 'juego']);
+Route::get('/juego', [GameController::class, 'juego'])->name('juego');
 
 Route::post('/pago', [PagoController::class, 'crearPago']);
 // Rutas de administración (requieren autenticación)

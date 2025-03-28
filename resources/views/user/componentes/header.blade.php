@@ -10,7 +10,7 @@
                     <span class="text-xl font-bold text-white tracking-wide">PePeriféricos</span>
                 </div>
             </a>
-
+            
             <!-- Search and Icons -->
             <div class="hidden md:flex items-center space-x-6">
                 <!-- Search Input -->
