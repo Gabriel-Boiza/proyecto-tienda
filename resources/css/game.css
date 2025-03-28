@@ -14,14 +14,14 @@
     width: 58px;
     height: 58px; 
     background-color: purple;
-
+    cursor: pointer;
     position: absolute;
     
 }
 
 .objetivo {
-    width: 58px;
-    height: 58px;
+    width: 64px;
+    height: 64px;
     border: 2px dashed white; /* Línea discontinua en el borde */
     position: absolute;
 }

@@ -1,42 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
     const escenario = document.getElementById('escenario');
+    let cont = 0
+    let cubo = crearCubo();
+    let objetivo = crearObjetivo();
 
-    crearCubo();
-    crearObjetivo();
+    objetivo.addEventListener('dragover', function(event){
+        event.preventDefault()
+    })
 
-    function crearCubo(){
+
+    objetivo.addEventListener('drop', function(event){
+        cont++
+
+        if(cont === 2){
+            
+        }        
+        posicionRandom(cubo)
+        posicionRandom(objetivo)
+
+    })
+
+    function crearCubo() {
         let cubo = document.createElement('div');
         cubo.className = "cubo";
         cubo.draggable = true;
 
-        const maxX = escenario.offsetWidth - cubo.offsetWidth;
-        const maxY = escenario.offsetHeight - cubo.offsetHeight;
-
-        const randomX = Math.random() * maxX;
-        const randomY = Math.random() * maxY;
-
-        cubo.style.left = `${randomX}px`;
-        cubo.style.top = `${randomY}px`;
+        posicionRandom(cubo)
 
         escenario.appendChild(cubo);
 
+        return cubo;
     }
 
-    function crearObjetivo(){
+    function crearObjetivo() {
         let objetivo = document.createElement('div');
         objetivo.className = "objetivo";
 
-        const maxX = escenario.offsetWidth - objetivo.offsetWidth;
-        const maxY = escenario.offsetHeight - objetivo.offsetHeight;
+        posicionRandom(objetivo)
+
+        escenario.appendChild(objetivo);
+
+        return objetivo;
+    }
+
+    function posicionRandom(objeto){
+        const maxX = escenario.offsetWidth - objeto.offsetWidth;
+        const maxY = escenario.offsetHeight - objeto.offsetHeight;
 
         const randomX = Math.random() * maxX;
         const randomY = Math.random() * maxY;
 
-        objetivo.style.left = `${randomX}px`;
-        objetivo.style.top = `${randomY}px`;
-
-        escenario.appendChild(objetivo);
+        objeto.style.left = `${randomX}px`;
+        objeto.style.top = `${randomY}px`;   
     }
-
-
 });
