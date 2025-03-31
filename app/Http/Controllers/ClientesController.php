@@ -51,16 +51,36 @@ class ClientesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $cliente = Cliente::find($id);
+        return view('user.editarCliente', compact('cliente'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // Validar los datos del formulario
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'direccion' => 'nullable|string|max:255',
+            'ciudad' => 'nullable|string|max:255',
+            'codigo_postal' => 'nullable|string|max:20',
+            'pais' => 'nullable|string|max:255',
+        ]);
+    
+        // Buscar el cliente en la base de datos
+        $cliente = Cliente::findOrFail($id);
+    
+        // Actualizar los datos del cliente
+        $cliente->update($request->all());
+    
+        // Redirigir con un mensaje de éxito
+        return redirect("/perfil/$cliente->id")->with('success', 'Perfil actualizado correctamente.');
     }
+    
 
     /**
      * Remove the specified resource from storage.

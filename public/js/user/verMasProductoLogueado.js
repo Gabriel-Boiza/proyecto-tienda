@@ -25,5 +25,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
         datos = await peticionFetch('/agregarCarrito', 'POST', producto)
         console.log(datos);
         
+        
     })
 })

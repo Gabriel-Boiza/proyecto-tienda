@@ -101,15 +101,14 @@
                 </div>
 
                 <div class="grid grid-cols-4 gap-4 mt-4">
-                    <template x-for="(image, index) in images" :key="index">
-                        <button 
-                            class="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-purple-500 transition-all"
-                            :class="{'ring-2 ring-purple-500': currentImage === index}"
-                        >
-                            <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="Thumbnail" class="w-full h-20 object-cover">
-                        </button>
-                    </template>
+                    @if(isset($imagenesAdicionales) && $imagenesAdicionales->isNotEmpty())
+                        @foreach($imagenesAdicionales as $imagen)
+                            <img src="{{ asset('storage/' . $imagen->imagen) }}" alt="Imagen adicional" class="object-cover rounded">
+                        @endforeach
+                    @endif
                 </div>
+
+
             </div>
 
 
@@ -177,9 +176,7 @@
                     <div class="prose prose-invert">
                         <h3 class="text-lg font-semibold mb-2">Descripción</h3>
                         <p class="text-gray-400">
-                            Teclado mecánico gaming de alta gama con switches Cherry MX Red, retroiluminación RGB personalizable, 
-                            construcción en aluminio, teclas PBT de doble inyección y cable USB-C desmontable. Incluye reposamuñecas 
-                            ergonómico y software de personalización avanzado.
+                            {{$producto->descripcion}}
                         </p>
                     </div>
                     
@@ -206,5 +203,3 @@
 @endsection
 
 <script src='{{asset("js/user/canvasImagen.js")}}'></script>
-
-

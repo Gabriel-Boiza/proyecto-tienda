@@ -60,8 +60,8 @@ class ProductoController extends Controller
 
     public function userShow(string $id){
         $producto = Producto::with(['categorias', 'marca', 'caracteristicas'])->find($id);
-
-        return view('user/mostrarProducto', compact('producto'));
+        $imagenesAdicionales = DB::table('imagenes_adicionales')->where('id_producto', $id)->get();
+        return view('user/mostrarProducto', compact('producto', 'imagenesAdicionales'));
     }
 
     public function obtenerProductos(){
