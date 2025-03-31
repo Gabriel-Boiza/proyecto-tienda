@@ -68,8 +68,8 @@
     </h2>
     <div id="productos-buscados" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         @foreach($productos as $producto)
-        <div class="producto bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300 border border-gray-700/50" data-producto-id="{{$producto->id}}">
-                <div class="relative">
+        <div class="producto bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300 border border-gray-700/50 min-h-[400px] flex flex-col" data-producto-id="{{$producto->id}}">
+            <div class="relative">
                 <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-48 object-cover">
                 @if($producto->descuento != 0)
                 <div class="span-descuento">-{{$producto->descuento}}%</div>
@@ -87,9 +87,9 @@
                     </button>
                 </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 flex flex-col flex-grow">
                 <h3 class="producto-info font-bold text-lg mb-2">{{$producto->nombre}}</h3>
-                <p class="text-gray-400 text-sm mb-3">{{$producto->descripcion}}</p>
+                <p class="text-gray-400 text-sm mb-3 flex-grow">{{$producto->descripcion}}</p>
                 <div class="flex items-center mb-3">
                     <div class="flex text-yellow-400 mr-2">
                         @for($i = 0; $i < 5; $i++)
@@ -113,6 +113,7 @@
                 </div>
             </div>
         </div>
+
         @endforeach
     </div>
 </div>
