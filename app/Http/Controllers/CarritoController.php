@@ -129,6 +129,12 @@ class CarritoController extends Controller
         return response()->json(['cantidad' => $cantidad]);
     }
 
+    public function verCantidad(){
+        $cantidad = Carrito::where('cliente_id', Session::get('cliente_id'))->count();
+
+        return response()->json(['cantidad' => $cantidad]);
+    }
+
     public function verificarStock(){
         $carrito = Carrito::join('productos as p', 'carritos.producto_id', '=', 'p.id')
         ->select('carritos.*', 'p.nombre', 'p.precio')->where([
