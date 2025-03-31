@@ -12,14 +12,21 @@ class CategoriasSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('categorias')->insert([
-            ['nombre_categoria' => 'Teclados'],
-            ['nombre_categoria' => 'Ratones'],
-            ['nombre_categoria' => 'Monitores'],
-            ['nombre_categoria' => 'Auriculares'],
-            ['nombre_categoria' => 'Altavoces'],
-            ['nombre_categoria' => 'Micrófonos'],
-            ['nombre_categoria' => 'destacado'],
-        ]);
+        $categorias = [
+            'Teclados',
+            'Ratones',
+            'Monitores',
+            'Auriculares',
+            'Altavoces',
+            'Micrófonos',
+            'destacado',
+        ];
+
+        foreach ($categorias as $categoria) {
+            DB::table('categorias')->updateOrInsert(
+                ['nombre_categoria' => $categoria],
+                ['nombre_categoria' => $categoria]
+            );
+        }
     }
 }

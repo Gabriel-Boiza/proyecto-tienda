@@ -14,12 +14,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\PersonalizadosController;
 use App\Http\Controllers\PagoController;
 // Rutas de productos
 
 
 
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
+
+Route::get('/productos-stock', [ProductoController::class, 'getProductosStock']);
+Route::get('/productos-vendidos',[PedidosController::class, 'obtenerProductosMasVendidos']);
+
 
 // Rutas de login y registro de cliente
 Route::get('/loginCliente', [ClienteLoginController::class, 'showLoginForm']);
@@ -50,7 +55,8 @@ Route::post('/agregarCarrito', [CarritoController::class, 'agregarCarrito']);
 
 Route::post('/actualizarCantidad/{id}', [CarritoController::class, 'actualizarCantidad']);
 
-Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy']);
+Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
+
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
@@ -71,11 +77,16 @@ Route::get('/mis-pedidos/{id}', [PedidosController::class, 'userIndex']);
 Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']);
 Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
 Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
+Route::post('/products/store', [ProductoController::class, 'guardarImagen'])->name('products.store');
 
+Route::post('/save-personalized', [PersonalizadosController::class, 'store'])->name('save.personalized');
+Route::get('/get-personalized/{producto_id}', [PersonalizadosController::class, 'getPersonalizedImage'])->name('get.personalized');
+
+Route::get('/pedidos-mensuales', [PedidosController::class, 'obtenerPedidosMensuales']);
 
 Route::get('/pagarPedido', [PedidosController::class, 'pagarPedido']);
 
-Route::get('/juego', [GameController::class, 'juego']);
+Route::get('/juego', [GameController::class, 'juego'])->name('juego');
 
 Route::post('/pago', [PagoController::class, 'crearPago']);
 // Rutas de administración (requieren autenticación)

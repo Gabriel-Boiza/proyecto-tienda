@@ -11,7 +11,9 @@ use App\Models\Pedido;
 use App\Models\Caracteristica;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
+use App\Models\Carrito;
+use Illuminate\Support\Facades\Session;
 
 class ProductoController extends Controller
 {
@@ -110,6 +112,7 @@ class ProductoController extends Controller
             'caracteristicas' => 'nullable|array', 
             'imagenes_adicionales' => 'nullable|array',
             'descuento' => 'integer',
+            'personalizable' => 'boolean',
         ]);
     
 
@@ -128,6 +131,7 @@ class ProductoController extends Controller
             'imagen_principal' => $rutaImagenPrincipal,
             'fk_marca' => $request->marca,  
             'descuento' => $request->descuento,
+            'personalizable' => $request->personalizable,
         ]);
 
         foreach($request->caracteristicas as $index => $caracteristica){
@@ -202,6 +206,7 @@ class ProductoController extends Controller
             'precio' => 'required|numeric|min:0',
             'descripcion' => 'nullable|string',
             'stock' => 'required|integer|min:0',
+            'descuento' => 'integer',
             'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'categorias' => 'nullable|array',
             'imagenes_adicionales' => 'nullable|array',
@@ -216,6 +221,8 @@ class ProductoController extends Controller
             'precio' => $request->precio,
             'descripcion' => $request->descripcion,
             'stock' => $request->stock,
+            'descuento' => $request->descuento,
+            'personalizable' => $request->has('personalizable') ? true : false,
             'fk_marca' => $request->fk_marca, // Guardar la marca seleccionada
         ]);
 
@@ -323,6 +330,82 @@ class ProductoController extends Controller
 
         return response()->json($productos);
     }
+
+    // En tu controlador
+    public function getProductosStock() {
+
+        $productos = Producto::select('nombre', 'stock')->orderBy('stock', 'desc')->get();
+
+        return response()->json($productos);
+    }
+    public function guardarImagen(Request $request)
+    {
+        try {
+            // Validar la imagen
+            if (!$request->has('image')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se ha proporcionado ninguna imagen'
+                ], 400);
+            }
+
+            // Obtener la imagen en base64 y decodificarla
+            $image = $request->input('image');
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = Str::random(40) . '.png';
+
+            // Guardar la imagen
+            Storage::disk('public')->put('products/' . $imageName, base64_decode($image));
+
+            // Generar nombre aleatorio que empiece con "pers" seguido de 9 caracteres aleatorios
+            $randomName = 'pers' . Str::random(9);
+
+            // Crear el producto con todos los campos requeridos
+            $product = new Producto();
+            $product->nombre = $randomName;
+            $product->precio = 5;
+            $product->descripcion = 'Producto personalizado';
+            $product->stock = 1;
+            $product->imagen_principal = 'products/' . $imageName;
+            $product->descuento = 0;
+            $product->personalizable = true;
+            $product->fk_marca = 1;
+
+            DB::beginTransaction();
+            try {
+                $product->save();
+                
+                // Obtener el ID del cliente de la sesión
+                $clienteId = Session::get('cliente_id');
+
+                // Crear entrada en el carrito usando el modelo Carrito
+                Carrito::create([
+                    'cliente_id' => $clienteId,
+                    'producto_id' => $product->id,
+                    'cantidad' => 1
+                ]);
+                
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Producto añadido al carrito exitosamente',
+                    'redirect' => '/carrito'
+                ]);
+                
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al guardar el producto: ' . $e->getMessage()
+            ], 500);
+        }
+}
 
 
     

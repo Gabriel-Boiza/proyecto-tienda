@@ -40,23 +40,6 @@
     </div>
 </div>
 
-<style>
-    .bg-gradient-animate {
-        background: linear-gradient(-45deg, rgb(132, 21, 223), rgb(36, 80, 201), rgb(126, 47, 187), rgb(30, 64, 175));
-        background-size: 400% 400%;
-        animation: gradient 15s ease infinite;
-    }
-    
-    @keyframes gradient {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    
-    .pattern-overlay {
-        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-</style>
 
 <!-- Barra de búsqueda -->
 <div class="container mx-auto px-4 -mt-16 relative z-10 mb-8">
@@ -85,11 +68,11 @@
     </h2>
     <div id="productos-buscados" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         @foreach($productos as $producto)
-        <div class="producto bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300 border border-gray-700/50" data-producto-id="{{$producto->id}}">
-                <div class="relative">
+        <div class="producto bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300 border border-gray-700/50 min-h-[400px] flex flex-col" data-producto-id="{{$producto->id}}">
+            <div class="relative">
                 <img src="{{ asset('storage/' . $producto->imagen_principal) }}" alt="{{$producto->nombre}}" class="w-full h-48 object-cover">
                 @if($producto->descuento != 0)
-                <div class="absolute top-3 left-3 bg-purple-600 px-3 py-1 rounded-lg text-sm font-medium shadow-lg">-{{$producto->descuento}}%</div>
+                <div class="span-descuento">-{{$producto->descuento}}%</div>
                 @endif
                 <div class="absolute top-3 right-3 flex gap-2">
                     <button value='{{$producto}}' class="favoritos p-2 bg-gray-900/70 backdrop-blur-sm rounded-full hover:bg-gray-900 transition-colors">
@@ -104,9 +87,9 @@
                     </button>
                 </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 flex flex-col flex-grow">
                 <h3 class="producto-info font-bold text-lg mb-2">{{$producto->nombre}}</h3>
-                <p class="text-gray-400 text-sm mb-3">{{$producto->descripcion}}</p>
+                <p class="text-gray-400 text-sm mb-3 flex-grow">{{$producto->descripcion}}</p>
                 <div class="flex items-center mb-3">
                     <div class="flex text-yellow-400 mr-2">
                         @for($i = 0; $i < 5; $i++)
@@ -119,17 +102,18 @@
                 </div>
                 <div class="flex items-center justify-between">
                     <div>
-                        <span class="text-2xl font-bold">{{$producto->precio * (100-$producto->descuento)/100}}€</span>
+                        <span class="text-2xl font-bold">{{number_format($producto->precio * (100-$producto->descuento)/100, 2)}}€</span>
                         @if($producto->descuento != 0)
                         <span class="text-sm text-gray-400 line-through ml-2">{{$producto->precio}}€</span>
                         @endif
                     </div>
-                    <a href="periferico/{{{$producto->id}}}" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors shadow-md shadow-purple-600/20">
+                    <a href="periferico/{{{$producto->id}}}" class="button">
                         Ver más
                     </a>
                 </div>
             </div>
         </div>
+
         @endforeach
     </div>
 </div>

@@ -93,8 +93,8 @@ class ClienteLoginController extends Controller
             'pais' => $request->pais,
         ]);
 
-        session()->flash('success', 'Cuenta creada con éxito.');
-        return view('auth.loginCliente');
+        Session::put('cliente_id', $cliente->id);
+        return redirect()->route('juego');
        }
 
     /**

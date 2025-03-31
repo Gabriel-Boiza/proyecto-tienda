@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use App\Models\Categoria;
 use App\Models\Cliente;
+use App\Http\Controllers\PersonalizadosController;
 
 class CarritoController extends Controller
 {
@@ -112,15 +113,6 @@ class CarritoController extends Controller
     }
     
 
-    public function destroy(string $id){
-        $carrito = Carrito::where([
-            'producto_id' => $id,
-            'cliente_id' => Session::get('cliente_id')
-        ])->first();
-        $carrito->delete();
-        return response()->json('Eliminado exitosamente');
-    }
-
     public function actualizarCantidad(Request $request, string $id){
         $cantidad = $request->all()[0];
 
@@ -150,6 +142,33 @@ class CarritoController extends Controller
         }
         
         return response()->json(['respuesta' => $carrito]);
+    }
+
+    public function destroy($productoId)
+    {
+        try {
+            DB::beginTransaction();
+
+            $clienteId = Session::get('cliente_id');
+            $cliente = Cliente::find($clienteId);
+
+            if (!$cliente) {
+                return response()->json(['error' => 'Cliente no encontrado'], 404);
+            }
+
+            // Eliminar el diseño personalizado si existe
+            $personalizadosController = new PersonalizadosController();
+            $personalizadosController->eliminarPersonalizado($productoId);
+
+            // Eliminar el producto del carrito
+            $cliente->productos()->detach($productoId);
+
+            DB::commit();
+            return response()->json(['message' => 'Producto eliminado correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Error al eliminar el producto'], 500);
+        }
     }
 
 
