@@ -18,7 +18,13 @@
             <!-- Product Images -->
             <div class="space-y-4 relative">
                 @if($producto->personalizable==true && Session::get('cliente_id'))
-                <div class="bg-gray-900 p-3 rounded-lg flex items-center justify-between space-x-4">
+                <button id="toggleTools" class="mb-2 bg-purple-600 hover:bg-purple-700 py-2 px-4 rounded-lg font-bold flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                    <span>Herramientas de edición</span>
+                </button>
+            <div id="toolsPanel" class="hidden bg-gray-900 p-3 rounded-lg flex items-center justify-between space-x-4">
             <!-- Herramientas de dibujo -->
             <div class="flex space-x-2">
                 <button id="pencilTool" class="tool-btn bg-purple-600 p-2 rounded-lg hover:bg-purple-700 active" aria-label="Herramienta de lápiz">
@@ -76,10 +82,10 @@
                                 class="w-full object-contain" 
                                 id="product-image">
                             
-                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                <div class="w-64 h-64"> <!-- Aumentado el tamaño del canvas -->
+                            <div class="absolute top-1/2 mt-28 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div id="canvasContainer" class="w-64 h-64 hidden" style="display: none; background-color: rgba(0,0,0,0.1); border: 2px dashed #9333ea; border-radius: 0.5rem;">
                                     <canvas id="productCanvas"
-                                            class="w-full h-full border-2 border-purple-500 rounded-lg"
+                                            class="w-full h-full rounded-lg"
                                             style="background: transparent;">
                                     </canvas>
                                 </div>
