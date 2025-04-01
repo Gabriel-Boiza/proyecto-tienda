@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="flex justify-end space-x-4 pt-4">
-                    <a href="/perfil/{{$cliente->id}}">
+                    <a href="/perfil">
                         Cancelar
                     </a>
                     <button type="submit" class="button">

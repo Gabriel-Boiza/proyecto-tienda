@@ -9,7 +9,7 @@
         <div class="bg-gray-800/30 p-6 rounded-lg shadow-lg">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold">Información Personal</h2>
-                <a href="/editPerfil/{{$cliente->id}}" class="button">
+                <a href="/editPerfil" class="button">
                     Editar perfil
                 </a>
             </div>

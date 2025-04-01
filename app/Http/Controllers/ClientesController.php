@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use Illuminate\Support\Facades\Session;
 
 class ClientesController extends Controller
 {
@@ -41,7 +42,8 @@ class ClientesController extends Controller
         return view('app-admin.clientes.mostrar', compact('cliente'));
     }
 
-    public function userShow($id){
+    public function userShow(){
+        $id = Session::get('cliente_id');
         $cliente = Cliente::find($id);
         return view('user.perfil', compact('cliente'));
     }
@@ -49,8 +51,9 @@ class ClientesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
+        $id = Session::get('cliente_id');
         $cliente = Cliente::find($id);
         return view('user.editarCliente', compact('cliente'));
     }
@@ -78,7 +81,7 @@ class ClientesController extends Controller
         $cliente->update($request->all());
     
         // Redirigir con un mensaje de éxito
-        return redirect("/perfil/$cliente->id")->with('success', 'Perfil actualizado correctamente.');
+        return redirect("/perfil")->with('success', 'Perfil actualizado correctamente.');
     }
     
 

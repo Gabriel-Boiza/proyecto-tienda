@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
         datos = await peticionFetch('/agregarCarrito', 'POST', producto)
         console.log(datos);
         
+        let valorCarritoNum = await peticionFetch('/cantidadCarrito', 'GET', null);
+        spanValorCarrito.textContent = valorCarritoNum.cantidad
         
     })
 })

@@ -78,7 +78,7 @@ class ClienteLoginController extends Controller
             'dirección' => 'nullable|string|max:255',
             'ciudad' => 'nullable|string|max:100',
             'codigo_postal' => 'nullable|string|max:20',
-            'pais' => 'nullable|string|max:3',
+            'pais' => 'nullable|string|max:50',
         ]);
 
         $cliente = Cliente::create([
