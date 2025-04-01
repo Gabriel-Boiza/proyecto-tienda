@@ -7,7 +7,12 @@
         <h1 class="text-2xl font-bold text-gray-400 mb-6">Perfil de cliente</h1>
 
         <div class="bg-gray-800/30 p-6 rounded-lg shadow-lg">
-            <h2 class="text-xl font-semibold mb-4">Información Personal</h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Información Personal</h2>
+                <a href="/editPerfil" class="button">
+                    Editar perfil
+                </a>
+            </div>
             
             <div class="space-y-4">
                 <p><strong>Nombre:</strong> {{ $cliente->nombre }} {{ $cliente->apellido }}</p>

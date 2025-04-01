@@ -126,17 +126,13 @@
                         <label for="pais" class="block text-sm font-medium text-gray-300 mb-1">
                             País (Opcional)
                         </label>
-                        <select
+                        <input
+                            type="text"
                             id="pais"
                             name="pais"
+                            placeholder="País"
                             class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200 appearance-none"
                         >
-                            <option value="" selected>Selecciona tu país</option>
-                            <option value="es">España</option>
-                            <option value="us">Estados Unidos</option>
-                            <option value="mx">México</option>
-                            <option value="ar">Argentina</option>
-                        </select>
                     </div>
                 </div>
                 

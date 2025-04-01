@@ -25,7 +25,8 @@ class PedidosController extends Controller
         return view('app-admin.pedidos.leer', compact('pedidos'));
     }
 
-    public function userIndex($id){
+    public function userIndex(){
+        $id = Session::get('cliente_id');
         $pedidos = Cliente::with('pedidos')->find($id)->pedidos;
         return view('user.misPedidos', compact('pedidos'));
     }
@@ -40,19 +41,28 @@ class PedidosController extends Controller
 
     public function productosPedido($id){
         $productos = Pedido::with('productos')->find($id)->productos;
-        return view('user.productosPedido', compact('productos'));
+        $pedido = Pedido::with('productos')->find($id);
+
+        if($pedido->cliente_id == Session::get('cliente_id')){
+            return view('user.productosPedido', compact('productos'));
+        }
+        return redirect()->route('inicio');
+
     }
 
     public function generarPdf($id){
 
-        
-    $pedido = Pedido::with('productos', 'cliente')->findOrFail($id);
-    $productos = $pedido->productos;
+    
+        $pedido = Pedido::with('productos', 'cliente')->findOrFail($id);
+        $productos = $pedido->productos;
 
-    $pdf = PDF::loadView('user.pdf.factura', compact('productos', 'pedido'));
+        $pdf = PDF::loadView('user.pdf.factura', compact('productos', 'pedido'));
 
-    return $pdf->stream('pedido.pdf'); 
-        
+        if($pedido->cliente_id == Session::get('cliente_id')){
+            return $pdf->stream('pedido.pdf'); 
+        }
+
+        return redirect()->route('inicio');
     }
 
     public function pagarPedido(){

@@ -32,7 +32,9 @@ Route::get('/logoutCliente', [ClienteLoginController::class, 'logout']);
 Route::get('/registroCliente', [ClienteLoginController::class, 'registro']);
 Route::post('/registradoCliente', [ClienteLoginController::class, 'store']);
 Route::post('/requestLoginCliente', [ClienteLoginController::class, 'loginCliente']);
-
+Route::get('/editPerfil', [ClientesController::class, 'edit']);
+Route::post('/updatePerfil/{id}', [ClientesController::class, 'update']);
+Route::get('perfil', [ClientesController::class, 'userShow'])->name('perfil');
 // Rutas del carrito
 Route::get('/carrito', [CarritoController::class, 'index']); // Esta ruta puede ser la vista del carrito
 
@@ -44,6 +46,7 @@ Route::delete('/api/carrito/{clienteId}/{productoId}', [CarritoController::class
 Route::get('/api/carrito', [CarritoController::class, 'obtenerCarrito']); 
 
 Route::get('/verCarrito', [CarritoController::class, 'show']); 
+Route::get('/cantidadCarrito', [CarritoController::class, 'verCantidad']);
 
 Route::get('/verificarStock', [CarritoController::class, 'verificarStock']); 
 
@@ -61,9 +64,9 @@ Route::delete('/api/carrito/{id}', [CarritoController::class, 'destroy'])->name(
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('perfil/{id}', [ClientesController::class, 'userShow']);
 
-Route::get('/', [ProductoController::class, 'destacados']);
+
+Route::get('/', [ProductoController::class, 'destacados'])->name('inicio');
 Route::get('/favoritos', [ProductoController::class, 'favoritos']);     
 Route::get('/periferico/{id}', [ProductoController::class, 'userShow']); 
 Route::get('/categoria/{id}', [CategoriaController::class, 'userShow']); 
@@ -73,7 +76,7 @@ Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias'])
 Route::post('/api/productosBusqueda', [ProductoController::class, 'obtenerProductosBusqueda']); 
 Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias']); 
 
-Route::get('/mis-pedidos/{id}', [PedidosController::class, 'userIndex']);
+Route::get('/mis-pedidos', [PedidosController::class, 'userIndex']);
 Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']);
 Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
 Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
@@ -108,4 +111,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
 
 });
+
+
 
