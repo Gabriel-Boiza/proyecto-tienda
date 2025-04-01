@@ -123,6 +123,13 @@ class ProductoController extends Controller
             $rutaImagenPrincipal = $imagenPrincipal->store('productos', 'public'); 
         }
 
+        if ($request->has('categorias') && count($request->categorias) > 0) {
+            $letrasCategoria = substr($request->categorias[0], 0, 2);
+        }
+
+        $letrasNombre = substr($request->nombre, 0, 2);
+
+
         $producto = Producto::create([
             'nombre' => $request->nombre,
             'precio' => $request->precio,
@@ -131,8 +138,10 @@ class ProductoController extends Controller
             'imagen_principal' => $rutaImagenPrincipal,
             'fk_marca' => $request->marca,  
             'descuento' => $request->descuento,
-            'personalizable' => $request->personalizable,
+            'personalizable' => $request->has('personalizable') ? true : false,
         ]);
+
+        $idFormateado = sprintf('%03d', $producto->id);
 
         foreach($request->caracteristicas as $index => $caracteristica){
             DB::table('productos_caracteristicas')->insert([
@@ -156,6 +165,10 @@ class ProductoController extends Controller
         if ($request->has('categorias') && count($request->categorias) > 0) {
             $producto->categorias()->attach($request->categorias);  
         }
+
+        $producto->update([
+            'id' => $letrasCategoria.'-'.$idFormateado.$letrasNombre,
+        ]);
     
         return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
     }
