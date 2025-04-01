@@ -72,7 +72,12 @@
                         </svg>
                     </button>
                 </div>
+                <!-- Mensaje para pantallas pequeñas -->
+                <div class="md:hidden bg-yellow-600 text-white p-3 rounded-lg mb-4">
+                    <p class="font-medium">Para personalizar este producto, por favor utiliza un dispositivo con pantalla más grande (mínimo 720p).</p>
+                </div>
                 @endif
+                
                 <div class="relative bg-gray-800 rounded-lg overflow-hidden">
                     @if($producto->personalizable == true && Session::get('cliente_id'))
                         <!-- Contenedor para productos personalizables -->
@@ -82,8 +87,8 @@
                                 class="w-full object-contain" 
                                 id="product-image">
                             
-                            <div class="absolute top-1/2 mt-28 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                <div id="canvasContainer" class="w-64 h-64 hidden" style="display: none; background-color: rgba(0,0,0,0.1); border: 2px dashed #9333ea; border-radius: 0.5rem;">
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-28 hidden md:block" id="canvasWrapper">
+                                <div id="canvasContainer" class="hidden w-32 h-32 md:w-64 md:h-64" style="display: none; background-color: rgba(0,0,0,0.1); border: 2px dashed #9333ea; border-radius: 0.5rem;">
                                     <canvas id="productCanvas"
                                             class="w-full h-full rounded-lg"
                                             style="background: transparent;">
@@ -213,4 +218,39 @@
 
 <script src='{{asset("js/user/canvasImagen.js")}}'></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to check if the screen is 16:9 and at least 720p
+        function checkAspectRatio() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const aspectRatio = width / height;
+            const is16by9 = Math.abs(aspectRatio - (16/9)) < 0.3; // Further increased tolerance for 16:9
+            const is720pOrHigher = width >= 1280 && height >= 720;
+            
+            const canvasWrapper = document.getElementById('canvasWrapper');
+            const toolsPanel = document.getElementById('toolsPanel');
+            const toggleToolsButton = document.getElementById('toggleTools');
+            
+            console.log(`Width: ${width}, Height: ${height}, Aspect Ratio: ${aspectRatio}`);
+            console.log(`is16by9: ${is16by9}, is720pOrHigher: ${is720pOrHigher}`);
+            
+            if (canvasWrapper && toolsPanel && toggleToolsButton) {
+                if (is720pOrHigher && is16by9) {
+                    toggleToolsButton.classList.remove('hidden');
+                } else {
+                    canvasWrapper.classList.add('hidden');
+                    toolsPanel.classList.add('hidden');
+                    toggleToolsButton.classList.add('hidden');
+                }
+            }
+        }
 
+        
+        // Check on load and when the window is resized
+        checkAspectRatio();
+        window.addEventListener('resize', checkAspectRatio);
+
+        
+    });
+</script>
