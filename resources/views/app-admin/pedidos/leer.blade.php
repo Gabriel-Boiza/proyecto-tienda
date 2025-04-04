@@ -4,7 +4,7 @@
 
 @section('contentAdmin')
 <div class="flex-1 p-6">
-    <div class="flex justify-between items-center mb-6">
+    <div class="lex justify-between items-center mb-6 productos-header">
         <h1 class="text-xl font-bold">Historial de Pedidos</h1>
     </div>
 
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Orders Table -->
-    <div class="bg-zinc-800/50 rounded-lg overflow-hidden">
+    <div class="bg-zinc-800/50 rounded-lg overflow-hidden productos-table">
         <table id="tabla-pedidos" class="w-full">
             <thead>
                 <tr class="text-left text-gray-400 border-b border-zinc-700">

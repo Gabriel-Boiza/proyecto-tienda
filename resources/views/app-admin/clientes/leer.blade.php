@@ -4,38 +4,38 @@
 
 @section('contentAdmin')
 <div class="flex-1 p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-xl font-bold">Lista de Clientes</h1>
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 productos-header">
+        <h1 class="text-xl font-bold mb-4 sm:mb-0">Lista de Clientes</h1>
     </div>
 
     <!-- Search and Filter Section -->
     <div class="mb-6 space-y-4">
         <!-- Search bar -->
-        <div class="flex space-x-4">
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
             <input type="text" 
                    id="searchInput"
                    placeholder="Buscar clientes..." 
-                   class="flex-1 bg-zinc-800 rounded-md px-4 py-2 text-gray-300">
+                   class="w-full md:flex-1 bg-zinc-800 rounded-md px-4 py-2 text-gray-300 search-input">
             
             <!-- Ciudad Dropdown -->
             <select id="ciudadFilter" 
-                    class="bg-zinc-800 rounded-md px-4 py-2 text-gray-300">
+                    class="w-full md:w-auto bg-zinc-800 rounded-md px-4 py-2 text-gray-300 filter-select">
                 <option value="">Todas las ciudades</option>
             </select>
         </div>
     </div>
 
     <!-- Clientes Table -->
-    <div class="bg-zinc-800/50 rounded-lg overflow-hidden">
+    <div class="bg-zinc-800/50 rounded-lg overflow-x-auto productos-table">
         <table id="tabla-clientes" class="w-full">
             <thead>
                 <tr class="text-left text-gray-400 border-b border-zinc-700">
                     <th class="p-4">ID</th>
                     <th class="p-4">Nombre</th>
-                    <th class="p-4">Apellido</th>
-                    <th class="p-4">Email</th>
-                    <th class="p-4">Teléfono</th>
-                    <th class="p-4">Ciudad</th>
+                    <th class="p-4 hidden sm:table-cell">Apellido</th>
+                    <th class="p-4 hidden md:table-cell">Email</th>
+                    <th class="p-4 hidden lg:table-cell">Teléfono</th>
+                    <th class="p-4 hidden md:table-cell">Ciudad</th>
                     <th class="p-4">Acciones</th>
                 </tr>
             </thead>
@@ -44,10 +44,10 @@
                 <tr class="border-b border-zinc-700 hover:bg-zinc-700/50">
                     <td class="p-4">{{ $cliente['id'] }}</td>
                     <td class="p-4">{{ $cliente['nombre'] }}</td>
-                    <td class="p-4">{{ $cliente['apellido'] }}</td>
-                    <td class="p-4">{{ $cliente['email'] }}</td>
-                    <td class="p-4">{{ $cliente['telefono'] }}</td>
-                    <td class="p-4">{{ $cliente['ciudad'] }}</td>
+                    <td class="p-4 hidden sm:table-cell">{{ $cliente['apellido'] }}</td>
+                    <td class="p-4 hidden md:table-cell">{{ $cliente['email'] }}</td>
+                    <td class="p-4 hidden lg:table-cell">{{ $cliente['telefono'] }}</td>
+                    <td class="p-4 hidden md:table-cell">{{ $cliente['ciudad'] }}</td>
                     <td class="p-4">
                         <div class="flex space-x-2">
                             <a href="{{ route('clientes.show', $cliente->id) }}" title="Ver historial de pedidos" class="text-blue-400 hover:text-blue-300">
