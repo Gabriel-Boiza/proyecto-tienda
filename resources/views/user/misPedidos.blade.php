@@ -93,6 +93,10 @@
                                             <a href="/cancelar-pedido/{{$pedido->id}}" class="text-red-500 hover:text-red-400">
                                                 Cancelar
                                             </a>
+                                        @elseif($pedido->estado == 'enviado')
+                                            <a href="/confirmar-pedido/{{$pedido->id}}" class="text-green-500 hover:text-green-400">
+                                                Confirmar envío
+                                            </a>
                                         @endif
                                         <a href="/generarPdf/{{$pedido->id}}" title="Generar factura" class="text-blue-400 hover:text-blue-300 ml-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

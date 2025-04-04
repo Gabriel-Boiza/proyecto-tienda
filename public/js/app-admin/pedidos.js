@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function(event){
         
         const filteredOrders = allOrders.filter(order => {
             const matchesSearch = order.id.toString().includes(searchTerm) || 
-                                 (order.created_at && order.created_at.toLowerCase().includes(searchTerm));
+                                 (order.created_at && order.created_at.toLowerCase().includes(searchTerm)) ||
+                                 (order.fecha_envio && order.fecha_envio.toLowerCase().includes(searchTerm));
             const matchesStatus = selectedStatus === '' || 
                                  order.estado.toLowerCase() === selectedStatus;
             return matchesSearch && matchesStatus;
@@ -30,23 +31,21 @@ document.addEventListener('DOMContentLoaded', function(event){
             // Create cells
             const cells = [
                 row.insertCell(0), // ID
-                row.insertCell(1), // Fecha
-                row.insertCell(2), // Total
-                row.insertCell(3)  // Estado
+                row.insertCell(1), // Fecha creación
+                row.insertCell(2), // Fecha envío
+                row.insertCell(3), // Total
+                row.insertCell(4)  // Estado
             ];
 
             cells.forEach(cell => {
                 cell.className = "p-4 text-gray-300";
             });
 
-            // Format date
-            const fecha = pedido.created_at ? new Date(pedido.created_at) : null;
-            const fechaFormateada = fecha ? `${fecha.getDate().toString().padStart(2, '0')}/${(fecha.getMonth() + 1).toString().padStart(2, '0')}/${fecha.getFullYear()}` : 'N/A';
-
             // Fill cells with data
             cells[0].textContent = pedido.id;
-            cells[1].textContent = fechaFormateada;
-            cells[2].textContent = `${parseFloat(pedido.total).toFixed(2)} €`;
+            cells[1].textContent = pedido.created_at;
+            cells[2].textContent = pedido.fecha_envio;
+            cells[3].textContent = `${parseFloat(pedido.total).toFixed(2)} €`;
             
             // Create status dropdown
             const form = document.createElement('form');
@@ -85,19 +84,20 @@ document.addEventListener('DOMContentLoaded', function(event){
             });
             
             form.appendChild(selectEl);
-            cells[3].appendChild(form);
+            cells[4].appendChild(form);
         });
     }
 
     // Initial data load - we'll get the data from the table that's already rendered
     const tableRows = document.getElementById('tabla-pedidos').getElementsByTagName('tbody')[0].rows;
     allOrders = Array.from(tableRows).map(row => {
-        const estadoSelect = row.cells[3].querySelector('select');
+        const estadoSelect = row.cells[4].querySelector('select');
         
         return {
             id: row.cells[0].textContent.trim(),
             created_at: row.cells[1].textContent.trim(),
-            total: parseFloat(row.cells[2].textContent.replace('€', '').trim()),
+            fecha_envio: row.cells[2].textContent.trim(),
+            total: parseFloat(row.cells[3].textContent.replace('€', '').trim()),
             estado: estadoSelect ? estadoSelect.value : ''
         };
     });
