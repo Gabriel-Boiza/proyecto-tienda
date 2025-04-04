@@ -179,7 +179,7 @@
                     >
                         Agregar al carrito
                     </button>
-                    <button class="w-full bg-gray-800 hover:bg-gray-700 py-4 rounded-lg font-bold">
+                    <button value="{{ $producto }}" class="favoritosMostrar w-full bg-gray-800 hover:bg-gray-700 py-4 rounded-lg font-bold">
                         Añadir a Favoritos
                     </button>
                 </div>
@@ -217,6 +217,7 @@
 @endsection
 
 <script src='{{asset("js/user/canvasImagen.js")}}'></script>
+<script src='{{ asset("js/user/favoritosMostrar.js") }}'></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
