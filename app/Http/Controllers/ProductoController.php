@@ -113,6 +113,7 @@ class ProductoController extends Controller
             'imagenes_adicionales' => 'nullable|array',
             'descuento' => 'integer',
             'personalizable' => 'boolean',
+            
         ]);
     
 
@@ -123,11 +124,7 @@ class ProductoController extends Controller
             $rutaImagenPrincipal = $imagenPrincipal->store('productos', 'public'); 
         }
 
-        if ($request->has('categorias') && count($request->categorias) > 0) {
-            $letrasCategoria = substr($request->categorias[0], 0, 2);
-        }
 
-        $letrasNombre = substr($request->nombre, 0, 2);
 
 
         $producto = Producto::create([
@@ -139,9 +136,9 @@ class ProductoController extends Controller
             'fk_marca' => $request->marca,  
             'descuento' => $request->descuento,
             'personalizable' => $request->has('personalizable') ? true : false,
+            'codigo_producto' => "abc",
         ]);
 
-        $idFormateado = sprintf('%03d', $producto->id);
 
         foreach($request->caracteristicas as $index => $caracteristica){
             DB::table('productos_caracteristicas')->insert([
@@ -166,9 +163,21 @@ class ProductoController extends Controller
             $producto->categorias()->attach($request->categorias);  
         }
 
+        $categoria = "";
+        if ($request->has('categorias') && count($request->categorias) > 0) {
+            $categoria = Categoria::find($request->categorias[0]);
+            $letrasCategoria = $categoria ? substr($categoria->nombre_categoria, 0, 2) : 'XX';
+        } else {
+            $letrasCategoria = 'XX';
+        }
+        
+        $letrasNombre = substr($request->nombre, 0, 2);
+        $idFormateado = sprintf('%03d', $producto->id);
+        
         $producto->update([
-            'id' => $letrasCategoria.'-'.$idFormateado.$letrasNombre,
+            'codigo_producto' => strtoupper($letrasCategoria).'-'.$idFormateado.strtoupper($letrasNombre),
         ]);
+        
     
         return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
     }

@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function(event){
                 cell.className = "p-4 text-gray-300";
             });
 
-            cells[0].textContent = producto.id;
+            cells[0].textContent = producto.codigo_producto;
             cells[1].textContent = producto.nombre;
             cells[2].textContent = producto.descripcion;
             cells[3].textContent = `${producto.precio.toFixed(2)}€`;
