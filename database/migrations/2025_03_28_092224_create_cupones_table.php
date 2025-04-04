@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('cupones', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo');
+            $table->integer('descuento');
             $table->timestamps();
         });
     }

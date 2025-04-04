@@ -10,13 +10,14 @@
     @apply font-normal text-gray-700 dark:text-gray-400;
 }
 
+
 .cubo{
     width: 58px;
     height: 58px; 
-    background-color: purple;
+    background-color: rgb(216, 26, 216);
     cursor: pointer;
     position: absolute;
-    
+    border-radius: 6px;
 }
 
 .objetivo {
@@ -24,4 +25,11 @@
     height: 64px;
     border: 2px dashed white; /* Línea discontinua en el borde */
     position: absolute;
+}
+
+
+dialog[open] { 
+    @apply text-white bg-slate-700 flex flex-col items-center gap-8 p-12 rounded-lg;
+
+
 }

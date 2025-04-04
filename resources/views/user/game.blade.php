@@ -25,12 +25,26 @@
             </article>
         </div>
     </div>
+
     <div class="relative w-full px-8 lg:px-24">
         <h2 class="text-2xl md:text-3xl font-bold mb-8">Juego</h2>
+        <div id="score-container" class="mb-4 text-center">
+            <span class="text-xl font-semibold">Puntuación: </span>
+            <span id="puntuacion" class="text-2xl font-bold text-green-500">0</span>
+        </div>
         <div id="escenario" class="w-full h-40 sm:h-48 md:h-56 lg:h-64 xl:h-72 2xl:h-80 rounded-lg shadow-sm bg-gray-800 border-gray-300"></div>
     </div>
 </div>
 
+<dialog id="dialog">
+<h2 class="text-3xl font-bold mb-4">¡Felicidades!</h2>
+        <p class="text-2xl" id="dialog-descripcion">Has ganado el cupón de descuento: </p>
+        <form method="dialog">
+            <button class="button">
+                Cerrar
+            </button>
+        </form>
+</dialog>
 
 <script src="{{asset('js/user/game.js')}}"></script>
 

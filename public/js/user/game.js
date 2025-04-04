@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     objetivo.addEventListener('drop', function(event){
         cont++
+        document.getElementById('puntuacion').textContent = cont
 
-        if(cont === 2){
-            
-        }        
+        if(cont === 5){abrirDialogo()}       
+         
         posicionRandom(cubo)
         posicionRandom(objetivo)
 
@@ -52,5 +52,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         objeto.style.left = `${randomX}px`;
         objeto.style.top = `${randomY}px`;   
+    }
+
+    function abrirDialogo() {
+        const dialogo = document.getElementById('dialog');
+        const descripcion = document.getElementById('dialog-descripcion');
+        
+        
+        descripcion.textContent = 'Has ganado un 10% de descuento!'; 
+        
+        dialogo.showModal(); 
     }
 });
