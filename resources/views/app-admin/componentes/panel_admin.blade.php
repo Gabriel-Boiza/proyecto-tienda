@@ -1,6 +1,19 @@
-<aside class="w-64 p-6 bg-zinc-900 shadow">
-        <!-- Logo -->
-    <div class="text-xl font-bold text-purple-500 mb-8">
+<!-- Botón de menú hamburguesa (visible solo en móviles) -->
+<div class="lg:hidden fixed top-0 left-0 z-50 w-full bg-zinc-900 shadow-md">
+    <div class="flex items-center justify-between p-4">
+        <div class="text-xl font-bold text-purple-500">PePeriféricos</div>
+        <button id="menu-toggle" class="text-gray-300 hover:text-white focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<!-- Panel lateral (oculto en móviles por defecto) -->
+<aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:relative w-64 p-6 bg-zinc-900 shadow z-40 lg:z-0 h-full overflow-y-auto pt-16 lg:pt-6">
+    <!-- Logo (oculto en móviles porque ya está en la barra superior) -->
+    <div class="text-xl font-bold text-purple-500 mb-8 hidden lg:block">
         PePeriféricos
     </div>
 
@@ -66,7 +79,6 @@
             <span>Clientes</span>
         </a>
 
-
         <a href="{{route('pedidos.index')}}" 
             class="flex items-center space-x-2 {{ request()->routeIs('pedidos.index') ? 'text-purple-500' : 'text-gray-500 hover:text-gray-300' }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -76,3 +88,57 @@
         </a>
     </nav>
 </aside>
+
+<!-- Overlay para cerrar el menú al hacer clic fuera (solo en móviles) -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-30 lg:hidden"></div>
+
+<!-- Script para controlar el menú hamburguesa -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        // Función para abrir/cerrar el menú
+        function toggleMenu() {
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Abrir menú
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-50', 'pointer-events-auto');
+            } else {
+                // Cerrar menú
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.remove('opacity-50', 'pointer-events-auto');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+        
+        // Event listeners
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        // Cerrar menú al hacer clic en un enlace (en móviles)
+        const navLinks = sidebar.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 1024) { // lg breakpoint
+                    toggleMenu();
+                }
+            });
+        });
+        
+        // Ajustar para cambios de tamaño de ventana
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) {
+                // En pantallas grandes, asegurarse de que el menú esté visible
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('opacity-50', 'pointer-events-auto');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else if (!sidebar.classList.contains('-translate-x-full')) {
+                // En pantallas pequeñas, si el menú está abierto, cerrarlo
+                toggleMenu();
+            }
+        });
+    });
+</script>

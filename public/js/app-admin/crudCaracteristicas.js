@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function(event){
 
 function generarTablas(){
     const container = document.getElementById('container');
-    container.className = 'w-full max-w-[60%]';
+    container.className = 'w-full md:max-w-[60%]';
     container.innerHTML = '';
 
     fetch('/api/caracteristica')

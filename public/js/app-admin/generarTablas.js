@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function(event){
             const row = tablaProductos.insertRow();
             row.className = "border-b border-zinc-700 hover:bg-zinc-700/50";
 
+            // Crear celdas con clases responsivas
             const cells = [
                 row.insertCell(0), // ID
                 row.insertCell(1), // Nombre
@@ -39,9 +40,15 @@ document.addEventListener('DOMContentLoaded', function(event){
                 row.insertCell(6)  // Acciones
             ];
 
+            // Aplicar clases base a todas las celdas
             cells.forEach(cell => {
                 cell.className = "p-4 text-gray-300";
             });
+
+            // Aplicar clases responsivas específicas
+            cells[2].className += " hidden md:table-cell"; // Descripción - oculta en móviles
+            cells[4].className += " hidden sm:table-cell"; // Stock - oculta en móviles pequeños
+            cells[5].className += " hidden lg:table-cell"; // Categorías - oculta en tablets y móviles
 
             cells[0].textContent = producto.id;
             cells[1].textContent = producto.nombre;
@@ -158,24 +165,24 @@ document.addEventListener('DOMContentLoaded', function(event){
     }
 
     function eliminarProducto(id) {
-if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-    fetch(`productos/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+            fetch(`productos/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Remove product from allProducts array
+                    allProducts = allProducts.filter(product => product.id !== id);
+                    // Update the table with the filtered products
+                    filterProducts();
+                } else {
+                    alert('Error al eliminar el producto');
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
-    })
-    .then(response => {
-        if (response.ok) {
-            // Remove product from allProducts array
-            allProducts = allProducts.filter(product => product.id !== id);
-            // Update the table with the filtered products
-            filterProducts();
-        } else {
-            alert('Error al eliminar el producto');
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-}
-})
+    }
+});
