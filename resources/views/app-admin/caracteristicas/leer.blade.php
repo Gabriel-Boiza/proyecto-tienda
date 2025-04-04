@@ -16,7 +16,7 @@
                 placeholder="Nombre de la característica" 
                 class="admin-input w-[70%]"
             >
-            @error('nombre_categoria')
+            @error('caracteristica')
                 <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>

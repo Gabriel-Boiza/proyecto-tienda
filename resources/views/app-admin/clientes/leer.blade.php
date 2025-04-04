@@ -4,7 +4,7 @@
 
 @section('contentAdmin')
 <div class="flex-1 p-6">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-6 productos-header">
         <h1 class="text-xl font-bold">Lista de Clientes</h1>
     </div>
 
@@ -15,18 +15,18 @@
             <input type="text" 
                    id="searchInput"
                    placeholder="Buscar clientes..." 
-                   class="flex-1 bg-zinc-800 rounded-md px-4 py-2 text-gray-300">
+                   class="flex-1 bg-zinc-800 rounded-md px-4 py-2 text-gray-300 search-input">
             
             <!-- Ciudad Dropdown -->
             <select id="ciudadFilter" 
-                    class="bg-zinc-800 rounded-md px-4 py-2 text-gray-300">
+                    class="bg-zinc-800 rounded-md px-4 py-2 text-gray-300 filter-select">
                 <option value="">Todas las ciudades</option>
             </select>
         </div>
     </div>
 
     <!-- Clientes Table -->
-    <div class="bg-zinc-800/50 rounded-lg overflow-hidden">
+    <div class="bg-zinc-800/50 rounded-lg overflow-hidden productos-table">
         <table id="tabla-clientes" class="w-full">
             <thead>
                 <tr class="text-left text-gray-400 border-b border-zinc-700">

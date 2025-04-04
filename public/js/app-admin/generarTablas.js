@@ -62,7 +62,15 @@ document.addEventListener('DOMContentLoaded', function(event){
                 
                 cells[5].appendChild(categoriasContainer);
             } else {
-                cells[5].textContent = 'Sin categorías';
+                const categoriasContainer = document.createElement('div');
+                categoriasContainer.className = 'flex flex-wrap gap-2';
+                
+                const categoriaTag = document.createElement('span');
+                categoriaTag.className = 'bg-purple-500/30 text-purple-200 px-2 py-1 rounded-md text-xs';
+                categoriaTag.textContent = 'Sin categorías';
+                categoriasContainer.appendChild(categoriaTag);
+                
+                cells[5].appendChild(categoriasContainer);
             }
 
             // Crear contenedor para los iconos de acciones
