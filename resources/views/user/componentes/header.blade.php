@@ -33,14 +33,14 @@
                 </div>
 
                 <!-- Favoritos -->
-                <a href="/favoritos" class="relative group p-2 hover:text-purple-500 transition-colors">
+                <a href="/favoritos" aria-label="favoritos" class="relative group p-2 hover:text-purple-500 transition-colors">
                     <svg class="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                     </svg>
                 </a>
 
                 <!-- Cart -->
-                 <a href="/carrito">
+                 <a href="/carrito" aria-label="carrito" >
                     <div class="relative group">
                         <button class="p-2 hover:text-purple-500 transition-colors">
                             <svg class="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,14 +93,14 @@
 
             <!-- Enlaces de navegación -->
             <div class="flex flex-col space-y-3">
-                <a href="/favoritos" class="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-purple-600/20 p-2 rounded-lg transition-colors">
+                <a href="/favoritos" aria-label="favoritos"  class="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-purple-600/20 p-2 rounded-lg transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                     </svg>
                     <span>Favoritos</span>
                 </a>
                 
-                <a href="/carrito" class="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-purple-600/20 p-2 rounded-lg transition-colors">
+                <a href="/carrito" aria-label="carrito"  class="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-purple-600/20 p-2 rounded-lg transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                     </svg>
@@ -108,7 +108,7 @@
                     <span id="valorCarritoMobile" class="bg-gradient-to-br from-purple-500 to-purple-700 text-xs text-white font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg"></span>
                 </a>
 
-                <div class="border-t border-gray-700 my-1 pt-1"></div>
+                <div aria-label="perfil"  class="border-t border-gray-700 my-1 pt-1"></div>
 
                 @if(Session::Has('cliente_id'))
                     <a href="/perfil/{{Session::get('cliente_id')}}" class="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-purple-600/20 p-2 rounded-lg transition-colors">
