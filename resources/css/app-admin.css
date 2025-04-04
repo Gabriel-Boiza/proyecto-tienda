@@ -1,0 +1,79 @@
+/* Estilos comunes para el panel de administración */
+
+/* Botones principales */
+.admin-button {
+    @apply bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md transition-colors shadow-md shadow-purple-600/20 text-white;
+}
+
+/* Botones secundarios */
+.admin-button-secondary {
+    @apply bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-md transition-colors shadow-md text-white;
+}
+
+/* Botones de acción (eliminar) */
+.admin-button-danger {
+    @apply bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md transition-colors shadow-md text-white;
+}
+
+/* Inputs */
+.admin-input {
+    @apply w-full p-2 rounded-md bg-zinc-800 text-gray-300 placeholder-gray-400 border border-zinc-700 focus:border-purple-500 focus:outline-none;
+}
+
+/* Contenedores de secciones */
+.admin-container {
+    @apply bg-zinc-800/50 rounded-lg p-4 w-full;
+}
+
+/* Títulos de secciones */
+.admin-title {
+    @apply text-xl font-bold mb-6 text-white;
+}
+
+/* Subtítulos */
+.admin-subtitle {
+    @apply text-lg font-semibold mb-4 text-gray-200;
+}
+
+/* Tablas */
+.admin-table {
+    @apply w-full border-collapse;
+}
+
+.admin-table th {
+    @apply bg-zinc-800 text-left p-3 text-gray-300;
+}
+
+.admin-table td {
+    @apply border-t border-zinc-700 p-3 text-gray-300;
+}
+
+.admin-table tr:hover {
+    @apply bg-zinc-800/70;
+}
+
+/* Badges o etiquetas */
+.admin-badge {
+    @apply px-2 py-1 rounded-md text-xs font-medium;
+}
+
+.admin-badge-purple {
+    @apply bg-purple-600 text-white;
+}
+
+.admin-badge-blue {
+    @apply bg-blue-600 text-white;
+}
+
+/* Animación de gradiente (similar a inicio.css) */
+.admin-gradient-animate {
+    @apply bg-gradient-to-r from-purple-600 via-blue-600 to-purple-400;
+    background-size: 400% 400%;
+    animation: adminGradient 15s ease infinite;
+}
+
+@keyframes adminGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
