@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function(event){
+    const container = document.getElementById('container');
     generarCategoria();
     generarTablas();
 });
 
 function generarTablas(){
-    const container = document.getElementById('container');
     container.className = 'w-full max-w-[60%]';
     container.innerHTML = '';
 
@@ -142,8 +142,8 @@ function generarCategoria() {
                 return;
             }
 
-            input.value = ''; // Limpiar input si todo sale bien
-            generarTablas(); // Refrescar lista de categorías
+            input.value = '';
+            generarTablas(); 
 
         } catch (error) {
             console.error('Error:', error);

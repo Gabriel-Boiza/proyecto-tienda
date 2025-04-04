@@ -8,6 +8,27 @@
         <h1 class="text-xl font-bold">Historial de Pedidos</h1>
     </div>
 
+    <!-- Search and Filter Section -->
+    <div class="mb-6 space-y-4">
+        <!-- Search bar -->
+        <div class="flex space-x-4">
+            <input type="text" 
+                id="searchInput" 
+                placeholder="Buscar pedidos..." 
+                class="flex-1 bg-zinc-800 rounded-md px-4 py-2 text-gray-300">
+            
+            <!-- Status Dropdown -->
+            <select id="statusFilter" 
+                class="bg-zinc-800 rounded-md px-4 py-2 text-gray-300">
+                <option value="">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="enviado">Enviado</option>
+                <option value="entregado">Entregado</option>
+                <option value="cancelado">Cancelado</option>
+            </select>
+        </div>
+    </div>
+
     <!-- Orders Table -->
     <div class="bg-zinc-800/50 rounded-lg overflow-hidden">
         <table id="tabla-pedidos" class="w-full">
@@ -41,11 +62,12 @@
                             </select>
                         </form>
                     </td>
-                
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
+
+<script src="{{ asset('js/app-admin/pedidos.js') }}"></script>
 @endsection
