@@ -22,22 +22,22 @@ class PedidosSeeder extends Seeder
             [
                 'cliente_id' => 2,
                 'total' => 89.99,
-                'estado' => 'enviado',
+                'estado' => 'pendiente',
             ],
             [
                 'cliente_id' => 1,
                 'total' => 250.50,
-                'estado' => 'enviado',
+                'estado' => 'pendiente',
             ],
             [
                 'cliente_id' => 1,
                 'total' => 120.00,
-                'estado' => 'entregado',
+                'estado' => 'pendiente',
             ],
             [
                 'cliente_id' => 2,
                 'total' => 55.10,
-                'estado' => 'cancelado',
+                'estado' => 'pendiente',
             ],
         ]);
     }

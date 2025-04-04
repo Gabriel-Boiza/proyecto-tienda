@@ -31,6 +31,14 @@ class PedidosController extends Controller
         return view('user.misPedidos', compact('pedidos'));
     }
 
+    public function confirmarPedido($id){
+        $pedido = Pedido::find($id);
+        $pedido->estado = 'entregado';
+        $pedido->save();
+
+        return redirect()->back();
+    }
+
     public function cancelarPedido($id){
         $pedido = Pedido::find($id);
         $pedido->estado = 'cancelado';
@@ -118,6 +126,11 @@ class PedidosController extends Controller
         $pedido = Pedido::find($id);
         $pedido->estado = $request->estado;
         $pedido->save();    
+
+        if($pedido->estado == 'enviado'){
+            $pedido->fecha_envio = now();   
+            $pedido->save();
+        }
 
         return redirect()->back();
     }
