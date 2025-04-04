@@ -19,8 +19,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->string('imagen_principal');
             $table->integer('descuento');
-            $table->boolean('personalizable');
-            $table->string('codigo_producto');
+            $table->boolean('personalizable')->default(0);
             $table->unsignedBigInteger('fk_marca');  // Esto debe ser unsignedBigInteger
             $table->timestamps();
         

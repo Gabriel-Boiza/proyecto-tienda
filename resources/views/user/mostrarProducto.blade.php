@@ -140,7 +140,7 @@
                         @endif
                     </div>
                     @if($producto->stock != 0)
-                    <p class="text-green-500">En stock - Envío en 24/48h</p>
+                    <p class="text-green-500">En stock - Envío en 24/48h / Stock: {{$producto->stock}}</p>
                     @else
                     <p class="text-red-500">Sin stock disponible</p>
                     @endif

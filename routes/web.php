@@ -78,6 +78,8 @@ Route::get('/api/categorias', [CategoriaController::class, 'obtenerCategorias'])
 
 Route::get('/mis-pedidos', [PedidosController::class, 'userIndex']);
 Route::get('/cancelar-pedido/{id}', [PedidosController::class, 'cancelarPedido']);
+Route::get('/confirmar-pedido/{id}', [PedidosController::class, 'confirmarPedido']);
+
 Route::get('/productosPedido/{id}', [PedidosController::class, 'productosPedido']);
 Route::get('/generarPdf/{id}', [PedidosController::class, 'generarPdf']);
 Route::post('/products/store', [ProductoController::class, 'guardarImagen'])->name('products.store');

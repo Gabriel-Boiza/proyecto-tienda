@@ -34,6 +34,7 @@
                 <tr class="text-left text-gray-400 border-b border-zinc-700">
                     <th class="p-4">ID</th>
                     <th class="p-4">Fecha</th>
+                    <th class="p-4">Fecha de envío</th>
                     <th class="p-4">Total</th>
                     <th class="p-4">Estado</th>
                 </tr>
@@ -43,6 +44,7 @@
                 <tr class="border-b border-zinc-700 hover:bg-zinc-700/50">
                     <td class="p-4">{{ $pedido->id }}</td>
                     <td class="p-4">{{ $pedido['created_at'] ? date('d/m/Y', strtotime($pedido['created_at'])) : 'N/A' }}</td>
+                    <td class="p-4">{{ $pedido->fecha_envio ? : 'N/A' }}</td>
                     <td class="p-4">{{ number_format($pedido->total, 2) }} €</td>
                     <td class="p-4">
                         <form action="/pedidos/{{$pedido->id}}" method="POST" class="m-0">

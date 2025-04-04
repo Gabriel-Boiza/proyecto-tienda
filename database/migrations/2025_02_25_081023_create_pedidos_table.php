@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
             $table->decimal('total', 10, 2);
             $table->enum('estado', ['pendiente', 'enviado', 'entregado', 'cancelado'])->default('pendiente');
+            $table->timestamp('fecha_envio')->nullable();
             $table->timestamps();
         });
     }

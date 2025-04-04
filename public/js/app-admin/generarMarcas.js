@@ -43,7 +43,7 @@ function generarTablas(){
                 </svg>
             `;
             deleteBtn.className = 'text-gray-400 hover:text-white p-1 transition-colors';
-            deleteBtn.onclick = () => eliminarCategoria(marca.id);
+            deleteBtn.onclick = () => eliminarCategoria(marca.id, container, categoriaDiv);
         
             // Agregar botones al contenedor
             botonesContainer.appendChild(editBtn);
@@ -79,7 +79,7 @@ async function editarCategoria(id, nuevoNombre) {
         if (!response.ok) {throw new Error('Error al actualizar la categoría')}
 
         const data = await response.json();
-        generarTablas(); // Refresca la tabla tras la actualización
+        alert('Marca actualizada correctamente')
         return data;
         
     } catch (error) {
@@ -88,7 +88,7 @@ async function editarCategoria(id, nuevoNombre) {
 }
 
 
-function eliminarCategoria(id){
+function eliminarCategoria(id, container, div){
     if(confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
         fetch(`marcas/${id}`, {
             method: 'DELETE',
@@ -98,7 +98,7 @@ function eliminarCategoria(id){
         })
         .then(response => {
             if(!response.ok) {throw new Error('Error al actualizar la categoría')}
-            generarTablas();
+            container.removeChild(div);
 
         })
         .catch(error => console.error('Error:', error));
