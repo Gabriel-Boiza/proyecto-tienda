@@ -131,7 +131,7 @@ class ProductoController extends Controller
             'imagen_principal' => $rutaImagenPrincipal,
             'fk_marca' => $request->marca,  
             'descuento' => $request->descuento,
-            'personalizable' => $request->personalizable,
+            'personalizable' => $request->has('personalizable') ? true : false,
         ]);
 
         foreach($request->caracteristicas as $index => $caracteristica){

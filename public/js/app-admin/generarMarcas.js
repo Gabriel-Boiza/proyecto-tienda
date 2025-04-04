@@ -79,7 +79,7 @@ async function editarCategoria(id, nuevoNombre) {
         if (!response.ok) {throw new Error('Error al actualizar la categoría')}
 
         const data = await response.json();
-        generarTablas(); // Refresca la tabla tras la actualización
+        alert('Marca actualizada correctamente')
         return data;
         
     } catch (error) {

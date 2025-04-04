@@ -62,6 +62,17 @@
                            min="0" 
                            class="w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-2 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
                 </div>
+                <div>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" 
+                            name="personalizable" 
+                            id="personalizable" 
+                            value="1" 
+                            class="rounded text-purple-500 bg-zinc-800 border-zinc-700">
+                        <span class="text-sm font-medium text-gray-400">Producto Personalizable</span>
+                    </label>
+                    <p class="mt-1 text-sm text-gray-500">Marca esta opción si el producto puede ser personalizado por el cliente</p>
+                </div>
             </div>
 
             <!-- Descuento -->
