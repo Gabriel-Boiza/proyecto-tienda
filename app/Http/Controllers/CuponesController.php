@@ -33,6 +33,6 @@ class CuponesController extends Controller
             'usado' => 0,
         ]);
 
-        return response()->json($cupon);
+        return response()->json(Session::get('cupon_temporal'));
     }
 }
