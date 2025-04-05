@@ -75,20 +75,7 @@
                 </div>
             </div>
 
-            <div>
-                <label class="flex items-center space-x-2">
-                    <input type="hidden" name="personalizable" value="0">
-                    
-                    <input type="checkbox" 
-                        name="personalizable" 
-                        id="personalizable"
-                        value="1" 
-                        class="rounded text-purple-500 bg-zinc-800 border-zinc-700">
-                    
-                    <span class="text-sm font-medium text-gray-400">Producto Personalizable</span>
-                </label>
-                <p class="mt-1 text-sm text-gray-500">Marca esta opción si el producto puede ser personalizado por el cliente</p>
-            </div>
+
 
 
             <!-- Descuento -->

@@ -61,13 +61,24 @@
                                     </button>
                                 </div>
                             </div>
+                            @php
+                                $precioConDescuento = $producto->precio - ($producto->precio * $producto->descuento / 100);
+                            @endphp
+
                             <div class="text-right">
-                                <div class="text-lg font-bold">{{ number_format($producto->precio, 2) }}€</div>
-                                <div class="text-sm text-gray-400">Total: {{ number_format($producto->precio * $producto->pivot->cantidad, 2) }}€</div>
+                                <div class="text-lg font-bold">
+                                    {{ number_format($precioConDescuento, 2) }}€
+                                    @if($producto->descuento > 0)
+                                        <span class="line-through text-sm text-gray-400 ml-2">{{ number_format($producto->precio, 2) }}€</span>
+                                    @endif
+                                </div>
+                                <div class="text-sm text-gray-400">
+                                    <span id="total_producto">Total: {{ number_format($precioConDescuento * $producto->pivot->cantidad, 2) }}€</span>
+                                </div>
                                 @if($producto->stock <= 0)
-                                <div class="text-xs text-red-500 mt-1">Agotado</div>
+                                    <div class="text-xs text-red-500 mt-1">Agotado</div>
                                 @elseif($producto->stock < 5)
-                                <div class="text-xs text-yellow-500 mt-1">¡Solo {{ $producto->stock }} disponibles!</div>
+                                    <div class="text-xs text-yellow-500 mt-1">¡Solo {{ $producto->stock }} disponibles!</div>
                                 @endif
                             </div>
                         </div>

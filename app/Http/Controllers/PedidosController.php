@@ -77,7 +77,7 @@ class PedidosController extends Controller
         $clienteProductos = Carrito::with('producto')->where('cliente_id', Session::get('cliente_id'))->get();
         
         $total = $clienteProductos->sum(function ($item) {
-            return $item->producto->precio * $item->cantidad;
+            return $item->producto->precio * $item->cantidad * (1 - ($item->producto->descuento / 100));
         });
         //return response()->json($clienteProductos);
 

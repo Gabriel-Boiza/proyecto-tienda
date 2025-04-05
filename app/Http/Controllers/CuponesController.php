@@ -35,4 +35,50 @@ class CuponesController extends Controller
 
         return response()->json(Session::get('cupon_temporal'));
     }
+
+    public function validarCupon(Request $request){
+        
+        $request->validate([
+            'codigo' => 'required|string',
+        ]);
+        
+        $codigo = $request->codigo;
+        
+        if (!Session::has('cupon_temporal')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No hay cupón disponible'
+            ]);
+        }
+        
+        $cuponTemporal = Session::get('cupon_temporal');
+        
+        if ($cuponTemporal['codigo'] == $codigo) {
+            if (now()->gt(\Carbon\Carbon::parse($cuponTemporal['expira_en']))) {
+                Session::forget('cupon_temporal');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El cupón ha expirado'
+                ]);
+            }
+            
+            if ($cuponTemporal['usado'] == 1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Este cupón ya ha sido utilizado'
+                ]);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Cupón aplicado correctamente',
+                'cupon' => $cuponTemporal
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Código de cupón inválido'
+        ]);
+    }
 }
