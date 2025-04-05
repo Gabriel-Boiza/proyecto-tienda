@@ -43,9 +43,13 @@ class ClientesController extends Controller
     }
 
     public function userShow(){
-        $id = Session::get('cliente_id');
-        $cliente = Cliente::find($id);
-        return view('user.perfil', compact('cliente'));
+        if(Session::exists('cliente_id')){
+            $id = Session::get('cliente_id');
+            $cliente = Cliente::find($id);
+            return view('user.perfil', compact('cliente'));
+        }
+
+        return redirect()->route('inicio');
     }
 
     /**
@@ -53,9 +57,13 @@ class ClientesController extends Controller
      */
     public function edit()
     {
-        $id = Session::get('cliente_id');
-        $cliente = Cliente::find($id);
-        return view('user.editarCliente', compact('cliente'));
+        if(Session::exists('cliente_id')){
+            $id = Session::get('cliente_id');
+            $cliente = Cliente::find($id);
+            return view('user.editarCliente', compact('cliente'));
+        }
+        return redirect()->route('inicio');
+
     }
 
     /**

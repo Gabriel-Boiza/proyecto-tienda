@@ -26,9 +26,12 @@ class PedidosController extends Controller
     }
 
     public function userIndex(){
-        $id = Session::get('cliente_id');
-        $pedidos = Cliente::with('pedidos')->find($id)->pedidos;
-        return view('user.misPedidos', compact('pedidos'));
+        if(Session::exists('cliente_id')){
+            $id = Session::get('cliente_id');
+            $pedidos = Cliente::with('pedidos')->find($id)->pedidos;
+            return view('user.misPedidos', compact('pedidos'));
+        }
+        return redirect()->route('inicio');
     }
 
     public function confirmarPedido($id){
