@@ -12,14 +12,16 @@
     <div class="mb-6 space-y-4">
         <!-- Search bar -->
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-            <input type="text" 
+            <input type="text"
                    id="searchInput"
-                   placeholder="Buscar clientes..." 
-                   class="w-full md:flex-1 bg-zinc-800 rounded-md px-4 py-2 text-gray-300 search-input">
-            
+                   placeholder="Buscar clientes..."
+                   class="w-full md:flex-1 bg-zinc-800 rounded-md px-4 py-2 text-gray-300 search-input"
+                   aria-label="Buscar clientes por nombre, apellido, email o teléfono"> {{-- Added aria-label --}}
+
             <!-- Ciudad Dropdown -->
-            <select id="ciudadFilter" 
-                    class="w-full md:w-auto bg-zinc-800 rounded-md px-4 py-2 text-gray-300 filter-select">
+            <select id="ciudadFilter"
+                    class="w-full md:w-auto bg-zinc-800 rounded-md px-4 py-2 text-gray-300 filter-select"
+                    aria-label="Filtrar clientes por ciudad"> {{-- Added aria-label --}}
                 <option value="">Todas las ciudades</option>
             </select>
         </div>
@@ -50,8 +52,11 @@
                     <td class="p-4 hidden md:table-cell">{{ $cliente['ciudad'] }}</td>
                     <td class="p-4">
                         <div class="flex space-x-2">
-                            <a href="{{ route('clientes.show', $cliente->id) }}" title="Ver historial de pedidos" class="text-blue-400 hover:text-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <a href="{{ route('clientes.show', $cliente->id) }}"
+                               title="Ver historial de pedidos"
+                               class="text-blue-400 hover:text-blue-300"
+                               aria-label="Ver historial de pedidos de {{ $cliente['nombre'] }} {{ $cliente['apellido'] }}"> {{-- Added aria-label --}}
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> {{-- Added aria-hidden --}}
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                 </svg>
                             </a>
@@ -68,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Obtener ciudades únicas de los clientes
     const clientes = @json($clientes);
     const ciudades = [...new Set(clientes.map(cliente => cliente.ciudad))];
-    
+
     // Llenar filtro de ciudades
     const ciudadFilter = document.getElementById('ciudadFilter');
     ciudades.forEach(ciudad => {
@@ -77,16 +82,16 @@ document.addEventListener('DOMContentLoaded', function() {
         option.textContent = ciudad;
         ciudadFilter.appendChild(option);
     });
-    
+
     // Configurar filtrado
     const searchInput = document.getElementById('searchInput');
     const tabla = document.getElementById('tabla-clientes');
     const tbody = tabla.querySelector('tbody');
-    
+
     function filtrarClientes() {
         const searchTerm = searchInput.value.toLowerCase();
         const ciudadSeleccionada = ciudadFilter.value;
-        
+
         // Ocultar/mostrar filas según filtros
         const filas = tbody.querySelectorAll('tr');
         filas.forEach(fila => {
@@ -95,19 +100,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = fila.querySelector('td:nth-child(4)').textContent.toLowerCase();
             const telefono = fila.querySelector('td:nth-child(5)').textContent;
             const ciudad = fila.querySelector('td:nth-child(6)').textContent;
-            
-            const matchSearch = 
-                nombre.includes(searchTerm) || 
-                apellido.includes(searchTerm) || 
+
+            const matchSearch =
+                nombre.includes(searchTerm) ||
+                apellido.includes(searchTerm) ||
                 email.includes(searchTerm) ||
                 telefono.includes(searchTerm);
-                
+
             const matchCiudad = !ciudadSeleccionada || ciudad === ciudadSeleccionada;
-            
+
             fila.style.display = matchSearch && matchCiudad ? '' : 'none';
         });
     }
-    
+
     // Event listeners
     searchInput.addEventListener('input', filtrarClientes);
     ciudadFilter.addEventListener('change', filtrarClientes);
