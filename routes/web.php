@@ -16,9 +16,10 @@ use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\PersonalizadosController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\CuponesController;
 // Rutas de productos
 
-
+Route::get('/cupon', [CuponesController::class, 'recogerCuponRandom']);
 
 Route::get('/productos/buscar', [ProductoController::class, 'buscar']);
 

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ClientesSeeder::class,
             PedidosSeeder::class,
             ProductosSeeder::class,
+            CuponesSedeer::class,
         ]);
     }
 }

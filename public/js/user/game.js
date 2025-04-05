@@ -47,19 +47,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const maxX = escenario.offsetWidth - objeto.offsetWidth;
         const maxY = escenario.offsetHeight - objeto.offsetHeight;
 
-        const randomX = Math.random() * maxX;
-        const randomY = Math.random() * maxY;
+        const randomX = Math.random() * maxX + 50;
+        const randomY = Math.random() * maxY + 100;
 
         objeto.style.left = `${randomX}px`;
         objeto.style.top = `${randomY}px`;   
     }
 
-    function abrirDialogo() {
+    async function abrirDialogo() {
         const dialogo = document.getElementById('dialog');
         const descripcion = document.getElementById('dialog-descripcion');
         
+        let cupon = await peticionFetch('/cupon', 'GET', null)
+        console.log(cupon);
         
-        descripcion.textContent = 'Has ganado un 10% de descuento!'; 
+        descripcion.textContent = `Has ganado un ${cupon.descuento}% de descuento! Usa el cupón ${cupon.codigo}`; 
         
         dialogo.showModal(); 
     }
