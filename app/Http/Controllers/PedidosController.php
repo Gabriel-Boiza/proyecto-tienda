@@ -25,15 +25,26 @@ class PedidosController extends Controller
         return view('app-admin.pedidos.leer', compact('pedidos'));
     }
 
-    public function userIndex(){
+    public function userIndex(Request $request){
         if(Session::exists('cliente_id')){
             $id = Session::get('cliente_id');
-            $pedidos = Cliente::with('pedidos')->find($id)->pedidos;
-            return view('user.misPedidos', compact('pedidos'));
+            $estado = $request->input('estado', 'todos');
+            
+            // Obtener el cliente con sus pedidos
+            $cliente = Cliente::find($id);
+            
+            if($estado == 'todos'){
+                // Obtener todos los pedidos del cliente
+                $pedidos = $cliente->pedidos;
+            } else {
+                // Filtrar pedidos por estado
+                $pedidos = $cliente->pedidos()->where('estado', $estado)->get();
+            }
+            
+            return view('user.misPedidos', compact('pedidos', 'estado'));
         }
         return redirect()->route('inicio');
     }
-
     public function confirmarPedido($id){
         $pedido = Pedido::find($id);
         $pedido->estado = 'entregado';

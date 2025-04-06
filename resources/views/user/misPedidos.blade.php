@@ -47,6 +47,27 @@
 
             <!-- Tabla de Pedidos -->
             <section class="flex-1">
+                <!-- Formulario de Filtro -->
+                <div class="bg-gray-800/30 p-4 rounded-lg mb-4">
+                    <form action="{{ url('/mis-pedidos') }}" method="GET" class="flex flex-wrap items-center gap-4">
+                        <div>
+                            <label for="estado" class="block text-sm text-gray-400 mb-1">Filtrar por estado:</label>
+                            <select name="estado" id="estado" class="bg-gray-700 text-white rounded px-3 py-2 border border-gray-600 focus:outline-none focus:border-purple-500">
+                                <option value="todos">Todos</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="enviado">Enviado</option>
+                                <option value="completado">Completado</option>
+                                <option value="cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                        <div class="self-end">
+                            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors">
+                                Filtrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
                 <div class="bg-gray-800/30 rounded-lg overflow-x-auto">
                     <table class="w-full min-w-[600px]">
                         <thead>
@@ -59,7 +80,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($pedidos as $pedido)
+                            @forelse($pedidos as $pedido)
                                 <tr class="border-t border-gray-700 hover:bg-gray-700/30 transition-colors">
                                     <td class="py-4 px-4">#{{ $pedido->id }}</td>
                                     <td class="py-4 px-4">
@@ -78,6 +99,10 @@
                                         @elseif($pedido->estado == 'cancelado')
                                             <span class="px-2 py-1 bg-red-500/20 text-red-300 rounded-full text-xs">
                                                 Cancelado
+                                            </span>
+                                        @elseif($pedido->estado == 'enviado')
+                                            <span class="px-2 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs">
+                                                Enviado
                                             </span>
                                         @else
                                             <span class="px-2 py-1 bg-gray-500/20 text-gray-300 rounded-full text-xs">
@@ -105,7 +130,13 @@
                                         </a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="py-6 px-4 text-center text-gray-400">
+                                        No se encontraron pedidos con el filtro seleccionado.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

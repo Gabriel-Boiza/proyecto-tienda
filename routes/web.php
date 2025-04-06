@@ -108,10 +108,13 @@ Route::middleware('auth')->group(function () {
         'caracteristicas' => CaracteristicaController::class,
         'clientes' => ClientesController::class,
         'pedidos' => PedidosController::class,
+        'cupones' => CuponesController::class,
     ]);
 
     Route::get('/api/caracteristicas/{id}', [CaracteristicaController::class, 'apiCaracteristicas']);
     Route::get('/api/caracteristica', [CaracteristicaController::class, 'apiCaracteristicasCrud']);
+
+    Route::get('/api/cupones', [CuponesController::class, 'apiCupones']);
 
     Route::get('/api/marcas', [MarcaController::class, 'obtenerMarcas']);
 

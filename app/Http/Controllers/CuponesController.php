@@ -81,4 +81,47 @@ class CuponesController extends Controller
             'message' => 'Código de cupón inválido'
         ]);
     }
+
+    public function index()
+    {
+        return view('app-admin.cupones.index');
+    }
+
+    public function create()
+    {
+        return view('app-admin.cupones.create');    
+    }
+
+    public function store(Request $request)
+    {
+        //
+    }
+
+    public function show($id)
+    {
+
+    }
+
+    public function edit($id)
+    {
+        $cupon = Cupon::find($id);
+        return view('app-admin.cupones.edit', compact('cupon'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    public function destroy($id)
+    {
+        $cupon = Cupon::find($id);
+        $cupon->delete();
+    }
+
+    public function apiCupones(){
+        $cupones = Cupon::all();
+        return response()->json($cupones);
+    }
+
 }
