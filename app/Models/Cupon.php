@@ -9,7 +9,7 @@ class Cupon extends Model
     protected $table = 'cupones';
 
     protected $fillable = [
-        'nombre',
+        'codigo',
         'descuento',
     ];
 }

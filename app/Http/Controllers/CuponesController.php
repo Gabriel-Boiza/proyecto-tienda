@@ -94,7 +94,11 @@ class CuponesController extends Controller
 
     public function store(Request $request)
     {
-        //
+        Cupon::create([
+            'codigo' => $request->codigo,
+            'descuento' => $request->descuento
+        ]);
+        return view('app-admin.cupones.index');
     }
 
     public function show($id)
@@ -110,7 +114,12 @@ class CuponesController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $cupon = Cupon::find($id);
+        $cupon->update([
+            'codigo' => $request->codigo,
+            'descuento' => $request->descuento
+        ]);
+        return view('app-admin.cupones.index');
     }
 
     public function destroy($id)

@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function(event){
         const cuponCode = cuponToDelete ? cuponToDelete.codigo : 'este cupón';
 
         if (confirm(`¿Estás seguro de que deseas eliminar el cupón ${cuponCode}?`)) {
-            fetch(`cupones/${id}`, {
+            fetch(`/cupones/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
