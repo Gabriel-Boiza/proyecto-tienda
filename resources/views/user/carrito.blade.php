@@ -31,7 +31,7 @@
                             @php
                                 $personalizadosController = new App\Http\Controllers\PersonalizadosController();
                                 $personalizado = $personalizadosController->getPersonalizedImage($producto->id);
-                                $imagenUrl = $personalizado ? asset('storage/' . $personalizado->imagen) : asset('storage/' . $producto->imagen_principal);
+                                $imagenUrl = $personalizado ? asset('storage/' . $personalizado->imagen_personalizada) : asset('storage/' . $producto->imagen_principal);
                             @endphp
                             <img src="{{ $imagenUrl }}"
                                 alt="{{ $producto->nombre }}" {{-- Alt attribute already provides description --}}

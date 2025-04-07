@@ -56,7 +56,7 @@ class PersonalizadosController extends Controller
             DB::table('personalizados')->insert([
                 'cliente_id' => $clienteId,
                 'producto_id' => $request->producto_id,
-                'imagen' => $filename,
+                'imagen_personalizada' => $filename,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
