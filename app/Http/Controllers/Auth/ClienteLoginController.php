@@ -42,7 +42,7 @@ class ClienteLoginController extends Controller
      public function logout()
      {
          Session::flush();
-         return back();
+         return redirect()->route('inicio');
      }
 
      public function registro()

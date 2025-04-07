@@ -50,7 +50,7 @@ class PagoController extends Controller
             }
     
             $charge = Charge::create([
-                'amount' => $request->total * 100, 
+                'amount' => intval(round($request->total * 100)),
                 'currency' => 'eur',
                 'description' => 'Pago en tu tienda online',
                 'source' => $request->stripeToken,
