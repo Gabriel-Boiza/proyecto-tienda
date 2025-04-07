@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return `
             <div class="bg-gray-800 rounded-xl p-6 flex flex-col md:flex-row gap-6 items-center">
-                <img src="/storage/${producto.imagen_principal}" alt="${producto.nombre}" class="w-full md:w-48 h-48 object-cover rounded-lg">
+                <img src="/storage/${producto.imagen_principal}" alt="${producto.nombre}" class="md:w-48 h-48 object-cover rounded-lg">
                 <div class="flex-grow">
                     <div class="flex items-start justify-between">
                         <div>

@@ -22,7 +22,7 @@ function contenidoCarrito(contenedor, producto, productoId){
     let divImagen = document.createElement('div')
     divImagen.className = 'w-20 h-20 bg-gray-700 rounded-lg overflow-hidden'
     let imagen = document.createElement('img')
-    imagen.src = `{{ asset(${producto.imagen_principal}) }}`
+    imagen.src = `/storage/${producto.imagen_principal}`
     imagen.alt = producto.nombre
     divImagen.appendChild(imagen)
 
