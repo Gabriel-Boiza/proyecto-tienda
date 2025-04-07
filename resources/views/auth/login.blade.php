@@ -1,69 +1,46 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Periféricos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-900 min-h-screen flex items-center justify-center">
-    <div class="max-w-md w-full bg-gray-800 rounded-lg shadow-xl p-8">
-        <div class="mb-8 text-center">
-            <h2 class="text-3xl font-bold text-purple-500 mb-2">Bienvenido</h2>
-            <p class="text-gray-400">Ingresa a tu cuenta de PePeriféricos</p>
-        </div>
-        
-        <form action="login" method="POST" class="space-y-6">
-        @csrf
-            
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
-                    Correo electrónico
-                </label>
-                <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    required
-                    class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
-                    placeholder="tucorreo@ejemplo.com"
-                >
-            </div>
-            
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
-                    Contraseña
-                </label>
-                <input 
-                    type="password" 
-                    name="password" 
-                    id="password" 
-                    required
-                    class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
-                    placeholder="••••••••"
-                >
-            </div>
-            
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input type="checkbox" id="remember" class="h-4 w-4 text-purple-500 focus:ring-purple-500 border-gray-600 rounded bg-gray-700">
-                    <label for="remember" class="ml-2 block text-sm text-gray-300">
-                        Recordarme
-                    </label>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Iniciar Sesión</div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus>
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                <label class="form-check-label" for="remember">Recordarme</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                        </form>
+                    </div>
                 </div>
-                
-                <a href="#" class="text-sm text-purple-400 hover:text-purple-300">
-                    ¿Olvidaste tu contraseña?
-                </a>
             </div>
-            
-            <button 
-                type="submit"
-                class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition duration-200"
-            >
-                Iniciar sesión
-            </button>
-        </form>
+        </div>
     </div>
 </body>
 </html>

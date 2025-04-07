@@ -2,29 +2,38 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Role;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        // Crear un usuario de prueba
+        // Get the admin role
+        $adminRole = Role::where('name', 'admin')->first();
+        
+        // Create a default admin user
         User::create([
-            'name' => 'Administrador',
+            'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'password' => Hash::make('a'), // Usa Hash::make() para cifrar la contraseña
+            'password' => Hash::make('password'),
+            'role_id' => $adminRole->id,
         ]);
-
-        // Crear más usuarios si es necesario
+        
+        // Get the user role
+        $userRole = Role::where('name', 'user')->first();
+        
+        // Create a default regular user
         User::create([
-            'name' => 'Usuario de prueba',
+            'name' => 'Regular User',
             'email' => 'user@example.com',
-            'password' => Hash::make('a'),
+            'password' => Hash::make('password'),
+            'role_id' => $userRole->id,
         ]);
-
-
     }
 }
-
