@@ -1,73 +1,43 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    protected $table = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role_id',
+        'id',
+        'nick',
+        'pass'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
-        'password',
+        'pass',
         'remember_token',
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the password for the user.
      *
-     * @var array<string, string>
+     * @return string
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    /**
-     * Get the role that owns the user.
-     */
-    public function role()
+    public function getAuthPassword()
     {
-        return $this->belongsTo(Role::class);
+        return $this->pass;
     }
 
     /**
-     * Check if the user has a specific role.
+     * Set the user's password.
      *
-     * @param string $role
-     * @return bool
+     * @param  string  $value
+     * @return void
      */
-    public function hasRole($role)
+    public function setPassAttribute($value)
     {
-        return $this->role && $this->role->name === $role;
-    }
-
-    /**
-     * Check if the user is an admin.
-     *
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return $this->hasRole('admin');
+        $this->attributes['pass'] = Hash::make($value);
     }
 }
